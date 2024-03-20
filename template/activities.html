@@ -377,83 +377,83 @@
 <!-- Overlay box markup ends -->
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const dropdownIcon = document.querySelector('.dropdown-toggle');
-        const overlay = document.getElementById('overlay');
-        const signInButton = document.querySelector('.dropdown-toggle button');
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function () {-->
+<!--        const dropdownIcon = document.querySelector('.dropdown-toggle');-->
+<!--        const overlay = document.getElementById('overlay');-->
+<!--        const signInButton = document.querySelector('.dropdown-toggle button');-->
 
-        dropdownIcon.addEventListener('click', function () {
-            if (overlay.style.display === "block") {
-                overlay.style.display = "none"; // Hide overlay if it's already visible
-                signInButton.style.backgroundColor = "";
-                signInButton.style.color = "";
-            } else {
-                overlay.style.display = "block";
-                signInButton.style.backgroundColor = "white"; // Show overlay if it's hidden
-                signInButton.style.color = "black";
-            }
-        });
+<!--        dropdownIcon.addEventListener('click', function () {-->
+<!--            if (overlay.style.display === "block") {-->
+<!--                overlay.style.display = "none"; // Hide overlay if it's already visible-->
+<!--                signInButton.style.backgroundColor = "";-->
+<!--                signInButton.style.color = "";-->
+<!--            } else {-->
+<!--                overlay.style.display = "block";-->
+<!--                signInButton.style.backgroundColor = "white"; // Show overlay if it's hidden-->
+<!--                signInButton.style.color = "black";-->
+<!--            }-->
+<!--        });-->
 
-        // Add event listener to overlay to close it when clicked anywhere on the screen
-        overlay.addEventListener('click', function () {
-            overlay.style.display = "none";
-            signInButton.style.backgroundColor = "";
-            signInButton.style.color = "";
-        });
+<!--        // Add event listener to overlay to close it when clicked anywhere on the screen-->
+<!--        overlay.addEventListener('click', function () {-->
+<!--            overlay.style.display = "none";-->
+<!--            signInButton.style.backgroundColor = "";-->
+<!--            signInButton.style.color = "";-->
+<!--        });-->
 
-        // Code for dynamically adding and removing activity fields
-        document.getElementById('add-field').addEventListener('click', function () {
-            addField();
-        });
+<!--        // Code for dynamically adding and removing activity fields-->
+<!--        document.getElementById('add-field').addEventListener('click', function () {-->
+<!--            addField();-->
+<!--        });-->
 
-        // Add event listener to dynamically added remove buttons
-        document.addEventListener('click', function (event) {
-            if (event.target.classList.contains('remove-field')) {
-                event.target.closest('.activity-group').remove();
-            }
-        });
-    });
+<!--        // Add event listener to dynamically added remove buttons-->
+<!--        document.addEventListener('click', function (event) {-->
+<!--            if (event.target.classList.contains('remove-field')) {-->
+<!--                event.target.closest('.activity-group').remove();-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
 
-    // Function to add new activity fields dynamically
-    let fieldCount = 0;
+<!--    // Function to add new activity fields dynamically-->
+<!--    let fieldCount = 0;-->
 
-    function addField() {
-        const container = document.getElementById('activity-container');
-        const newField = document.createElement('div');
-        newField.classList.add('activity-group');
-        newField.innerHTML = `
-            <div class="row">
-                <input type="hidden" name="package_id" value="{{ user_obj.pk }}">
-                <div class="col-md-4">
-                    <div class="form-group mt-3">
-                        <label for="activity_name">Activity Name:</label>
-                        <input type="text" class="form-control" name="activity_name[]" required>
-                    </div>
-                </div>
+<!--    function addField() {-->
+<!--        const container = document.getElementById('activity-container');-->
+<!--        const newField = document.createElement('div');-->
+<!--        newField.classList.add('activity-group');-->
+<!--        newField.innerHTML = `-->
+<!--            <div class="row">-->
+<!--                <input type="hidden" name="package_id" value="{{ user_obj.pk }}">-->
+<!--                <div class="col-md-4">-->
+<!--                    <div class="form-group mt-3">-->
+<!--                        <label for="activity_name">Activity Name:</label>-->
+<!--                        <input type="text" class="form-control" name="activity_name[]" required>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-                <div class="col-md-4">
-                    <div class="form-group mt-3">
-                        <label for="activity_image">Image:</label>
-                        <input type="file" class="form-control" name="activity_image[]" required>
-                    </div>
-                </div>
+<!--                <div class="col-md-4">-->
+<!--                    <div class="form-group mt-3">-->
+<!--                        <label for="activity_image">Image:</label>-->
+<!--                        <input type="file" class="form-control" name="activity_image[]" required>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-                <div class="col-md-3">
-                    <div class="form-group mt-3">
-                        <label for="activity_description">Description:</label>
-                        <textarea class="form-control" name="activity_description[]" rows="1" required></textarea>
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-danger mt-3 remove-field"><i class="bi bi-trash"></i></button>
-                </div>
-            </div>
-        `;
-        container.appendChild(newField);
-        fieldCount++;
-    }
-</script>
+<!--                <div class="col-md-3">-->
+<!--                    <div class="form-group mt-3">-->
+<!--                        <label for="activity_description">Description:</label>-->
+<!--                        <textarea class="form-control" name="activity_description[]" rows="1" required></textarea>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-md-1">-->
+<!--                    <button type="button" class="btn btn-danger mt-3 remove-field"><i class="bi bi-trash"></i></button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        `;-->
+<!--        container.appendChild(newField);-->
+<!--        fieldCount++;-->
+<!--    }-->
+<!--</script>-->
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
