@@ -1,0 +1,19 @@
+*{
+    font-family: 'Raleway', sans-serif;
+
+}
+.bi-star-fill{
+    color: yellow;
+}
+.bi-star{
+    color: yellow;
+}.carousel-inner img {
+    height: 550px;
+    object-fit: cover;
+}
+b{
+    color: red;
+}
+body {
+    overflow-x: hidden;
+  }

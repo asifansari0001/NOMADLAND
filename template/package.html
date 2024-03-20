@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nomaland</title>
+    {% load static %}
+   <link rel="icon" type="image/png" href="{% static 'mountains_top.png' %}">
+        <link rel="stylesheet" href="{% static 'Package.css' %}">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://kit.fontawesome.com/7db032fd81.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@300;400&family=Raleway&display=swap"
+    rel="stylesheet">
+</head>
+
+<style>
+        /* overlay css */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            backdrop-filter: blur(1px);
+        }
+
+        .navbar {
+            z-index: 10000;
+            backdrop-filter: none;
+            /* Remove blur effect from navbar */
+        }
+
+
+        .overlay-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: whitesmoke;
+            border: groove 1px black;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .overlay-box {
+            width: 60%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            /* Position buttons at the ends */
+        }
+
+        .user-btn,
+        .agent-btn {
+            width: 45%;
+            /* Adjust button width */
+            border: 2px solid transparent;
+            background-color: transparent;
+            color: black;
+            margin: 5px 0;
+            /* Adjust the margin as needed */
+            padding: 10px;
+            /* Adjust the padding as needed */
+            text-align: center;
+
+        }
+
+        @media (max-width: 992px) {
+            .overlay-box {
+                width: 80%;
+                /* Adjust width for smaller screens */
+                flex-direction: column;
+                /* Stack buttons vertically */
+                align-items: center;
+                /* Center buttons vertically */
+            }
+
+            .user-btn,
+            .agent-btn {
+                width: 100%;
+                /* Full width for buttons on smaller screens */
+
+            }
+        }
+
+
+        .agent-btn:hover {
+            color: grey;
+        }
+
+        .user-btn:hover {
+            color: grey;
+
+        }
+
+        @media (max-width: 992px) {
+            .hide-on {
+                display: none;
+            }
+
+            .overlay-box {
+                width: 40%;
+            }
+        }
+
+        @media (min-width:992px) {
+            .hide-off {
+                display: none;
+            }
+
+        }
+
+
+        .navbar-nav .nav-link:not(.dropdown-toggle):hover {
+            color: grey !important;
+        }
+
+        .overflow-hidden {
+            overflow-y: hidden;
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        /* overlay css */
+    </style>
+<body>
+
+  <!-- navbar section starts -->
+    <header>
+        <div>
+            <nav class="navbar navbar-expand-lg" id="#mainNav" style="background-color: whitesmoke;">
+                <div class="container-fluid">
+                    <a class="navbar-brand  fw-bold" href="{% url 'home' %}">
+                        <img src="{% static 'mountains_black.png' %}" alt="Logo" width="30" height="28"
+                            class="d-inline-block align-text-top">
+                        NOMAD<span>LAND</span>
+                    </a>
+                    <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size " aria-current="page" href="{% url 'home' %}">HOME</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size" href="{% url 'booking' %}">TOURS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size" href="{% url 'review' %}">REVIEWS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size" href="{% url 'about' %}">ABOUT US</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle ms-md-1 justify-content-sm-start ps-1 pt-1 pb-1"
+                                    href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button type="button"
+                                        class="btn btn-outline-dark bg-light btn-sm sg-button text-black">SIGN
+                                        IN</button>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- navbar section ends -->
+
+    <!-- Overlay box markup -->
+    <div class="overlay" id="overlay">
+        <div class="overlay-box">
+            <button class="btn user-btn fs-5 fw-bolder border-0" onclick="chooseOption('customer')">
+                <i class="fas fa-user"></i><br> USER
+            </button>
+            <h2 class="hide-on">|</h2>
+            <h1 class="hide-off">─</h1>
+            <button class="btn  agent-btn fs-5 fw-bolder border-0" onclick="chooseOption('agent')">
+                <i class="fas fa-user-tie"></i><br> AGENT
+            </button><br>
+        </div>
+    </div>
+
+
+    <!-- Overlay box markup ends -->
+
+
+
+    <div id="carouselExampleCaptions" class="carousel slide">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="{% static 'cristina-gottardi-JiLTJODH5j4-unsplash.jpg' %}" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-md-block">
+              <h1>WHAT WE HAVE !</h1>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'joshua-sortino-f3uWi9G-lus-unsplash.jpg' %}" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-md-block">
+              <h1>WHAT WE HAVE !</h1>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'william-warby-ld4wZGqlLF4-unsplash.jpg' %}" class="d-block w-100" alt="...">
+            <div class="carousel-caption">
+              <h1>WHAT WE HAVE !</h1>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      <div class="mx-auto p-2" style="width: 200px;">
+        <p class="fs-1">Packages</p>
+      </div>
+      <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
+        <div class="col">
+          <div class="card">
+            <img src="https://images.pexels.com/photos/1268855/pexels-photo-1268855.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top" alt="Maldves">
+            <div class="card-body">
+              <h5 class="card-title">MALDIVES</h5>
+              <p class="card-text">
+                <ul>
+                  <li><b>WaterSports</b> :Snorking,diving,water skiing.</li>
+                  <li><b> Bungalows</b> :The stay in overwater  bungalows.</li>
+                  <li><b> Hopping</b> :Explore different atolls and islands.</li>
+                  <li><b> Watching</b> :Take a boat tour to spot dolphins.</li>
+                </ul>
+              </p>
+                <div class="star">
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="https://wallpapercave.com/wp/wp12511099.jpg" class="card-img-top" alt="Bali">
+            <div class="card-body">
+              <h5 class="card-title">BALI</h5>
+              <p class="card-text">
+                <ul>
+                  <li><b>Ubud Monkey Forest</b> :Play with monkeys in lush forest.</li>
+                  <li><b>Tanah Lot Temple</b> :Witness the ocean temple sunset.</li>
+                  <li><b>Rice Terraces</b> :Explore the tegallalang Rice Terraces.</li>
+                  <li><b> Water Temples</b> :Visit Tirta Emplul,Ulan Danu temples.</li>
+                </ul>
+              </p>
+                <div class="star">
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="https://images.pexels.com/photos/6057723/pexels-photo-6057723.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top" alt="Brazil">
+            <div class="card-body">
+              <h5 class="card-title">BRAZIL</h5>
+              <p class="card-text">
+                <ul>
+                  <li><b>Carnival in Rio</b> :Experence world-famous Carnival.</li>
+                  <li><b>Amazon Rainforest</b> :Explore the diverse flora and fauna.</li>
+                  <li><b>Capacabana Beach</b> :The iconic Beach in Rio.</li>
+                  <li><b>Christ the Redeemer</b> :iconic statue overlooking Rio.</li>
+                </ul>
+              </p>
+                <div class="star">
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="https://images.pexels.com/photos/753639/pexels-photo-753639.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top" alt="Italy">
+            <div class="card-body">
+              <h5 class="card-title">ITALY</h5>
+              <p class="card-text">
+                <ul>
+                  <li><b>Gondola Rides</b> :Explore canals on a gondola ride.</li>
+                  <li><b>St. Mark's Basilica</b> :Visit St.Mark's iconic cathedral</li>
+                  <li><b>Venetain Mask Shoping</b> :Purchase Mask,Historic district.</li>
+                  <li><b>Grand Canal Cruise</b> :A boat ride along the Grand Canal.</li>
+                </ul>
+              </p>
+                <div class="star">
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="https://images.pexels.com/photos/1549326/pexels-photo-1549326.jpeg?auto=compress&cs=tinysrgb&w=600" class="card-img-top" alt="Istanbul">
+            <div class="card-body">
+              <h5 class="card-title">ISTANBUL</h5>
+              <p class="card-text">
+                <ul>
+                  <li><b>Blue Mosque</b> :architecture of this historic mosque.</li>
+                  <li><b>Hagia Sophia</b> :iconic museum and former cathedral.</li>
+                  <li><b>Grand Bazaar</b> :spices, textiles, and unique souvenirs.</li>
+                  <li><b>Bosphorus Cruise</b> :boat tour along the scenic strait.</li>
+                </ul>
+              </p>
+                <div class="star">
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star"></a>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="https://images.pexels.com/photos/777059/pexels-photo-777059.jpeg?auto=compress&cs=tinysrgb&w=600" class="card-img-top" alt="singapore">
+            <div class="card-body">
+              <h5 class="card-title">SINGAPORE</h5>
+              <p class="card-text">
+                <ul>
+                  <li><b>Garden by the Bay</b> :futuristic garden, iconic Supoertrees.</li>
+                  <li><b>Sentosa Island</b> :Beaches, theme parks and cable car rides.</li>
+                  <li><b>Marina Bay Sands</b> :the rooftop infinity pool and skyline views.</li>
+                  <li><b>Chinatown and little India</b> :Culture diversity of singapore.</li>
+                </ul>
+              </p>
+                <div class="star">
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star"></a>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="https://images.pexels.com/photos/2599247/pexels-photo-2599247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top" alt="tokyo">
+            <div class="card-body">
+              <h5 class="card-title">TOKYO</h5>
+              <p class="card-text">
+                <ul>
+                  <li><b>Tsukiji Fish Market</b> :vibrant atmosphere and fresh seafood.</li>
+                  <li><b>Harajuku</b> :Explore fashion on pop culture district.</li>
+                  <li><b>Shinjuku Gyoen National Garden</b> :Japanese garden.</li>
+                  <li><b>Robot Restaurant</b> :Unique and futuristic dining show.</li>
+                </ul>
+              </p>
+                <div class="star">
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star"></a>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="https://images.pexels.com/photos/4553365/pexels-photo-4553365.jpeg" class="card-img-top" alt="Srilanka">
+            <div class="card-body">
+              <h5 class="card-title">SRILANKA</h5>
+              <p class="card-text">
+                <ul>
+                  <li><b>Sigiriya Rock</b> :ancient rock fortress for panoramic view.</li>
+                  <li><b>Tea Plantations</b> :scienic plantations in Nuwara Eliya.</li>
+                  <li><b>Dambulla Cave Temple</b> :cave with ancient Buddist art.</li>
+                  <li><b>Yala National Park</b> :diverse wildlife including leopards.</li>
+                </ul>
+              </p>
+                <div class="star">
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-"></a>
+                  <a href="#" class="bi-star"></a>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="https://images.pexels.com/photos/8170275/pexels-photo-8170275.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top" alt="Thailand">
+            <div class="card-body">
+              <h5 class="card-title">THAILAND</h5>
+              <p class="card-text">
+                <ul>
+                  <li><b>Phi Phi Islands </b> :Snorkel and relax at stunning beaches.</li>
+                  <li><b>Bangkok Temples</b> :visit wat pho and the grand palace.</li>
+                  <li><b>Floating Markets</b> :Damnoen Saduakl or Amphawa markets.</li>
+                  <li><b>Full Moon Party</b> :The famous beach party.</li>
+                </ul>
+              </p>
+                <div class="star">
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star"></a>
+                  <a href="#" class="bi-star"></a>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <img src="https://images.pexels.com/photos/965873/pexels-photo-965873.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top" alt="Sweden">
+            <div class="card-body">
+              <h5 class="card-title">SWEDEN</h5>
+              <p class="card-text">
+                <ul>
+                  <li><b>Vasa Museum</b> :See well-preserved 17th-century warship.</li>
+                  <li><b>Northern Lights</b> :the mesmerizing aurora borealis.</li>
+                  <li><b>Ice Hotels</b> :stay in a hotel made of ice and snow.</li>
+                  <li><b>Gamla Stan</b> :Wnder through the historic old town.</li>
+                </ul>
+              </p>
+                <div class="star">
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star-fill"></a>
+                  <a href="#" class="bi-star"></a>
+                  <a href="#" class="bi-star"></a>
+                </div>
+            </div>
+          </div>
+        </div>
+ <div class="col">
+        <div class="card">
+          <img
+            src="https://images.pexels.com/photos/1239162/pexels-photo-1239162.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            class="card-img-top" alt="New york">
+          <div class="card-body">
+            <h5 class="card-title">NEW YORK<span class="star ms-3 fs-4"></span></h5>
+            <p class="card-text">
+            <ul>
+              <li><b class="text-danger">Times Square</b> :Snorking,diving,water skiing.</li>
+              <li><b class="text-danger">Central Park</b> :Explore the iconic urban park.</li>
+              <li><b class="text-danger">Brodway Shows</b> :live performance in the theater.</li>
+              <li><b class="text-danger">Statue of Liberty</b> :Symbol of the freedom.</li>
+            </ul>
+            </p>
+            <div class="star">
+              <a href="#" class="bi-star-fill"></a>
+              <a href="#" class="bi-star-fill"></a>
+              <a href="#" class="bi-star-fill"></a>
+              <a href="#" class="bi-star"></a>
+              <a href="#" class="bi-star"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card">
+          <img
+            src="https://images.pexels.com/photos/532826/pexels-photo-532826.jpeg?auto=compress&cs=tinysrgb&w=600"
+            class="card-img-top" alt="PARIS">
+          <div class="card-body">
+            <h5 class="card-title">PARIS<span class="star ms-3 fs-4"></span></h5>
+            <p class="card-text">
+            <ul>
+              <li><b class="text-danger">Eiffel Tower:</b> Eiffel Tower Views, Picnic</li>
+              <li><b class="text-danger">Seine River Cruise:</b>River Views, Paris Lights</li>
+              <li><b class="text-danger">Louvre Museum:</b>Museum Marvels, Mona Lisa</li>
+              <li><b class="text-danger">Montmartre and Sacré-Cœur:</b>Artistic Charm, Views</li>
+            </ul>
+            </p>
+            <div class="star">
+              <a href="#" class="bi-star-fill"></a>
+              <a href="#" class="bi-star-fill"></a>
+              <a href="#" class="bi-star-fill"></a>
+              <a href="#" class="bi-star"></a>
+              <a href="#" class="bi-star"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+
+  </section>
+      <footer>
+        <br>
+        <br>
+        <footer class="text-center text-lg-start text-white bg-dark">
+          <!-- Grid container -->
+          <div class="container p-4 pb-0">
+            <!-- Section: Links -->
+            <section class="">
+              <!--Grid row-->
+              <div class="row">
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-2">
+                  <a class="navbar-brand text-white fs-5 fw-bold" href="{% url 'home'  %}">
+                    <img src="{% static 'mountains.png' %}" alt="Logo" width="29" height="25" class="d-inline-block align-text-top">
+                    NOMAD<span>LAND</span>
+                  </a>
+                  <p class="mt-3">
+                    Welcome to NomadLand, your one-stop destination for unforgettable journeys! We bring the world to your
+                    fingertips, offering curated travel experiences that will ignite your wanderlust. Explore the hidden gems
+                    of the globe with us and create memories that last a lifetime. Start your adventure with NomadLand today!
+                  </p>
+                </div>
+                <!-- Grid column -->
+
+                <hr class="w-100 clearfix d-md-none" />
+
+                <!-- Grid column -->
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                  <h6 class="text-uppercase mb-4 font-weight-bold">RESOURCES</h6>
+                  <p>
+                    <a class="text-white">Login</a>
+                  </p>
+                  <p>
+                    <a class="text-white">Contact us</a>
+                  </p>
+                  <p>
+                    <a class="text-white">Certification</a>
+                  </p>
+                  <p>
+                    <a class="text-white">Customer Reviews</a>
+                  </p>
+                </div>
+                <!-- Grid column -->
+
+                <hr class="w-100 clearfix d-md-none" />
+
+                <!-- Grid column -->
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+                  <h6 class="text-uppercase mb-4 font-weight-bold">
+                    PARTNERS
+                  </h6>
+                  <p>
+                    <a class="text-warning" style="text-decoration: none;"> BRITISH AIRWAYS</a>
+                  </p>
+                  <p>
+                    <a class="text-warning" style="text-decoration: none;">TURKISH AIRLINES</a>
+                  </p>
+                  <p>
+                    <a class="text-warning" style="text-decoration: none;">CITILINK</a>
+                  </p>
+                  <p>
+                    <a class="text-warning" style="text-decoration: none;">EXPEDIA</a>
+                  </p>
+                  <p>
+                    <a class="text-warning" style="text-decoration: none;">AUSTRALIA</a>
+                  </p>
+                  <p>
+                    <a class="text-warning" style="text-decoration: none;">TRIP.COM</a>
+                  </p>
+                </div>
+
+                <!-- Grid column -->
+                <hr class="w-100 clearfix d-md-none" />
+
+                <!-- Grid column -->
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                  <h6 class="text-uppercase mb-4 font-weight-bold">CONTACT</h6>
+                  <p><i class="fas fa-home mr-3"></i> 2 Fifth Avenue,Alappuzha,Kerala</p>
+                  <p><i class="fas fa-envelope mr-3"></i> nomadland@gmail.com</p>
+                  <p><i class="fas fa-phone mr-3"></i>  923-456-789-1</p>
+                  <p><i class="fas fa-print mr-3"></i> 931-564-899-5</p>
+                </div>
+                <!-- Grid column -->
+              </div>
+              <!--Grid row-->
+            </section>
+            <!-- Section: Links -->
+
+            <hr class="my-3">
+
+            <!-- Section: Copyright -->
+            <section class="p-3 pt-0">
+              <div class="row d-flex align-items-center">
+                <!-- Grid column -->
+                <div class="col-md-7 col-lg-8 text-center text-md-start">
+                  <!-- Copyright -->
+                  <div class="p-3">
+                    © 2024 Copyright:
+                    <a class="text-white" href="#">nomadland.com</a>
+                  </div>
+                  <!-- Copyright -->
+                </div>
+                <!-- Grid column -->
+
+                <!-- Grid column -->
+                <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
+                  <!-- Facebook -->
+                  <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                      class="fab fa-facebook-f"></i></a>
+
+                  <!-- Twitter -->
+                  <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                      class="fab fa-twitter"></i></a>
+
+                  <!-- Google -->
+                  <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                      class="fab fa-google"></i></a>
+
+                  <!-- Instagram -->
+                  <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                      class="fab fa-instagram"></i></a>
+                </div>
+                <!-- Grid column -->
+              </div>
+            </section>
+            <!-- Section: Copyright -->
+          </div>
+          <!-- Grid container -->
+        </footer>
+      </footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownIcon = document.querySelector('.dropdown-toggle');
+        const overlay = document.getElementById('overlay');
+        const signInButton = document.querySelector('.dropdown-toggle button');
+
+        dropdownIcon.addEventListener('click', function () {
+            if (overlay.style.display === "block") {
+                overlay.style.display = "none"; // Hide overlay if it's already visible
+                signInButton.style.backgroundColor = "";
+                signInButton.style.color = "";
+            } else {
+                overlay.style.display = "block";
+                signInButton.style.backgroundColor = "white"; // Show overlay if it's hidden
+                signInButton.style.color = "black";
+            }
+        });
+
+        // Add event listener to overlay to close it when clicked anywhere on the screen
+        overlay.addEventListener('click', function () {
+            overlay.style.display = "none";
+            signInButton.style.backgroundColor = "";
+            signInButton.style.color = "";
+        });
+    });
+
+    function chooseOption(option) {
+        if (option === 'customer') {
+            window.location.href = "{% url 'login' %}"; // Redirect to the login URL
+        } else if (option === 'agent') {
+            // Add logic for redirecting to the agent URL if needed
+        }
+    }
+
+    $(document).ready(function () {
+        $(window).on('resize', function () {
+            if ($(window).width() < 992) {
+                $('#mainNav').removeClass('fixed-top');
+            } else {
+                $('#mainNav').addClass('fixed-top');
+            }
+        });
+    });
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>

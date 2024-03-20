@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Travel Packages</title>
+    <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@300;400&family=Raleway&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    {% load static %}
+     <link rel="icon" type="image/png" href="{% static 'mountains_top.png' %}">
+
+    <style>
+         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+        * {
+           font-family: 'Montserrat', sans-serif;
+        }
+
+
+        #mapIframe {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .container-fluid,
+        .container {
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        body{
+            overflow-x: hidden;
+        }
+
+        @media screen and (max-width: 767px) {
+            .map_check {
+                width: 100%;
+            }
+
+            #mapIframe {
+                width: 100%;
+            }
+        }
+
+
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <div>
+            <nav class="navbar navbar-expand-lg bg-dark fixed-top ">
+                <div class="container-fluid">
+                    <a class="navbar-brand text-white fw-bold" href="{% url 'home'  %}">
+                        <img src="{% static 'mountains.png' %}" alt="Logo" width="30" height="28"
+                            class="d-inline-block align-text-top">
+                        NOMAD<span>LAND</span>
+                    </a>
+                    <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-white nav-size " aria-current="page" href="{% url 'home' %}">HOME</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white nav-size" href="{% url 'booking' %}">TOURS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white nav-size" href="{% url 'review' %}">REVIEWS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white nav-size" href="{% url 'about' %}">ABOUT US</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white nav-size" href="{% url 'login' %}">LOGIN</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+
+
+    <div class="container-fluid mt-5">
+
+
+            <div class="card mb-12">
+                <div class="row g-0 mt-3 ms-4">
+                    <div class="col-md-4 col-sm-12" style="height: 160px;">
+                        <iframe id="mapIframe" class="map_check"
+                            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d7253.531917199855!2d76.29648374238519!3d9.992665259752345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1706761734259!5m2!1sen!2sin"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                            style="width: 100%; height: 160px;"></iframe>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title fs-1 fw-bold text-center">PACKAGES</h5>
+                            <div class="container-fluid  booking-bar">
+                                <div class="container">
+                                    <div class="row p-2">
+                                        <div class="col-md-2 ms-5">
+                                            <label class="ms-auto fs-5" for="location">Location</label>
+
+                                            <h6 class="ms-auto">{{location}}</h6>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label class="ms-auto fs-5" for="input-date">Depart</label>
+<!--                                            <input class="input-date form-control" type="date">-->
+                                            <h6 class="ms-auto">{{depart}}</h6>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label class="ms-auto fs-5" for="input-2">Return</label>
+<!--                                            <input class="input-date2 form-control" type="date">-->
+                                            <h6 class="ms-auto">{{return_date}}</h6>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label class="ms-3 fs-5" for="adults">Adults</label>
+                                            <h6 class="ms-3">{{adults}}</h6>
+<!--                                            <select class="form-control">-->
+<!--                                                <option>1</option>-->
+<!--                                                <option>2</option>-->
+<!--                                                <option>3</option>-->
+<!--                                                <option>4</option>-->
+<!--                                            </select>-->
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label class="ms-auto fs-5" for="children">Children</label>
+                                            <h6 class="ms-auto">{{children}}</h6>
+<!--                                            <select class="form-control">-->
+<!--                                                <option>0</option>-->
+<!--                                                <option>1</option>-->
+<!--                                                <option>2</option>-->
+<!--                                                <option>3</option>-->
+<!--                                            </select>-->
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+
+                <div class="row bg-secondary-subtle ms-1 " style="width: 100%; border-radius: 6px;">
+
+                    <div class="row">
+                        <div class="col-md-3 mt-2">
+                            <form id="filterForm">
+                                <!-- New: Price Range -->
+                                <div class="form-group">
+                                    <label for="priceRange">Price Range:</label>
+                                    <input type="range" class="form-range" id="priceRange" min="0" max="30000" step="10">
+                                    <span id="selectedPrice" class="mt-2">Price: ₹0</span>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-md-3 ms-auto mt-3">
+                            <label class="ms-auto" for="sort">Sort By</label>
+                            <select id="sort" class="form-control">
+                                <option value="latest">Latest</option>
+                                <option value="oldest">Oldest</option>
+                            </select>
+                        </div>
+
+                        <!-- Results container -->
+                        <div class="container col-md-12 ms-2 mt-3" style="border-top: solid 1px rgba(0, 0, 0, 0.157);">
+                            <div id="results" class="ms-sm-5 ps-sm-5 mt-3"></div>
+                        </div>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+    </div>
+
+    <!-- Footer -->
+  <footer class="text-center text-lg-start text-white bg-dark">
+    <!-- Grid container -->
+    <div class="container p-4 pb-0">
+      <!-- Section: Links -->
+      <section class="">
+        <!--Grid row-->
+        <div class="row">
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-2">
+            <a class="navbar-brand text-white fs-5 fw-bold" href="{% url 'home'  %}">
+              <img src="{% static 'mountains.png' %}" alt="Logo" width="30" height="28" class="d-inline-block align-text-top">
+              NOMAD<span>LAND</span>
+            </a>
+            <p class="mt-3">
+              Welcome to NomadLand, your one-stop destination for unforgettable journeys! We bring the world to your
+              fingertips, offering curated travel experiences that will ignite your wanderlust. Explore the hidden gems
+              of the globe with us and create memories that last a lifetime. Start your adventure with NomadLand today!
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <hr class="w-100 clearfix d-md-none" />
+
+          <!-- Grid column -->
+          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">RESOURCES</h6>
+            <p>
+              <a class="text-white">Login</a>
+            </p>
+            <p>
+              <a class="text-white">Contact us</a>
+            </p>
+            <p>
+              <a class="text-white">Certification</a>
+            </p>
+            <p>
+              <a class="text-white">Customer Reviews</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <hr class="w-100 clearfix d-md-none" />
+
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">
+              PARTNERS
+            </h6>
+            <p>
+              <a class="text-warning" style="text-decoration: none;"> BRITISH AIRWAYS</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">TURKISH AIRLINES</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">CITILINK</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">EXPEDIA</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">AUSTRALIA</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">TRIP.COM</a>
+            </p>
+          </div>
+
+          <!-- Grid column -->
+          <hr class="w-100 clearfix d-md-none" />
+
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">CONTACT</h6>
+            <p><i class="fas fa-home mr-3"></i> 2 Fifth Avenue,Alappuzha,Kerala</p>
+            <p><i class="fas fa-envelope mr-3"></i> nomadland@gmail.com</p>
+            <p><i class="fas fa-phone mr-3"></i>  923-456-789-1</p>
+            <p><i class="fas fa-print mr-3"></i> 931-564-899-5</p>
+          </div>
+          <!-- Grid column -->
+        </div>
+        <!--Grid row-->
+      </section>
+      <!-- Section: Links -->
+
+      <hr class="my-3">
+
+      <!-- Section: Copyright -->
+      <section class="p-3 pt-0">
+        <div class="row d-flex align-items-center">
+          <!-- Grid column -->
+          <div class="col-md-7 col-lg-8 text-center text-md-start">
+            <!-- Copyright -->
+            <div class="p-3">
+              © 2024 Copyright:
+              <a class="text-white" href="#">nomadland.com</a>
+            </div>
+            <!-- Copyright -->
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
+            <!-- Facebook -->
+            <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-facebook-f"></i></a>
+
+            <!-- Twitter -->
+            <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-twitter"></i></a>
+
+            <!-- Google -->
+            <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-google"></i></a>
+
+            <!-- Instagram -->
+            <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-instagram"></i></a>
+          </div>
+          <!-- Grid column -->
+        </div>
+      </section>
+      <!-- Section: Copyright -->
+    </div>
+    <!-- Grid container -->
+  </footer>
+  <!-- Footer -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var travelPackages = [
+                { destination: "SINGAPORE", stars: "★★★★★", image:"{% static 'singapore-79116.jpg' %}", price: 25000, date: "2024-02-04" },
+                { destination: "BALI", stars: "★★★★", image: "{% static 'bali-pagoda-sunrise-indonesia.jpg ' %}", price: 27000, date: "2024-02-01" },
+                { destination: "THAILAND", stars: "★★★", image: "{% static 'wat-arun-temple-twilight-bangkok-thailand.jpg' %}", price: 28000, date: "2024-02-02" },
+                { destination: "TOKYO", stars: "★★★★", image: "{% static 'tokyo-skyline-with-rainbow-bridge-tokyo-tower-tokyo-japan.jpg' %}", price: 30000, date: "2024-03-02" },
+                { destination: "SRI LANKA", stars: "★★★", image: "{% static 'elephants-nature.jpg'%}", price: 18000, date: "2024-02-02" },
+                { destination: "ISTANBUL", stars: "★★★★", image: "{% static 'blue-mosque-istanbul.jpg'%}", price: 22000, date: "2024-03-02" }
+                // Add more packages as needed
+            ];
+
+            // Initial display of all packages
+            displayPackages(travelPackages);
+
+            // Add event listener to sort and price filter inputs
+            $('#sort, #priceRange').on('input', function () {
+                updateResults();
+            });
+
+            function updateResults() {
+                var selectedPrice = $('#priceRange').val();
+                var selectedSort = $('#sort').val();
+
+                // Update selected price display
+                $('#selectedPrice').text(`Selected Price: $${selectedPrice}`);
+
+                var filteredPackages = travelPackages.filter(function (package) {
+                    // Apply price filter
+                    return package.price <= parseInt(selectedPrice);
+                });
+
+                // Apply sorting
+                if (selectedSort === 'latest') {
+                    filteredPackages.sort((a, b) => new Date(b.date) - new Date(a.date));
+                } else if (selectedSort === 'oldest') {
+                    filteredPackages.sort((a, b) => new Date(a.date) - new Date(b.date));
+                }
+
+                displayPackages(filteredPackages);
+            }
+
+            function displayPackages(packages) {
+                let resultText = '';
+
+                resultText += `<div class="d-flex flex-row flex-wrap">`;
+
+                // Loop through all packages and generate result cards
+                packages.forEach(package => {
+                    resultText += `
+                        <div class="col-12 col-md-6  col-sm-12 col-lg-4 mb-4">
+                            <div class="card w-75">
+                               <a href='{% url 'package_preview' %}'style="text-decoration:none;"><img src="${package.image}" class="card-img-top" alt="${package.destination}">
+                                <div class="card-body">
+                                    <h5 class="card-title text-black">${package.destination}<span class="star ms-3 fs-4 text-warning">${package.stars}</span></h5>
+                                    <p class="card-text text-black fs-5">Price: ₹${package.price}</p>
+                                </div></a>
+                            </div>
+                        </div>`;
+                });
+
+                resultText += `</div>`;
+
+                $("#results").html(resultText);
+            }
+        });
+    </script>
+</body>
+
+</html>

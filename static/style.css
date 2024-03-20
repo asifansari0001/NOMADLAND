@@ -1,0 +1,53 @@
+.max-content{
+    max-width: fit-content;
+}
+
+*{
+    font-family: 'Raleway', sans-serif;
+
+}
+
+.div_width{
+    width: max-content;
+    height: 300px;
+}
+
+
+
+body {
+    background-color: #f8f9fa;
+}
+.booking-bar {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 10px;
+}
+.booking-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.booking-form input {
+    width: 100%;
+    padding: 10px;
+}
+.booking-form select {
+    width: 100%;
+    padding: 10px;
+}
+.booking-form button {
+    padding: 10px;
+}
+
+.star{
+    color:yellow;
+
+}
+
+body {
+    overflow-x: hidden;
+}
+
+
+
+

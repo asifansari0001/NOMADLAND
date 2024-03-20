@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/7db032fd81.js" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jacques+Francois&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@300;400&family=Raleway&display=swap"
+    rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <title>NOMADLAND</title>
+  {% load static %}
+  <link rel="icon" type="image/png" href="{% static 'mountains_top.png' %}">
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+
+<style>
+
+  .card {
+              width: 18rem;
+              margin-right: 10px;
+            }
+
+/* overlay css */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            backdrop-filter: blur(1px);
+        }
+
+        .navbar {
+            z-index: 10000;
+            backdrop-filter: none;
+            /* Remove blur effect from navbar */
+        }
+
+
+        .overlay-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: whitesmoke;
+            border: groove 1px black;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .overlay-box {
+            width: 60%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            /* Position buttons at the ends */
+        }
+
+        .user-btn,
+        .agent-btn {
+            width: 45%;
+            /* Adjust button width */
+            border: 2px solid transparent;
+            background-color: transparent;
+            color: black;
+            margin: 5px 0;
+            /* Adjust the margin as needed */
+            padding: 10px;
+            /* Adjust the padding as needed */
+            text-align: center;
+
+        }
+
+        @media (max-width: 992px) {
+            .overlay-box {
+                width: 80%;
+                /* Adjust width for smaller screens */
+                flex-direction: column;
+                /* Stack buttons vertically */
+                align-items: center;
+                /* Center buttons vertically */
+            }
+
+            .user-btn,
+            .agent-btn {
+                width: 100%;
+                /* Full width for buttons on smaller screens */
+
+            }
+        }
+
+
+        .agent-btn:hover {
+            color: grey;
+        }
+
+        .user-btn:hover {
+            color: grey;
+
+        }
+
+        @media (max-width: 992px) {
+            .hide-on {
+                display: none;
+            }
+
+            .overlay-box {
+                width: 40%;
+            }
+        }
+
+        @media (min-width:992px) {
+            .hide-off {
+                display: none;
+            }
+
+        }
+
+
+        .navbar-nav .nav-link:not(.dropdown-toggle):hover {
+            color: grey !important;
+        }
+
+        .overflow-hidden {
+            overflow-y: hidden;
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        /* overlay css */
+
+</style>
+
+</head>
+
+<body>
+
+
+
+   <!-- navbar section starts -->
+    <header>
+        <div>
+            <nav class="navbar navbar-expand-lg" id="#mainNav" style="background-color: whitesmoke;">
+                <div class="container-fluid">
+                    <a class="navbar-brand  fw-bold" href="#">
+                        <img src="{% static 'mountains_black.png' %}" alt="Logo" width="30" height="28"
+                            class="d-inline-block align-text-top">
+                        NOMAD<span>LAND</span>
+                    </a>
+                    <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size " aria-current="page" href="{% url 'home' %}">HOME</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size" href="{% url 'booking' %}">TOURS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size" href="{% url 'review' %}">REVIEWS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size" href="{% url 'about' %}">ABOUT US</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle ms-md-1 justify-content-sm-start ps-1 pt-1 pb-1"
+                                    href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button type="button"
+                                        class="btn btn-outline-dark bg-light btn-sm sg-button text-black">SIGN
+                                        IN</button>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- navbar section ends -->
+
+    <!-- Overlay box markup -->
+    <div class="overlay" id="overlay">
+        <div class="overlay-box">
+            <button class="btn user-btn fs-5 fw-bolder border-0" onclick="chooseOption('customer')">
+                <i class="fas fa-user"></i><br> USER
+            </button>
+            <h2 class="hide-on">|</h2>
+            <h1 class="hide-off">─</h1>
+            <button class="btn  agent-btn fs-5 fw-bolder border-0" onclick="chooseOption('agent')">
+                <i class="fas fa-user-tie"></i><br> AGENT
+            </button><br>
+        </div>
+    </div>
+
+
+    <!-- Overlay box markup ends -->
+
+
+  <!-- background section start -->
+
+
+  <section>
+
+
+    <div>
+
+      <div id="carouselExampleCaptions" class="carousel slide " data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+            aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active" style="max-height:735px;">
+            <img src="{% static 'nomadic-children-2389829.jpg' %}" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block align-items-center">
+              <h5 class=" fw-bold display-6  ">Travel&
+                Explore the
+                World </h5>
+              <p class="fw-lighter fs-6">A good traveler has no fixed plans,
+                and is not intent on arriving</p>
+            </div>
+          </div>
+          <div class="carousel-item" style="max-height:735px;">
+            <img src="{% static 'sri-lankan-elephant-4043774_1920.jpg' %}" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+              <h5 class="fw-bold display-6">Travel&
+                Explore the
+                World </h5>
+              <p class="fw-lighter fs-6">A good traveler has no fixed plans,
+                and is not intent on arriving</p>
+            </div>
+          </div>
+          <div class="carousel-item" style="max-height:735px;">
+            <img src="{% static 'statue-of-liberty-748619_1920.jpg' %}" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+              <h5 class="fw-bold display-6">Travel&
+                Explore the
+                World </h5>
+              <p class="fw-lighter fs-6">A good traveler has no fixed plans,
+                and is not intent on arriving</p>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+          data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+          data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+
+    </div>
+
+  </section>
+
+  <!-- background section end -->
+
+
+  <!-- most visited starts -->
+
+  <section>
+    <div class="container-fluid mt-md-5 mt-sm-5" style="background-color: whitesmoke;">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center fw-bold display-5">Best Offers</div>
+        </div><br><br>
+        <div class="row">
+        <div class="container mt-5">
+          <div class="row">
+            <div class="col-md-3">
+              <a href="{% url 'offer' %}" style="text-decoration:none;"><div class="card">
+                <img src="{% static 'rio-de-janeiro.jpg' %}" class="card-img-top" alt="Image 1">
+                <div class="card-body">
+                  <h5 class="card-title">BRAZIL</h5>
+                  <p class="card-text">Flat 20% off on selected packages</p>
+                </div>
+              </div></a>
+            </div>
+            <div class="col-md-3">
+              <a href="{% url 'offer' %}" style="text-decoration:none;"><div class="card">
+                <img src="{% static 'veligandu-island.jpg' %}" class="card-img-top" alt="Image 2">
+                <div class="card-body">
+                  <h5 class="card-title">MALDIVES</h5>
+                  <p class="card-text">Flat 20% off on selected packages</p>
+                </div>
+              </div></a>
+            </div>
+            <div class="col-md-3">
+              <a href="{% url 'offer' %}" style="text-decoration:none;"><div class="card">
+                <img src="{% static 'venice.jpg' %}" class="card-img-top" alt="Image 3">
+                <div class="card-body">
+                  <h5 class="card-title">VENICE</h5>
+                  <p class="card-text">Flat 35% off on selected packages</p>
+                </div>
+              </div></a>
+            </div>
+            <div class="col-md-3">
+              <a href="{% url 'offer' %}" style="text-decoration:none;"><div class="card">
+                <img src="{% static 'rome.jpg' %}" class="card-img-top" alt="Image 4">
+                <div class="card-body">
+                  <h5 class="card-title">ROME</h5>
+                  <p class="card-text">Flat 35% off on selected packages</p>
+                </div>
+              </div></a>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div >
+
+         <a href="{% url 'offer' %}"><button class="btn btn-success mt-3" type="button">Know more</button></a>
+        </div>
+      </div>
+    </div>
+
+
+      <br>
+    <br>
+
+    <div class="container">
+
+      <div class="container bg-light">
+        <div class="card-body row">
+            <div class="col-md-6">
+                <a href="{% url 'package' %}"><img src="{% static 'canyon-1740973_1920.jpg' %}" class="img-fluid" alt="Image"></a>
+            </div>
+            <div class="col-md-6">
+                <h2 class="card-title display-5 text-center">Our Most Popular Tours</h2><br>
+                <p class="card-text text-center">Embark on unforgettable adventures with our most sought-after tours,
+                meticulously crafted to immerse you in the heart of captivating destinations around the globe.
+                From breathtaking natural wonders to culturally rich cities, our curated selection ensures an enriching
+                and memorable travel experience for every explorer.</p><br><br>
+                <div class="text-center">
+                    <a href="{% url 'package' %}" class="btn btn-success">View Tours</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <br>
+
+
+    <h2 style="text-align: center;">Amenities & Services</h2><br>
+    <p style="text-align: center;">Embark on seamless journeys with our comprehensive travel services,<br>
+      where every detail is meticulously crafted to ensure your comfort,<br>
+      convenience, and unforgettable experiences</p>
+
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col-md-3 ">
+            <div class="card" style="width:301px;">
+              <img src="{% static 'handsome-elegant-man-car-salon.jpg' %}" class="card-img-top" style="width:300px;" alt="Image 1">
+              <div class="card-body" style="width:300px;">
+                <h5 class="card-title">Car rental</h5>
+                <p class="card-text">Experience the freedom to explore at your
+                  own pace with our convenient and affordable
+                  car rental services</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card" style="width:301px;">
+              <img src="{% static 'busy-woman-doing-many-things-same-time.jpg' %}" class="card-img-top" style="width:300px;" alt="Image 2">
+              <div class="card-body" style="width:300px;">
+                <h5 class="card-title">24/7 Customer support</h5>
+                <p class="card-text">Enjoy peace of mind with our dedicated 24/7
+                  customer support, ensuring a seamless
+                  and stress-free experience</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 ">
+            <div class="card" style="width:301px;">
+              <img src="{% static '3d-rendering-beautiful-comtemporary-luxury-bedroom-suite-hotel-with-tv.jpg' %}" style="width:300px;" class="card-img-top" alt="Image 3">
+              <div class="card-body" style="width:300px;">
+                <h5 class="card-title">Luxurious rooms</h5>
+                <p class="card-text">Luxury rooms offer unparalleled comfort
+                  and sophistication, creating an indulgent
+                  retreat for  guests.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card" style="width:301px;">
+              <img src="{% static 'people-traveling-without-covid-worries.jpg' %}" class="card-img-top" style="width:300px;" alt="Image 3">
+              <div class="card-body" style="width:300px;">
+                <h5 class="card-title">Tour guidance</h5>
+                <p class="card-text"> Let us be your compass as you navigate
+                  the extraordinary tapestry of our world. Your adventure starts here!</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top: 5%;">
+            <h2 style="text-align: center;">Contact Us</h2><br>
+
+          </div>
+
+
+
+          <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label" >Email address</label>
+            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Enter Your Email">
+          </div>
+          <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Write your Message</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <button type="button" class="btn btn-success mt-2">Send</button>
+          </div>
+  </section>
+
+
+  <!-- footer starts -->
+
+
+
+
+
+  <!-- Footer -->
+  <br>
+  <br>
+  <footer class="text-center text-lg-start text-white bg-dark">
+    <!-- Grid container -->
+    <div class="container p-4 pb-0">
+      <!-- Section: Links -->
+      <section>
+        <!--Grid row-->
+        <div class="row">
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-2">
+            <a class="navbar-brand text-white fs-5 fw-bold" href="{% url 'home'  %}">
+              <img src="{% static 'mountains.png' %}" alt="Logo" width="30" height="28" class="d-inline-block align-text-top">
+              NOMAD<span>LAND</span>
+            </a>
+            <p class="mt-3">
+              Welcome to NomadLand, your one-stop destination for unforgettable journeys! We bring the world to your
+              fingertips, offering curated travel experiences that will ignite your wanderlust. Explore the hidden gems
+              of the globe with us and create memories that last a lifetime. Start your adventure with NomadLand today!
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <hr class="w-100 clearfix d-md-none" />
+
+          <!-- Grid column -->
+          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">RESOURCES</h6>
+            <p>
+              <a class="text-white" style="text-decoration:none;">Login</a>
+            </p>
+            <p>
+              <a class="text-white" style="text-decoration:none;">Contact us</a>
+            </p>
+            <p>
+              <a class="text-white" style="text-decoration:none;">Certification</a>
+            </p>
+            <p>
+              <a class="text-white" style="text-decoration:none;">Customer Reviews</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <hr class="w-100 clearfix d-md-none" />
+
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">
+              PARTNERS
+            </h6>
+            <p>
+              <a class="text-warning" style="text-decoration: none;"> BRITISH AIRWAYS</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">TURKISH AIRLINES</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">CITILINK</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">EXPEDIA</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">AUSTRALIA</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">TRIP.COM</a>
+            </p>
+          </div>
+
+          <!-- Grid column -->
+          <hr class="w-100 clearfix d-md-none" />
+
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">CONTACT</h6>
+            <p><i class="fas fa-home mr-3"></i><span><a style="text-decoration: none;" class="text-white" href="https://www.google.com/maps?q=2+Fifth+Avenue,Alappuzha,Kerala" target="_blank"> 2 Fifth Avenue,Alappuzha,Kerala</a></span></p>
+            <p><i class="fas fa-envelope mr-3"></i> <span><a style="text-decoration: none;" class="text-white" href="mailto:nomadland@gmail.com"> nomadland@gmail.com</a></span></p>
+            <p><i class="fas fa-phone mr-3"></i><span><a style="text-decoration: none;" class="text-white" href="tel:+9234567891"> 923-456-789-1</a></span></p>
+            <p><i class="fas fa-phone mr-3"></i><span><a style="text-decoration: none;" class="text-white" href="tel:+9315648995"> 931-564-899-5</a></span></p>
+          </div>
+          <!-- Grid column -->
+        </div>
+        <!--Grid row-->
+      </section>
+      <!-- Section: Links -->
+
+      <hr class="my-3">
+
+      <!-- Section: Copyright -->
+      <section class="p-3 pt-0">
+        <div class="row d-flex align-items-center">
+          <!-- Grid column -->
+          <div class="col-md-7 col-lg-8 text-center text-md-start">
+            <!-- Copyright -->
+            <div class="p-3">
+              © 2024 Copyright:
+              <a class="text-white" style="text-decoration:none;" href="#">nomadland.com</a>
+            </div>
+            <!-- Copyright -->
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/your_facebook_page" class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-facebook-f"></i></a>
+
+            <!-- Twitter -->
+            <a href="https://twitter.com" class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-twitter"></i></a>
+
+            <!-- Google -->
+            <a href="https://www.google.com" class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-google"></i></a>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com" class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-instagram"></i></a>
+          </div>
+          <!-- Grid column -->
+        </div>
+      </section>
+      <!-- Section: Copyright -->
+    </div>
+    <!-- Grid container -->
+  </footer>
+  <!-- Footer -->
+
+
+  <!-- footer endss -->
+
+
+<script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdownIcon = document.querySelector('.dropdown-toggle');
+            const overlay = document.getElementById('overlay');
+            const signInButton = document.querySelector('.dropdown-toggle button');
+
+            dropdownIcon.addEventListener('click', function () {
+                if (overlay.style.display === "block") {
+                    overlay.style.display = "none"; // Hide overlay if it's already visible
+                    signInButton.style.backgroundColor = "";
+                    signInButton.style.color = "";
+                } else {
+                    overlay.style.display = "block";
+                    signInButton.style.backgroundColor = "white"; // Show overlay if it's hidden
+                    signInButton.style.color = "black";
+                }
+            });
+
+            // Add event listener to overlay to close it when clicked anywhere on the screen
+            overlay.addEventListener('click', function () {
+                overlay.style.display = "none";
+                signInButton.style.backgroundColor = "";
+                signInButton.style.color = "";
+            });
+        });
+
+        function chooseOption(option) {
+            if (option === 'customer') {
+                window.location.href = "{% url 'login' %}"; // Redirect to the login URL
+            } else if (option === 'agent') {
+                 window.location.href = "{% url 'agent_login' %}";
+            }
+        }
+
+        $(document).ready(function () {
+            $(window).on('resize', function () {
+                if ($(window).width() < 992) {
+                    $('#mainNav').removeClass('fixed-top');
+                } else {
+                    $('#mainNav').addClass('fixed-top');
+                }
+            });
+        });
+</script>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+</body>

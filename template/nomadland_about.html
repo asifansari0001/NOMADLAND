@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOMDLAND</title>
+     {% load static %}
+     <link rel="icon" type="image/png" href="{% static 'mountains_top.png' %}">
+    <link rel="stylesheet" href="{% static 'nomadland_about.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/7db032fd81.js" crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@300;400&family=Raleway&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* overlay css */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            backdrop-filter: blur(1px);
+        }
+
+        .navbar {
+            z-index: 10000;
+            backdrop-filter: none;
+            /* Remove blur effect from navbar */
+        }
+
+
+        .overlay-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: whitesmoke;
+            border: groove 1px black;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .overlay-box {
+            width: 60%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            /* Position buttons at the ends */
+        }
+
+        .user-btn,
+        .agent-btn {
+            width: 45%;
+            /* Adjust button width */
+            border: 2px solid transparent;
+            background-color: transparent;
+            color: black;
+            margin: 5px 0;
+            /* Adjust the margin as needed */
+            padding: 10px;
+            /* Adjust the padding as needed */
+            text-align: center;
+
+        }
+
+        @media (max-width: 992px) {
+            .overlay-box {
+                width: 80%;
+                /* Adjust width for smaller screens */
+                flex-direction: column;
+                /* Stack buttons vertically */
+                align-items: center;
+                /* Center buttons vertically */
+            }
+
+            .user-btn,
+            .agent-btn {
+                width: 100%;
+                /* Full width for buttons on smaller screens */
+
+            }
+        }
+
+
+        .agent-btn:hover {
+            color: grey;
+        }
+
+        .user-btn:hover {
+            color: grey;
+
+        }
+
+        @media (max-width: 992px) {
+            .hide-on {
+                display: none;
+            }
+
+            .overlay-box {
+                width: 40%;
+            }
+        }
+
+        @media (min-width:992px) {
+            .hide-off {
+                display: none;
+            }
+
+        }
+
+
+        .navbar-nav .nav-link:not(.dropdown-toggle):hover {
+            color: grey !important;
+        }
+
+        .overflow-hidden {
+            overflow-y: hidden;
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        /* overlay css */
+    </style>
+</head>
+
+<body>
+
+    <!-- navbar section starts -->
+    <header>
+        <div>
+            <nav class="navbar navbar-expand-lg" id="#mainNav" style="background-color: whitesmoke;">
+                <div class="container-fluid">
+                    <a class="navbar-brand  fw-bold" href="#">
+                        <img src="{% static 'mountains_black.png' %}" alt="Logo" width="30" height="28"
+                            class="d-inline-block align-text-top">
+                        NOMAD<span>LAND</span>
+                    </a>
+                    <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size " aria-current="page" href="{% url 'home' %}">HOME</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size" href="{% url 'booking' %}">TOURS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size" href="{% url 'review' %}">REVIEWS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size" href="{% url 'about' %}">ABOUT US</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle ms-md-1 justify-content-sm-start ps-1 pt-1 pb-1"
+                                    href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button type="button"
+                                        class="btn btn-outline-dark bg-light btn-sm sg-button text-black">SIGN
+                                        IN</button>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- navbar section ends -->
+
+    <!-- Overlay box markup -->
+    <div class="overlay" id="overlay">
+        <div class="overlay-box">
+            <button class="btn user-btn fs-5 fw-bolder border-0" onclick="chooseOption('customer')">
+                <i class="fas fa-user"></i><br> USER
+            </button>
+            <h2 class="hide-on">|</h2>
+            <h1 class="hide-off">─</h1>
+            <button class="btn  agent-btn fs-5 fw-bolder border-0" onclick="chooseOption('agent')">
+                <i class="fas fa-user-tie"></i><br> AGENT
+            </button><br>
+        </div>
+    </div>
+
+
+    <!-- Overlay box markup ends -->
+
+
+    <!-- background section starts -->
+
+    <div class="position-relative w-100">
+        <img src="{% static 'view-urban-dark-city-with-fog.jpg' %}" class="img-fluid" alt="img">
+        <div class="container-fluid position-absolute top-50 start-50 translate-middle text-center">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 mt-sm-3 text-center">
+                    <h3 class=" text-center text-white display-5">WHAT DO WE DO?</h3>
+                    <p class="text-center fs-6 text-white opacity-50">
+                        We serves as a virtual gateway for potential travelers,
+                        providing comprehensive information on destinations,
+                        itineraries, and unique offerings.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+
+    <!-- background section ends -->
+
+
+    <!-- about us starts -->
+
+
+    <div class="container">
+        <div class="row">
+            <div>
+                <h3 class="col-md-12 text-center fw-bold display-5">About Us</h3>
+            </div>
+            <br>
+            <br>
+            <br>
+
+            <div class="card mb-3 mt-3" style="max-width: 1300px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{% static 'brunette-businesswoman-posing.jpg' %}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">No Reservation Fees</h5>
+                            <p class="card-text">
+                                Explore Nomadland with the added perk of no reservation
+                                fees on our platform, making your travel planning not only
+                                extensive but also economically worry-free. Enjoy the freedom
+                                to book without additional charges, ensuring a cost-effective
+                                and seamless journey to your chosen destination We don’t
+                                charge you any booking fees or add any administrative
+                                charges And in many cases, your booking can be canceled
+                                free of charge.
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3 mt-3" style="max-width: 1300px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{% static 'people-working-call-center.jpg' %}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">24/7 Customer Support</h5>
+                            <p class="card-text">
+                                Experience unparalleled customer service with NOMADLAND,
+                                where our devoted team goes above and beyond to curate an
+                                extraordinary travel journey for you, offering personalized
+                                assistance, expert guidance, and a commitment to ensuring
+                                every aspect of your adventure is seamless and memorable.
+                                Whether you’ve just booked or are already enjoying your trip,
+                                our Customer Experience Team is available around the clock
+                                to answer your questions</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3 mt-3" style="max-width: 1300px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{% static 'two-colleagues-working-laptop.jpg' %}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">User Friendly</h5>
+                            <p class="card-text">
+                                In the boundless realm of Nomadland, our expansive platform
+                                goes above and beyond, offering an immense array of travel
+                                experiences. Navigate through the extraordinary diversity of
+                                destinations effortlessly with our intuitively designed and
+                                user-friendly interface, facilitating a seamless booking
+                                process that ensures instant confirmations, enabling you
+                                to embark on a monumental adventure with unparalleled
+                                ease and confidence.our dedicated platform, promises a
+                                colossal travel experience.
+
+
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card mb-3 mt-3" style="max-width: 1300px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{% static 'cropped-view-businesswomen-reading-document.jpg' %}" class="img-fluid rounded-start" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Transparent Policies</h5>
+                            <p class="card-text">
+                                At NomadLand, we take pride in our commitment to transparent policies, ensuring that
+                                your travel experience is not only seamless but also crystal clear. Our dedication to
+                                openness means no hidden fees or unexpected costs, allowing you to plan your adventures
+                                confidently. From booking to exploring new destinations, NomadLand prioritizes
+                                transparency in every aspect of our services. We believe in fostering trust with our
+                                community, and our transparent policies reflect our commitment to providing you with an
+                                honest and enjoyable travel experience. Join us at NomadLand, where clear policies pave
+                                the way for worry-free journeys.
+
+
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- about us ends -->
+
+     <!-- partners starts -->
+
+  <section>
+    <div class="container-fluid  mt-sm-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center fw-bold display-5">Our Partners</div>
+        </div><br>
+        <div class="row d-flex justify-content-center">
+
+          <div class="col-md-3 mb-sm-3  d-flex justify-content-center">
+            <div class="card border-0" style="width: 10rem; height: 5rem;">
+              <img src="{% static 'citilink-837863_640.png' %}" class="card-img-top" alt="..." height="150px">
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-sm-3 d-flex justify-content-center">
+            <div class="card border-0" style="width: 10rem; height: 5rem;">
+              <img src="{% static 'expedia.png' %}" class="card-img-top" alt="..." height="150px">
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-sm-3  d-flex justify-content-center">
+            <div class="card border-0" style="width: 10rem; height: 5rem;">
+              <img src="{% static 'turkish.png' %}" class="card-img-top" alt="..." height="150px">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row d-flex justify-content-center">
+
+          <div class="col-md-3 mb-sm-3 d-flex justify-content-center">
+            <div class="card border-0" style="width: 10rem; height: 5rem;">
+              <img src="{% static 'qantas.png' %}" class="card-img-top" alt="..." height="150px">
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-sm-3  d-flex justify-content-center">
+            <div class="card border-0" style="width: 10rem; height: 5rem;">
+              <img src="{% static 'british1.png' %}" class="card-img-top" alt="..." height="150px">
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-sm-3  d-flex justify-content-center">
+            <div class="card border-0" style="width: 10rem; height: 5rem;">
+              <img src="{% static 'trip.com.png' %}" class="card-img-top" alt="..." height="150px">
+            </div>
+          </div>
+
+        </div>
+
+
+
+
+      </div>
+    </div>
+    </div>
+
+
+
+  </section>
+
+
+
+  <!-- partners ends -->
+
+
+    <!-- Footer -->
+  <br>
+  <br>
+  <footer class="text-center text-lg-start text-white bg-dark">
+    <!-- Grid container -->
+    <div class="container p-4 pb-0">
+      <!-- Section: Links -->
+      <section class="">
+        <!--Grid row-->
+        <div class="row">
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-2">
+            <a class="navbar-brand text-white fs-5 fw-bold" href="{% url 'home'  %}">
+              <img src="{% static 'mountains.png' %}" alt="Logo" width="30" height="28" class="d-inline-block align-text-top">
+              NOMAD<span>LAND</span>
+            </a>
+            <p class="mt-3">
+              Welcome to NomadLand, your one-stop destination for unforgettable journeys! We bring the world to your
+              fingertips, offering curated travel experiences that will ignite your wanderlust. Explore the hidden gems
+              of the globe with us and create memories that last a lifetime. Start your adventure with NomadLand today!
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <hr class="w-100 clearfix d-md-none" />
+
+          <!-- Grid column -->
+          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">RESOURCES</h6>
+            <p>
+              <a class="text-white" style="text-decoration:none;">Login</a>
+            </p>
+            <p>
+              <a class="text-white" style="text-decoration:none;">Contact us</a>
+            </p>
+            <p>
+              <a class="text-white" style="text-decoration:none;">Certification</a>
+            </p>
+            <p>
+              <a class="text-white" style="text-decoration:none;">Customer Reviews</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <hr class="w-100 clearfix d-md-none" />
+
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">
+              PARTNERS
+            </h6>
+            <p>
+              <a class="text-warning" style="text-decoration: none;"> BRITISH AIRWAYS</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">TURKISH AIRLINES</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">CITILINK</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">EXPEDIA</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">AUSTRALIA</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">TRIP.COM</a>
+            </p>
+          </div>
+
+          <!-- Grid column -->
+          <hr class="w-100 clearfix d-md-none" />
+
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">CONTACT</h6>
+            <p><i class="fas fa-home mr-3"></i> 2 Fifth Avenue,Alappuzha,Kerala</p>
+            <p><i class="fas fa-envelope mr-3"></i> nomadland@gmail.com</p>
+            <p><i class="fas fa-phone mr-3"></i>  923-456-789-1</p>
+            <p><i class="fas fa-print mr-3"></i> 931-564-899-5</p>
+          </div>
+          <!-- Grid column -->
+        </div>
+        <!--Grid row-->
+      </section>
+      <!-- Section: Links -->
+
+      <hr class="my-3">
+
+      <!-- Section: Copyright -->
+      <section class="p-3 pt-0">
+        <div class="row d-flex align-items-center">
+          <!-- Grid column -->
+          <div class="col-md-7 col-lg-8 text-center text-md-start">
+            <!-- Copyright -->
+            <div class="p-3">
+              © 2024 Copyright:
+              <a class="text-white" href="#" style="text-decoration:none;">nomadland.com</a>
+            </div>
+            <!-- Copyright -->
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
+            <!-- Facebook -->
+            <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-facebook-f"></i></a>
+
+            <!-- Twitter -->
+            <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-twitter"></i></a>
+
+            <!-- Google -->
+            <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-google"></i></a>
+
+            <!-- Instagram -->
+            <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-instagram"></i></a>
+          </div>
+          <!-- Grid column -->
+        </div>
+      </section>
+      <!-- Section: Copyright -->
+    </div>
+    <!-- Grid container -->
+  </footer>
+  <!-- Footer -->
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdownIcon = document.querySelector('.dropdown-toggle');
+            const overlay = document.getElementById('overlay');
+            const signInButton = document.querySelector('.dropdown-toggle button');
+
+            dropdownIcon.addEventListener('click', function () {
+                if (overlay.style.display === "block") {
+                    overlay.style.display = "none"; // Hide overlay if it's already visible
+                    signInButton.style.backgroundColor = "";
+                    signInButton.style.color = "";
+                } else {
+                    overlay.style.display = "block";
+                    signInButton.style.backgroundColor = "white"; // Show overlay if it's hidden
+                    signInButton.style.color = "black";
+                }
+            });
+
+            // Add event listener to overlay to close it when clicked anywhere on the screen
+            overlay.addEventListener('click', function () {
+                overlay.style.display = "none";
+                signInButton.style.backgroundColor = "";
+                signInButton.style.color = "";
+            });
+        });
+
+        function chooseOption(option) {
+            if (option === 'customer') {
+                window.location.href = "{% url 'login' %}"; // Redirect to the login URL
+            } else if (option === 'agent') {
+                 window.location.href = "{% url 'agent_login' %}";
+            }
+        }
+
+        $(document).ready(function () {
+            $(window).on('resize', function () {
+                if ($(window).width() < 992) {
+                    $('#mainNav').removeClass('fixed-top');
+                } else {
+                    $('#mainNav').addClass('fixed-top');
+                }
+            });
+        });
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>

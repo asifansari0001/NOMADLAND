@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Jacques+Francois&display=swap');
+
+
+*{
+    font-family: 'Raleway', sans-serif;
+
+}
+
+
+.header{
+    width: 100vw;
+    height: 80vh;
+    background-image: url('https://img.freepik.com/free-photo/texture-close-up-blurred-plants_23-2148198915.jpg?w=826&t=st=1705379475~exp=1705380075~hmac=68eea1362f47455d881c8b3a8db8a52e666f3c2b3e0d30682606c204d153108a');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+.navbar-toggler{
+    background-color: aliceblue;
+
+
+}
+
+.header-main{
+    height: 71.8vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.header-main-text{
+    letter-spacing: 30px;
+    font-family: 'jacques francois';
+    font-weight: bold;
+}
+.header2-h1{
+    text-align: center;
+
+    font-family: 'jacques francois';
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+}
+.cards{
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.card{
+    margin-top: 80px;
+    border-radius: 0;
+}
+.card img{
+    border-radius: 0;
+}
+.card-title{
+    text-align: left;
+    font-family: Averia serif libre;
+
+}
+.bi-star-fill{
+    color: yellow;
+}
+.bi-star{
+    color: yellow;
+}
+
+body{
+  overflow-x: hidden;
+}

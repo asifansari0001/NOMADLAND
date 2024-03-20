@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@300;400&family=Raleway&display=swap"
+    rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'nomad_login.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'mountains_top.png' %}">
+     <title>NOMADLAND</title>
+
+<style>
+          /* overlay css */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            backdrop-filter: blur(1px);
+        }
+
+        .navbar {
+            z-index: 10000;
+            backdrop-filter: none;
+            /* Remove blur effect from navbar */
+        }
+
+
+        .overlay-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: whitesmoke;
+            border: groove 1px black;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .overlay-box {
+            width: 60%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            /* Position buttons at the ends */
+        }
+
+        .user-btn,
+        .agent-btn {
+            width: 45%;
+            /* Adjust button width */
+            border: 2px solid transparent;
+            background-color: transparent;
+            color: black;
+            margin: 5px 0;
+            /* Adjust the margin as needed */
+            padding: 10px;
+            /* Adjust the padding as needed */
+            text-align: center;
+
+        }
+
+        @media (max-width: 992px) {
+            .overlay-box {
+                width: 80%;
+                /* Adjust width for smaller screens */
+                flex-direction: column;
+                /* Stack buttons vertically */
+                align-items: center;
+                /* Center buttons vertically */
+            }
+
+            .user-btn,
+            .agent-btn {
+                width: 100%;
+                /* Full width for buttons on smaller screens */
+
+            }
+        }
+
+
+        .agent-btn:hover {
+            color: grey;
+        }
+
+        .user-btn:hover {
+            color: grey;
+
+        }
+
+        @media (max-width: 992px) {
+            .hide-on {
+                display: none;
+            }
+
+            .overlay-box {
+                width: 40%;
+            }
+        }
+
+        @media (min-width:992px) {
+            .hide-off {
+                display: none;
+            }
+
+        }
+
+
+        .navbar-nav .nav-link:not(.dropdown-toggle):hover {
+            color: grey !important;
+        }
+
+        .overflow-hidden {
+            overflow-y: hidden;
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        /* overlay css */
+
+</style>
+
+</head>
+
+<body>
+
+    <!-- navbar section starts -->
+    <header>
+        <div>
+            <nav class="navbar navbar-expand-lg" id="#mainNav" style="background-color: whitesmoke;">
+                <div class="container-fluid">
+                    <a class="navbar-brand  fw-bold" href="{% url 'home' %}">
+                        <img src="{% static 'mountains_black.png' %}" alt="Logo" width="30" height="28"
+                            class="d-inline-block align-text-top">
+                        NOMAD<span>LAND</span>
+                    </a>
+                    <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size " aria-current="page" href="{% url 'home' %}">HOME</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size" href="{% url 'booking' %}">TOURS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size" href="{% url 'review' %}">REVIEWS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-black  nav-size" href="{% url 'about' %}">ABOUT US</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle ms-md-1 justify-content-sm-start ps-1 pt-1 pb-1"
+                                    href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button type="button"
+                                        class="btn btn-outline-dark bg-light btn-sm sg-button text-black">SIGN
+                                        IN</button>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- navbar section ends -->
+
+    <!-- Overlay box markup -->
+    <div class="overlay" id="overlay">
+        <div class="overlay-box">
+            <button class="btn user-btn fs-5 fw-bolder border-0" onclick="chooseOption('customer')">
+                <i class="fas fa-user"></i><br> USER
+            </button>
+            <h2 class="hide-on">|</h2>
+            <h1 class="hide-off">─</h1>
+            <button class="btn  agent-btn fs-5 fw-bolder border-0" onclick="chooseOption('agent')">
+                <i class="fas fa-user-tie"></i><br> AGENT
+            </button><br>
+        </div>
+    </div>
+
+
+    <!-- Overlay box markup ends -->
+
+    <div class="container mt-5" id="container">
+        <div class="form-container sign-up">
+            <form method="post">
+                {% csrf_token %}
+                <h1> sign up</h1>
+
+                <span>or use your email for registration</span>
+                <input type="text" name="agent_name" placeholder="Name">
+                <input type="email" name="agent_email" placeholder="Email">
+                <input type="text" name="agent_phone" placeholder="Mobile">
+                <input type="text" name="license" placeholder="License Number">
+                <input type="password" name="agent_password" placeholder="Password">
+                <button type="submit"> Sign Up</button>
+                <input type="hidden" name="agent_signup" value="true">
+            </form>
+        </div>
+        <div class="form-container sign-in">
+            <form method="post">
+                {% csrf_token %}
+                <h1> Sign In</h1>
+                <div class="social-icons">
+                    <a href="#" class="icon"><i class="fab fa-google-plus-g"></i></a>
+                    <a href="#" class="icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="icon"><i class="fab fa-github"></i></a>
+                    <a href="#" class="icon"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your email and password</span>
+                <input type="email" name="agent_email" placeholder="Email">
+                <input type="password" name="agent_password" placeholder="Password">
+                <a href="#">Forgot Your Password?</a>
+                <button type="submit">Sign In</button>
+                <input type="hidden" name="agent_signin" value="true">
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Welcome Back Agent!</h1>
+                    <p>Enter your personal details to use all site features</p>
+                    <button class="hidden" id="login">Sign In</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Welcome, Agent!</h1>
+                    <p>Enter your personal details to use all site features</p>
+                    <button class="hidden" id="register">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdownIcon = document.querySelector('.dropdown-toggle');
+            const overlay = document.getElementById('overlay');
+            const signInButton = document.querySelector('.dropdown-toggle button');
+
+            dropdownIcon.addEventListener('click', function () {
+                if (overlay.style.display === "block") {
+                    overlay.style.display = "none"; // Hide overlay if it's already visible
+                    signInButton.style.backgroundColor = "";
+                    signInButton.style.color = "";
+                } else {
+                    overlay.style.display = "block";
+                    signInButton.style.backgroundColor = "white"; // Show overlay if it's hidden
+                    signInButton.style.color = "black";
+                }
+            });
+
+            // Add event listener to overlay to close it when clicked anywhere on the screen
+            overlay.addEventListener('click', function () {
+                overlay.style.display = "none";
+                signInButton.style.backgroundColor = "";
+                signInButton.style.color = "";
+            });
+        });
+
+        function chooseOption(option) {
+            if (option === 'customer') {
+                window.location.href = "{% url 'login' %}"; // Redirect to the login URL
+            } else if (option === 'agent') {
+                window.location.href = "{% url 'agent_login' %}";
+            }
+        }
+
+        $(document).ready(function () {
+            $(window).on('resize', function () {
+                if ($(window).width() < 992) {
+                    $('#mainNav').removeClass('fixed-top');
+                } else {
+                    $('#mainNav').addClass('fixed-top');
+                }
+            });
+        });
+    </script>
+    <script src="{% static 'login.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
