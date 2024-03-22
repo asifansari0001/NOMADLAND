@@ -93,51 +93,27 @@ def manage_package(request):
     return render(request, 'manage_package.html')
 
 
-# def activities(request):
-#     if request.method == 'POST':
-#
-#         package_id = request.GET.get('package_id')   # Retrieve from form data
-#         total_activities = int(request.POST.get('total_activities'))
-#
-#         # Loop through each activity and save it to the database
-#         for i in range(total_activities):
-#             activity_name = request.POST.get(f'activity_name[{i}]')
-#             activity_description = request.POST.get(f'activity_description[{i}]')
-#             activity_image = request.FILES.get(f'activity_img[{i}]')
-#
-#             # Create a new instance of ActivitiesModel and save it to the database
-#             new_activity = ActivitiesModel(
-#                 activities=activity_name,
-#                 activity_description=activity_description,
-#                 activity_images=activity_image,
-#                 package_id=PackageModel.objects.get(pk=package_id)
-#             )
-#             new_activity.save()
-#
-#         # Redirect to home page after saving activities
-#         return redirect('home')
-#     else:
-#         # If the request method is not POST, return an error response or render the form again
-#         return render(request, 'activities.html')
-
-
 def activities(request):
-    package_id = request.GET.get('package_id')
-
     if request.method == 'POST':
+        package_id = request.GET.get('package_id')  # Change from GET to POST
+
+        # Handle the dynamic fields
         activity_names = request.POST.getlist('activity_name[]')
         activity_images = request.FILES.getlist('activity_image[]')
         activity_descriptions = request.POST.getlist('activity_description[]')
 
-        # Save data to the database
         for name, image, description in zip(activity_names, activity_images, activity_descriptions):
-            activity = ActivitiesModel(package_id=PackageModel.objects.get(pk=package_id), activities=name, activity_images=image, activity_description=description)
-            activity.save()
+            new_activity = ActivitiesModel.objects.create(
+                activities=name,
+                activity_description=description,
+                activity_images=image,
+                package_id=PackageModel.objects.get(pk=package_id)
+            )
 
-        # Redirect to a success page or any other appropriate view
-        return redirect('home')  # Change 'home' to your desired URL name
+        return redirect('home')  # Redirect to home page after saving activities
 
-    return render(request, 'activities.html', {'package_id': package_id})
+    return render(request, 'activities.html')
+
 
 
 def agent_communication(request):
