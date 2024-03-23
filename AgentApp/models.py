@@ -185,9 +185,9 @@ class ActivitiesModel(models.Model):
         package_id (ForeignKey): The package associated with this activity.
     """
     activities_id = models.AutoField(primary_key=True)
-    activities = models.CharField(max_length=255)
+    activities = models.CharField(max_length=255,null=True)
     activity_images = models.ImageField(upload_to='images/', null=True)
-    activity_description = models.CharField(max_length=255)
+    activity_description = models.CharField(max_length=255,null=True)
     package_id = models.ForeignKey(PackageModel, on_delete=models.CASCADE)
 
     class Meta:

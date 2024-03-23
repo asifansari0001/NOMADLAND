@@ -87,17 +87,21 @@ def manage_package(request):
         user_obj.nation_id = NationsModel.objects.get(nations_id=nation_id)
 
         user_obj.save()
+        request.session['package_id'] = user_obj.pk
 
         return redirect(reverse('activities') + f'?package_id={user_obj.pk}')
 
     return render(request, 'manage_package.html')
 
 
+from django.shortcuts import render, redirect
+from .models import ActivitiesModel, PackageModel
+
+
 def activities(request):
     if request.method == 'POST':
-        package_id = request.GET.get('package_id')  # Change from GET to POST
+        package_id = request.GET.get('package_id')
 
-        # Handle the dynamic fields
         activity_names = request.POST.getlist('activity_name[]')
         activity_images = request.FILES.getlist('activity_image[]')
         activity_descriptions = request.POST.getlist('activity_description[]')
@@ -107,13 +111,12 @@ def activities(request):
                 activities=name,
                 activity_description=description,
                 activity_images=image,
-                package_id=PackageModel.objects.get(pk=package_id)
+                package_id=PackageModel.objects.get(package_id=package_id)
             )
 
-        return redirect('home')  # Redirect to home page after saving activities
+        return redirect('home')
 
     return render(request, 'activities.html')
-
 
 
 def agent_communication(request):
