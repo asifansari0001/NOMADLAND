@@ -10,8 +10,6 @@ urlpatterns = [
     path('agent_communication/', views.agent_communication,name='agent_communication'),
     path('agent_analyticgraph/',views.agent_analyticgraph, name='agent_analyticgraph'),
     path('activities/', views.activities, name='activities'),
-    path('nation/', views.nation, name='nation'),
-    path('package_split', views.package_split, name='package_split'),
     path('hotel_add',views.hotel_add, name='hotel_add')
 
 

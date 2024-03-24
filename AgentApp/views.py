@@ -47,8 +47,9 @@ def agent_manage(request):
     return render(request, 'agent_manage.html')
 
 
-def nation(request):
+def manage_package(request):
     if request.method == 'POST':
+
         nation_name = request.POST.get('nation_name')
 
         existing_nation = NationsModel.objects.filter(nation=nation_name).first()
@@ -60,34 +61,42 @@ def nation(request):
             new_nation = NationsModel.objects.create(nation=nation_name)
             request.session['nation_id'] = new_nation.pk
 
-        return redirect('/manage_package')
-
-    return render(request, 'nation.html')
-
-
-def manage_package(request):
-    if request.method == 'POST':
-        destination = request.POST.get('pk_destination')
-        price = request.POST.get('pk_price')
+        destination = request.POST.get('destination')
+        price = request.POST.get('price')
         description = request.POST.get('activity_description')
-
         agent_id = request.session.get('agent_id')
         nation_id = request.session.get('nation_id')
 
         user_obj = PackageModel()
-
         user_obj.destination_name = destination
         user_obj.price = price
         user_obj.description = description
         user_obj.agent = AgentModel.objects.get(agent_id=agent_id)
         user_obj.nation_id = NationsModel.objects.get(nations_id=nation_id)
-
         user_obj.save()
-        request.session['package_id'] = user_obj.pk
 
+        image = request.FILES.get('image')
+        image_obj = PackageImagesModel()
+        image_obj.image = image
+        image_obj.package_id = PackageModel.objects.get(package_id=user_obj.pk)
+        image_obj.save()
+
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        quantity = request.POST.get('quantity')
+        split = PackageSplit()
+        split.start_date = start_date
+        split.end_date = end_date
+        split.quantity = quantity
+        split.package_id = PackageModel.objects.get(package_id=user_obj.pk)
+        split.save()
+
+        request.session['package_id'] = user_obj.pk
         return redirect(reverse('activities') + f'?package_id={user_obj.pk}')
 
     return render(request, 'manage_package.html')
+
+
 
 
 def activities(request):
@@ -106,29 +115,9 @@ def activities(request):
                 package_id=PackageModel.objects.get(package_id=package_id)
             )
 
-        return redirect(reverse('package_split') + f'?package_id={package_id}')
+        return redirect('home')
 
     return render(request, 'activities.html')
-
-
-def package_split(request):
-    if request.method == 'POST':
-        package_id = request.session.get('package_id')
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-        quantity = request.POST.get('quantity')
-
-        user_obj = PackageSplit()
-        user_obj.start_date = start_date
-        user_obj.end_date = end_date
-        user_obj.quantity = quantity
-        user_obj.package_id = PackageModel.objects.get(package_id=package_id)
-
-        user_obj.save()
-
-        del request.session['package_id']
-
-    return render(request, 'package_split.html')
 
 
 def hotel_add(request):

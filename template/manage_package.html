@@ -197,22 +197,46 @@
 <div class="container mt-3">
     <h2 class="text-center">Add New Travel Package</h2>
     <br>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
       <div class="form-group mt-3 col-md-5">
-        <label for="destination">Destination:</label>
-        <input type="text" class="form-control" name="pk_destination" id="destination" required autocapitalize="on">
+        <label for="country">Country:</label>
+        <input type="text" class="form-control" name="nation_name" id="country" required autocapitalize="on">
       </div>
 
       <div class="form-group mt-3 col-md-5">
-        <label for="price">Price:</label>
-        <input type="number" class="form-control" name="pk_price" id="price" required>
+        <label for="destination">Destination:</label>
+        <input type="text" class="form-control" name="destination" id="destination" required autocapitalize="on">
       </div>
+
+      <div class="form-group mt-3 col-md-5">
+        <label for="image">Add Image</label>
+        <input type="file" class="form-control" name="image" id="image" required>
+      </div>
+
+      <div class="form-group mt-3 col-md-5">
+            <label for="start_date">Start Date:</label>
+            <input type="date" class="form-control" name="start_date" id="start_date" required>
+        </div>
+        <div class="form-group mt-3 col-md-5">
+            <label for="end_date">End Date:</label>
+            <input type="date" class="form-control" name="end_date" id="end_date" required>
+        </div>
+
+        <div class="form-group mt-3 col-md-5">
+            <label for="quantity">Quantity:</label>
+            <input type="number" class="form-control" name="quantity" id="quantity" required>
+        </div>
 
 
       <div class="form-group mt-3 col-md-5">
         <label for="description">Description:</label>
-        <textarea class="form-control" name="activity_description" id="description" rows="3"></textarea>
+        <textarea class="form-control" name="activity_description" id="description" rows="3" required></textarea>
+      </div>
+
+      <div class="form-group mt-3 col-md-5">
+        <label for="price">Price:</label>
+        <input type="number" class="form-control" name="price" id="price" required>
       </div>
 
       <button type="submit" class="btn btn-primary mt-4">Next</button>
