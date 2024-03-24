@@ -1,10 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from AgentApp.models import *
 from UserApp.models import *
-from django.http import JsonResponse
-
-
-# Create your views here.
 
 
 def agent_login(request):
@@ -94,10 +90,6 @@ def manage_package(request):
     return render(request, 'manage_package.html')
 
 
-from django.shortcuts import render, redirect
-from .models import ActivitiesModel, PackageModel
-
-
 def activities(request):
     if request.method == 'POST':
         package_id = request.GET.get('package_id')
@@ -114,9 +106,33 @@ def activities(request):
                 package_id=PackageModel.objects.get(package_id=package_id)
             )
 
-        return redirect('home')
+        return redirect(reverse('package_split') + f'?package_id={package_id}')
 
     return render(request, 'activities.html')
+
+
+def package_split(request):
+    if request.method == 'POST':
+        package_id = request.session.get('package_id')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        quantity = request.POST.get('quantity')
+
+        user_obj = PackageSplit()
+        user_obj.start_date = start_date
+        user_obj.end_date = end_date
+        user_obj.quantity = quantity
+        user_obj.package_id = PackageModel.objects.get(package_id=package_id)
+
+        user_obj.save()
+
+        del request.session['package_id']
+
+    return render(request, 'package_split.html')
+
+
+def hotel_add(request):
+    return render(request, 'hotel_add.html')
 
 
 def agent_communication(request):
