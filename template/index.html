@@ -435,219 +435,28 @@
       <p class="fs-1 fw-bold">Packages</p>
     </div>
     <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
-      <div class="col">
-        <div class="card">
-          <img
-            src="https://images.pexels.com/photos/1268855/pexels-photo-1268855.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            class="card-img-top" alt="Maldves">
-          <div class="card-body">
-            <h5 class="card-title">MALDIVES<span class="star ms-3 fs-5">★★★★☆</span></h5>
-            <div class="star">
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-            </div>
-          </div>
+     {% for package in package_data %}
+<div class="col ms-3">
+  <a href="/package_preview/" style="text-decoration: none;">
+    <div class="card">
+      <img src="{{ package.packageimagesmodel_set.first.image.url }}"
+        class="card-img-top" alt="image" height="230px">
+      <div class="card-body" style="height: 220px;">
+        <h5 class="card-title text-black fw-bold" style="height: 40px; overflow: hidden;">{{ package.destination_name }}<span class="star ms-3 fs-5">★★★★☆</span></h5>
+        <div class="star">
+          <a href="#" class="bi-star-fill"></a>
+          <a href="#" class="bi-star-fill"></a>
+          <a href="#" class="bi-star-fill"></a>
+          <a href="#" class="bi-star-fill"></a>
+          <a href="#" class="bi-star-fill"></a>
         </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="https://wallpapercave.com/wp/wp12511099.jpg" class="card-img-top" alt="Bali">
-          <div class="card-body">
-            <h5 class="card-title">BALI<span class="star ms-3 fs-4">★★★★☆</span></h5>
-
-            <div class="star">
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img
-            src="https://images.pexels.com/photos/6057723/pexels-photo-6057723.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            class="card-img-top" alt="Brazil">
-          <div class="card-body">
-            <h5 class="card-title">BRAZIL<span class="star ms-3 fs-4">★★★★☆</span></h5>
-
-            <div class="star">
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img
-            src="https://images.pexels.com/photos/753639/pexels-photo-753639.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            class="card-img-top" alt="Italy">
-          <div class="card-body">
-            <h5 class="card-title">ITALY<span class="star ms-3 fs-4">★★★★☆</span></h5>
-
-            <div class="star">
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="https://images.pexels.com/photos/1549326/pexels-photo-1549326.jpeg?auto=compress&cs=tinysrgb&w=600"
-            class="card-img-top" alt="Istanbul">
-          <div class="card-body">
-            <h5 class="card-title">ISTANBUL<span class="star ms-3 fs-4">★★★★☆</span></h5>
-
-            <div class="star">
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star"></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="https://images.pexels.com/photos/777059/pexels-photo-777059.jpeg?auto=compress&cs=tinysrgb&w=600"
-            class="card-img-top" alt="singapore">
-          <div class="card-body">
-            <h5 class="card-title">SINGAPORE<span class="star ms-3 fs-4">★★★★☆</span></h5>
-
-            <div class="star">
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star"></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img
-            src="https://images.pexels.com/photos/2599247/pexels-photo-2599247.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            class="card-img-top" alt="tokyo">
-          <div class="card-body">
-            <h5 class="card-title">TOKYO<span class="star ms-3 fs-4">★★★★☆</span></h5>
-
-            <div class="star">
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star"></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="https://images.pexels.com/photos/4553365/pexels-photo-4553365.jpeg" class="card-img-top"
-            alt="Srilanka">
-          <div class="card-body">
-            <h5 class="card-title">SRILANKA<span class="star ms-3 fs-4">★★★★☆</span></h5>
-
-            <div class="star">
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-"></a>
-              <a href="#" class="bi-star"></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img
-            src="https://images.pexels.com/photos/8170275/pexels-photo-8170275.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            class="card-img-top" alt="Thailand">
-          <div class="card-body">
-            <h5 class="card-title">THAILAND<span class="star ms-3 fs-4">★★★★☆</span></h5>
-
-            <div class="star">
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star"></a>
-              <a href="#" class="bi-star"></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img
-            src="https://images.pexels.com/photos/965873/pexels-photo-965873.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            class="card-img-top" alt="Sweden">
-          <div class="card-body">
-            <h5 class="card-title">SWEDEN<span class="star ms-3 fs-4">★★★★☆</span></h5>
-
-            <div class="star">
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star"></a>
-              <a href="#" class="bi-star"></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img
-            src="https://images.pexels.com/photos/1239162/pexels-photo-1239162.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            class="card-img-top" alt="New york">
-          <div class="card-body">
-            <h5 class="card-title">NEW YORK<span class="star ms-3 fs-4">★★★★☆</span></h5>
-
-            <div class="star">
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star"></a>
-              <a href="#" class="bi-star"></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="card">
-          <img
-            src="https://images.pexels.com/photos/532826/pexels-photo-532826.jpeg?auto=compress&cs=tinysrgb&w=600"
-            class="card-img-top" alt="PARIS">
-          <div class="card-body">
-            <h5 class="card-title">PARIS<span class="star ms-3 fs-4">★★★★☆</span></h5>
-
-            <div class="star">
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star-fill"></a>
-              <a href="#" class="bi-star"></a>
-              <a href="#" class="bi-star"></a>
-            </div>
-          </div>
-        </div>
+        <h6 class="card-text text-secondary" style="height: 90px;">{{ package.description }}</h6>
+        <h6 class="card-text text-success fw-bold text-white pt-2 pb-2 text-center bg-success mt-auto" style="border-radius:4px;">₹ {{ package.price }}</h6>
       </div>
     </div>
-    </div>
+  </a>
+</div>
+{% endfor %}
     </div>
 
 

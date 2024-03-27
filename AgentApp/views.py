@@ -48,6 +48,12 @@ def agent_manage(request):
 
 
 def manage_package(request):
+    packages = PackageModel.objects.all()
+
+    context = {
+        'data_key': packages
+    }
+
     if request.method == 'POST':
 
         nation_name = request.POST.get('nation_name')
@@ -76,10 +82,18 @@ def manage_package(request):
         user_obj.save()
 
         image = request.FILES.get('image')
+
         image_obj = PackageImagesModel()
         image_obj.image = image
         image_obj.package_id = PackageModel.objects.get(package_id=user_obj.pk)
         image_obj.save()
+
+        image2 = request.FILES.get('image2')
+        if image2:
+            image2_obj = PackageImagesModel()
+            image2_obj.image = image2
+            image2_obj.package_id = PackageModel.objects.get(package_id=user_obj.pk)
+            image2_obj.save()
 
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
@@ -94,9 +108,7 @@ def manage_package(request):
         request.session['package_id'] = user_obj.pk
         return redirect(reverse('activities') + f'?package_id={user_obj.pk}')
 
-    return render(request, 'manage_package.html')
-
-
+    return render(request, 'manage_package.html', context)
 
 
 def activities(request):

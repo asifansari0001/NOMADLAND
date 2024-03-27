@@ -199,45 +199,68 @@
     <br>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-      <div class="form-group mt-3 col-md-5">
-        <label for="country">Country:</label>
-        <input type="text" class="form-control" name="nation_name" id="country" required autocapitalize="on">
-      </div>
 
-      <div class="form-group mt-3 col-md-5">
-        <label for="destination">Destination:</label>
-        <input type="text" class="form-control" name="destination" id="destination" required autocapitalize="on">
-      </div>
+    <div class="col-md-12">
+    <div class="row">
+        <div class="form-group mt-3 col-md-4">
+            <label for="country">Country:</label>
+            <input type="text" class="form-control" name="nation_name" id="country" required>
+        </div>
 
-      <div class="form-group mt-3 col-md-5">
-        <label for="image">Add Image</label>
-        <input type="file" class="form-control" name="image" id="image" required>
-      </div>
+        <div class="form-group mt-3 col-md-4">
+            <label for="destination">Destination:</label>
+            <input type="text" class="form-control" name="destination" id="destination" required>
+        </div>
 
-      <div class="form-group mt-3 col-md-5">
+        <div class="form-group mt-3 col-md-4">
+            <label for="quantity">Quantity:</label>
+            <input type="number" class="form-control" name="quantity" id="quantity" required>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="form-group mt-3 col-md-4">
+            <label for="image">Add Image</label>
+            <input type="file" class="form-control" name="image" id="image" required>
+        </div>
+
+
+        <div class="form-group mt-3 col-md-4">
+            <label for="image2">Another Image(optional)</label>
+            <input type="file" class="form-control" name="image2" id="image2">
+        </div>
+
+
+        <div class="form-group mt-3 col-md-4">
+            <label for="activity_description">Description:</label>
+            <textarea class="form-control" name="activity_description" id="activity_description" rows="1" required maxlength="150"></textarea>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group mt-3 col-md-4">
             <label for="start_date">Start Date:</label>
             <input type="date" class="form-control" name="start_date" id="start_date" required>
         </div>
-        <div class="form-group mt-3 col-md-5">
+
+
+        <div class="form-group mt-3 col-md-4">
             <label for="end_date">End Date:</label>
             <input type="date" class="form-control" name="end_date" id="end_date" required>
         </div>
 
-        <div class="form-group mt-3 col-md-5">
-            <label for="quantity">Quantity:</label>
-            <input type="number" class="form-control" name="quantity" id="quantity" required>
+        <div class="form-group mt-3 col-md-4">
+            <label for="price">Price:</label>
+            <input type="number" class="form-control" name="price" id="price" required>
         </div>
 
+        <!-- Third column of the last row is empty to maintain alignment -->
 
-      <div class="form-group mt-3 col-md-5">
-        <label for="description">Description:</label>
-        <textarea class="form-control" name="activity_description" id="description" rows="3" required></textarea>
-      </div>
+    </div>
+</div>
 
-      <div class="form-group mt-3 col-md-5">
-        <label for="price">Price:</label>
-        <input type="number" class="form-control" name="price" id="price" required>
-      </div>
+
 
       <button type="submit" class="btn btn-primary mt-4">Next</button>
 
@@ -254,7 +277,7 @@
             <thead>
                 <tr>
                     <th>Destination</th>
-                    <th>Duration</th>
+
                     <th>Price</th>
                     <th>Available Dates</th>
                     <th>Description</th>
@@ -264,18 +287,21 @@
             </thead>
             <tbody>
                 <!-- Display existing packages dynamically here -->
+                {% for x in data_key %}
                 <tr>
-                    <td>TOKYO</td>
-                    <td>7 days</td>
-                    <td>$1500</td>
+                    <td>{{x.destination_name}}</td>
+
+                    <td>{{x.price}}</td>
                     <td>May 15 - May 22, 2024</td>
-                    <td>Description of the package goes here.</td>
-                    <td><img src="{% static 'rome.jpg' %}" alt="Package Image" style="max-width: 100px;"></td>
+                    <td>{{x.description}}</td>
+                    <td><img src="{{ x.packageimagesmodel_set.first.image.url }}" alt="Package Image" style="max-width: 100px;" class="mt-1"></td>
                     <td>
-                        <button class="btn btn-primary btn-sm">Edit</button>
-                        <button class="btn btn-danger btn-sm">Delete</button>
+                        <button class="btn btn-primary btn-sm ms-2"><i class="fa-solid fa-square-pen"></i></button>
+
+                        <button class="btn btn-danger btn-sm mt-1 ms-2"><i class="fa-solid fa-trash-can"></i></button>
                     </td>
                 </tr>
+                {% endfor %}
                 <!-- Example package, you can populate this dynamically from the backend -->
             </tbody>
         </table>
@@ -423,50 +449,72 @@
 <!-- Overlay box markup ends -->
 
 
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function () {-->
+<!--        const dropdownIcon = document.querySelector('.dropdown-toggle');-->
+<!--        const overlay = document.getElementById('overlay');-->
+<!--        const signInButton = document.querySelector('.dropdown-toggle button');-->
+
+<!--        dropdownIcon.addEventListener('click', function () {-->
+<!--            if (overlay.style.display === "block") {-->
+<!--                overlay.style.display = "none"; // Hide overlay if it's already visible-->
+<!--                signInButton.style.backgroundColor = "";-->
+<!--                signInButton.style.color = "";-->
+<!--            } else {-->
+<!--                overlay.style.display = "block";-->
+<!--                signInButton.style.backgroundColor = "white"; // Show overlay if it's hidden-->
+<!--                signInButton.style.color = "black";-->
+<!--            }-->
+<!--        });-->
+
+<!--        // Add event listener to overlay to close it when clicked anywhere on the screen-->
+<!--        overlay.addEventListener('click', function () {-->
+<!--            overlay.style.display = "none";-->
+<!--            signInButton.style.backgroundColor = "";-->
+<!--            signInButton.style.color = "";-->
+<!--        });-->
+<!--    });-->
+
+<!--    function chooseOption(option) {-->
+<!--        if (option === 'customer') {-->
+<!--            window.location.href = "{% url 'login' %}"; // Redirect to the login URL-->
+<!--        } else if (option === 'agent') {-->
+<!--            // Add logic for redirecting to the agent URL if needed-->
+<!--        }-->
+<!--    }-->
+
+<!--    $(document).ready(function () {-->
+<!--        $(window).on('resize', function () {-->
+<!--            if ($(window).width() < 992) {-->
+<!--                $('#mainNav').removeClass('fixed-top');-->
+<!--            } else {-->
+<!--                $('#mainNav').addClass('fixed-top');-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const dropdownIcon = document.querySelector('.dropdown-toggle');
-        const overlay = document.getElementById('overlay');
-        const signInButton = document.querySelector('.dropdown-toggle button');
-
-        dropdownIcon.addEventListener('click', function () {
-            if (overlay.style.display === "block") {
-                overlay.style.display = "none"; // Hide overlay if it's already visible
-                signInButton.style.backgroundColor = "";
-                signInButton.style.color = "";
-            } else {
-                overlay.style.display = "block";
-                signInButton.style.backgroundColor = "white"; // Show overlay if it's hidden
-                signInButton.style.color = "black";
-            }
-        });
-
-        // Add event listener to overlay to close it when clicked anywhere on the screen
-        overlay.addEventListener('click', function () {
-            overlay.style.display = "none";
-            signInButton.style.backgroundColor = "";
-            signInButton.style.color = "";
-        });
-    });
-
-    function chooseOption(option) {
-        if (option === 'customer') {
-            window.location.href = "{% url 'login' %}"; // Redirect to the login URL
-        } else if (option === 'agent') {
-            // Add logic for redirecting to the agent URL if needed
+    // Function to capitalize the input value
+    function capitalizeInput(event) {
+        const input = event.target;
+        if (input.id === 'activity_description') {
+            let capitalizedText = input.value.toLowerCase();
+            capitalizedText = capitalizedText.charAt(0).toUpperCase() + capitalizedText.slice(1);
+            input.value = capitalizedText;
+        } else {
+            input.value = input.value.toUpperCase();
         }
     }
 
-    $(document).ready(function () {
-        $(window).on('resize', function () {
-            if ($(window).width() < 992) {
-                $('#mainNav').removeClass('fixed-top');
-            } else {
-                $('#mainNav').addClass('fixed-top');
-            }
-        });
-    });
+    // Add event listeners to the input fields
+    document.getElementById('country').addEventListener('input', capitalizeInput);
+    document.getElementById('destination').addEventListener('input', capitalizeInput);
+    document.getElementById('activity_description').addEventListener('input', capitalizeInput);
 </script>
+
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
 integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"

@@ -69,7 +69,7 @@ class PackageModel(models.Model):
     created_at = models.DateField(auto_now_add=True)
     status = models.CharField(max_length=255, default='active')
     agent = models.ForeignKey(AgentModel, on_delete=models.CASCADE)
-    description = models.TextField(max_length=500)
+    description = models.TextField(max_length=255)
     price = models.IntegerField()
     nation_id = models.ForeignKey(NationsModel, on_delete=models.CASCADE)
 
