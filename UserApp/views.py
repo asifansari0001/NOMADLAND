@@ -12,11 +12,10 @@ def login(request):
 
             if user:
                 request.session['user_id'] = user.user_id
-                user_data = UserModel.objects.filter(user_id=user.user_id)
-                return render(request, 'home.html', {'data_key': user_data})
+                return redirect('/')
 
             if user is None:
-                return render(request, 'login.html', {'error': 'Invalid Credentials'})
+                return render(request, 'login.html')
 
         if 'user_signup' in request.POST:
             user_name = request.POST.get('user_name')
@@ -32,6 +31,24 @@ def login(request):
             return redirect('login')
 
     return render(request, 'login.html')
+
+
+def logout(request):
+    if 'user_id' in request.session:
+        del request.session['user_id']
+    return redirect('/')
+
+
+def home(request):
+    user_id = request.session.get('user_id')
+
+    if user_id:
+        user_data = UserModel.objects.filter(user_id=user_id)
+
+        return render(request, 'home.html', {'user_data': user_data})
+    else:
+        return render(request, 'home.html')
+
 
 
 def user(request):
@@ -52,8 +69,6 @@ def review(request):
     return render(request, 'nomadland_review.html')
 
 
-def home(request):
-    return render(request, 'home.html')
 
 
 def offer(request):

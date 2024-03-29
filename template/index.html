@@ -434,30 +434,34 @@
     <div class="mx-auto p-2" style="width: 200px; background-color: white;">
       <p class="fs-1 fw-bold">Packages</p>
     </div>
-    <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
-     {% for package in package_data %}
-<div class="col ms-3">
-  <a href="/package_preview/" style="text-decoration: none;">
-    <div class="card">
-      <img src="{{ package.packageimagesmodel_set.first.image.url }}"
-        class="card-img-top" alt="image" height="230px">
-      <div class="card-body" style="height: 220px;">
-        <h5 class="card-title text-black fw-bold" style="height: 40px; overflow: hidden;">{{ package.destination_name }}<span class="star ms-3 fs-5">★★★★☆</span></h5>
-        <div class="star">
-          <a href="#" class="bi-star-fill"></a>
-          <a href="#" class="bi-star-fill"></a>
-          <a href="#" class="bi-star-fill"></a>
-          <a href="#" class="bi-star-fill"></a>
-          <a href="#" class="bi-star-fill"></a>
+  <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
+  {% for package in package_data %}
+  <div class="col mb-3">
+    <a href="/package_preview/" style="text-decoration: none;">
+      <div class="card" style="width:100%;">
+        <img src="{{ package.packageimagesmodel_set.first.image.url }}" class="card-img-top" alt="image" height="230px">
+        <div class="card-body" style="height: 220px;">
+          <h5 class="card-title text-black fw-bold" style="height: 40px; overflow: hidden;">{{ package.destination_name }}<span class="star ms-3 fs-5">★★★★☆</span></h5>
+          <div class="star">
+            <a href="#" class="bi-star-fill"></a>
+            <a href="#" class="bi-star-fill"></a>
+            <a href="#" class="bi-star-fill"></a>
+            <a href="#" class="bi-star-fill"></a>
+            <a href="#" class="bi-star-fill"></a>
+          </div>
+          <h6 class="card-text text-secondary" style="height: 90px;">{{ package.description }}</h6>
+          <h6 class="card-text text-success fw-bold text-white pt-2 pb-2 text-center bg-success mt-auto" style="border-radius:4px;">₹ {{ package.price }}</h6>
         </div>
-        <h6 class="card-text text-secondary" style="height: 90px;">{{ package.description }}</h6>
-        <h6 class="card-text text-success fw-bold text-white pt-2 pb-2 text-center bg-success mt-auto" style="border-radius:4px;">₹ {{ package.price }}</h6>
       </div>
-    </div>
-  </a>
+    </a>
+  </div>
+  {% if forloop.counter|divisibleby:4 and not forloop.last %}
+  </div>
+  <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
+  {% endif %}
+  {% endfor %}
 </div>
-{% endfor %}
-    </div>
+
 
 
   </section>
