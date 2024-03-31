@@ -2,66 +2,149 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Travel Packages</title>
-    <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@300;400&family=Raleway&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/7db032fd81.js" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  {% load static %}
+   <link rel="icon" type="image/png" href="{% static 'mountains_black.png' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 
+  <title>NOMADLAND</title>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    {% load static %}
-     <link rel="icon" type="image/png" href="{% static 'mountains_top.png' %}">
+  <style>
+    /* overlay css */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            backdrop-filter: blur(1px);
+        }
 
-    <style>
-         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
-
-        * {
-           font-family: 'Montserrat', sans-serif;
+        .navbar {
+            z-index: 10000;
+            backdrop-filter: none;
+            /* Remove blur effect from navbar */
         }
 
 
-        #mapIframe {
-            margin: 0 !important;
-            padding: 0 !important;
+        .overlay-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: whitesmoke;
+            border: groove 1px black;
+            padding: 20px;
+            border-radius: 10px;
         }
 
-        .container-fluid,
-        .container {
-            padding-right: 0;
-            padding-left: 0;
+        .overlay-box {
+            width: 60%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            /* Position buttons at the ends */
         }
 
-        body{
-            overflow-x: hidden;
+        .user-btn,
+        .agent-btn {
+            width: 45%;
+            /* Adjust button width */
+            border: 2px solid transparent;
+            background-color: transparent;
+            color: black;
+            margin: 5px 0;
+            /* Adjust the margin as needed */
+            padding: 10px;
+            /* Adjust the padding as needed */
+            text-align: center;
+
         }
 
-        @media screen and (max-width: 767px) {
-            .map_check {
-                width: 100%;
+        @media (max-width: 992px) {
+            .overlay-box {
+                width: 80%;
+                /* Adjust width for smaller screens */
+                flex-direction: column;
+                /* Stack buttons vertically */
+                align-items: center;
+                /* Center buttons vertically */
             }
 
-            #mapIframe {
+            .user-btn,
+            .agent-btn {
                 width: 100%;
+                /* Full width for buttons on smaller screens */
+
             }
         }
 
 
+        .agent-btn:hover {
+            color: grey;
+        }
 
-    </style>
+        .user-btn:hover {
+            color: grey;
 
+        }
+
+        @media (max-width: 992px) {
+            .hide-on {
+                display: none;
+            }
+
+            .overlay-box {
+                width: 40%;
+            }
+        }
+
+        @media (min-width:992px) {
+            .hide-off {
+                display: none;
+            }
+
+        }
+
+
+        .navbar-nav .nav-link:not(.dropdown-toggle):hover {
+            color: grey !important;
+        }
+
+        .overflow-hidden {
+            overflow-y: hidden;
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        /* overlay css */
+
+
+
+  </style>
 </head>
 
 <body>
 
+  <!-- navbar section starts -->
     <header>
         <div>
-            <nav class="navbar navbar-expand-lg bg-dark fixed-top ">
+            <nav class="navbar navbar-expand-lg" id="#mainNav" style="background-color: whitesmoke;">
                 <div class="container-fluid">
-                    <a class="navbar-brand text-white fw-bold" href="{% url 'home'  %}">
-                        <img src="{% static 'mountains.png' %}" alt="Logo" width="30" height="28"
+                    <a class="navbar-brand  fw-bold" href="#">
+                        <img src="{% static 'mountains_black.png' %}" alt="Logo" width="30" height="28"
                             class="d-inline-block align-text-top">
                         NOMAD<span>LAND</span>
                     </a>
@@ -73,145 +156,164 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item">
-                                <a class="nav-link text-white nav-size " aria-current="page" href="{% url 'home' %}">HOME</a>
+                                <a class="nav-link text-black  nav-size " aria-current="page" href="{% url 'home' %}">HOME</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white nav-size" href="{% url 'booking' %}">TOURS</a>
+                                <a class="nav-link text-black  nav-size" href="{% url 'booking' %}">TOURS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white nav-size" href="{% url 'review' %}">REVIEWS</a>
+                                <a class="nav-link text-black  nav-size" href="{% url 'review' %}">REVIEWS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white nav-size" href="{% url 'about' %}">ABOUT US</a>
+                                <a class="nav-link text-black  nav-size" href="{% url 'about' %}">ABOUT US</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white nav-size" href="{% url 'login' %}">LOGIN</a>
-                            </li>
+
+{% if user_data %}
+    <li class="nav-item dropdown ">
+          <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-circle-user"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-light dropdown-menu-end">
+            {% with user=user_data.first %}
+       {% with names=user.user_name.split %}
+
+            <h6 class="text-center fw-bold mt-1">Hello {{ names.0 }}</h6>
+        {% endwith %}
+    {% endwith %}
+            <hr>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Account</a></li>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Wishlist</a></li>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">History</a></li>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Contact us</a></li>
+             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Saved Address</a></li>
+            <hr>
+             <li><a class="dropdown-item text-center" href="{% url 'logout' %}" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: red;"> <button class="btn btn-danger" style="--bs-btn-hover-bg:#dc3545; --bs-btn-hover-border-color:#dc3545;">Logout</button> </a></li>
+          </ul>
+        </li>
+{% else %}
+    <li class="nav-item">
+        <a class="nav-link dropdown-toggle ms-md-1 justify-content-sm-start ps-1 pt-1 pb-1"
+            href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button type="button" class="btn btn-outline-dark bg-light btn-sm sg-button text-black">SIGN IN</button>
+        </a>
+    </li>
+{% endif %}
                         </ul>
                     </div>
                 </div>
             </nav>
         </div>
     </header>
+    <!-- navbar section ends -->
 
-
-
-    <div class="container-fluid mt-5">
-
-
-            <div class="card mb-12">
-                <div class="row g-0 mt-3 ms-4">
-                    <div class="col-md-4 col-sm-12" style="height: 160px;">
-                        <iframe id="mapIframe" class="map_check"
-                            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d7253.531917199855!2d76.29648374238519!3d9.992665259752345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1706761734259!5m2!1sen!2sin"
-                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                            style="width: 100%; height: 160px;"></iframe>
-                    </div>
-
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title fs-1 fw-bold text-center">PACKAGES</h5>
-                            <div class="container-fluid  booking-bar">
-                                <div class="container">
-                                    <div class="row p-2">
-                                        <div class="col-md-2 ms-5">
-                                            <label class="ms-auto fs-5" for="location">Location</label>
-
-                                            <h6 class="ms-auto">{{location}}</h6>
-                                        </div>
-
-                                        <div class="col-md-2">
-                                            <label class="ms-auto fs-5" for="input-date">Depart</label>
-<!--                                            <input class="input-date form-control" type="date">-->
-                                            <h6 class="ms-auto">{{depart}}</h6>
-                                        </div>
-
-                                        <div class="col-md-2">
-                                            <label class="ms-auto fs-5" for="input-2">Return</label>
-<!--                                            <input class="input-date2 form-control" type="date">-->
-                                            <h6 class="ms-auto">{{return_date}}</h6>
-                                        </div>
-
-                                        <div class="col-md-2">
-                                            <label class="ms-3 fs-5" for="adults">Adults</label>
-                                            <h6 class="ms-3">{{adults}}</h6>
-<!--                                            <select class="form-control">-->
-<!--                                                <option>1</option>-->
-<!--                                                <option>2</option>-->
-<!--                                                <option>3</option>-->
-<!--                                                <option>4</option>-->
-<!--                                            </select>-->
-                                        </div>
-
-                                        <div class="col-md-2">
-                                            <label class="ms-auto fs-5" for="children">Children</label>
-                                            <h6 class="ms-auto">{{children}}</h6>
-<!--                                            <select class="form-control">-->
-<!--                                                <option>0</option>-->
-<!--                                                <option>1</option>-->
-<!--                                                <option>2</option>-->
-<!--                                                <option>3</option>-->
-<!--                                            </select>-->
-                                        </div>
-                                    </div>
-
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container-fluid">
-
-                <div class="row bg-secondary-subtle ms-1 " style="width: 100%; border-radius: 6px;">
-
-                    <div class="row">
-                        <div class="col-md-3 mt-2">
-                            <form id="filterForm">
-                                <!-- New: Price Range -->
-                                <div class="form-group">
-                                    <label for="priceRange">Price Range:</label>
-                                    <input type="range" class="form-range" id="priceRange" min="0" max="30000" step="10">
-                                    <span id="selectedPrice" class="mt-2">Price: ₹0</span>
-                                </div>
-                            </form>
-                        </div>
-
-                        <div class="col-md-3 ms-auto mt-3">
-                            <label class="ms-auto" for="sort">Sort By</label>
-                            <select id="sort" class="form-control">
-                                <option value="latest">Latest</option>
-                                <option value="oldest">Oldest</option>
-                            </select>
-                        </div>
-
-                        <!-- Results container -->
-                        <div class="container col-md-12 ms-2 mt-3" style="border-top: solid 1px rgba(0, 0, 0, 0.157);">
-                            <div id="results" class="ms-sm-5 ps-sm-5 mt-3"></div>
-                        </div>
-
-
-
-                    </div>
-
-
-
-                </div>
-
-            </div>
-
-
-
-
-
-
-
+    <!-- Overlay box markup -->
+    <div class="overlay" id="overlay">
+        <div class="overlay-box">
+            <button class="btn user-btn fs-5 fw-bolder border-0" onclick="chooseOption('customer')">
+                <i class="fas fa-user"></i><br> USER
+            </button>
+            <h2 class="hide-on">|</h2>
+            <h1 class="hide-off">─</h1>
+            <button class="btn  agent-btn fs-5 fw-bolder border-0" onclick="chooseOption('agent')">
+                <i class="fas fa-user-tie"></i><br> AGENT
+            </button><br>
+        </div>
     </div>
 
-    <!-- Footer -->
+
+    <!-- Overlay box markup ends -->
+
+    <!-- background section starts -->
+
+<div class="col-md-12">
+    <h1 class="text-center">Packages</h1>
+    <hr>
+    <div class="row  d-flex justify-content-between align-items-center" style="background-color:whitesmoke;">
+        <div class="col-6 text-start">
+            <form action="{% url 'package_filter' %}" method="post">
+                {% csrf_token %}
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle ms-4 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Price <span><i class="fa-solid fa-filter-circle-dollar"></i></span>
+                </button>
+                <ul class="dropdown-menu">
+                     <li><button class="dropdown-item" type="submit" name="price_option" value="low_high">Low to High</button></li>
+                        <li><button class="dropdown-item" type="submit" name="price_option" value="high_low">High to Low</button></li>
+                </ul>
+            </div>
+                </form>
+        </div>
+        <div class="col-6 text-end">
+            <form action="{% url 'package_filter' %}" method="post">
+                  {% csrf_token %}
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle me-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Sort <span><i class="fa-solid fa-filter"></i></span>
+                </button>
+                <ul class="dropdown-menu">
+                   <li><button class="dropdown-item" type="submit" name="sort_option" value="latest">Latest</button></li>
+                        <li><button class="dropdown-item" type="submit" name="sort_option" value="oldest">Oldest</button></li>
+                        <li><button class="dropdown-item" type="submit" name="sort_option" value="customer_rating">Customer Rating</button></li>
+                        <li><button class="dropdown-item" type="submit" name="sort_option" value="better_offer">Better Offer</button></li>
+                </ul>
+            </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+
+<hr>
+
+
+
+
+
+  <section style="background-color:whitesmoke;" class="mt-4">
+  <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
+  {% for package in filtered_packages %}
+  <div class="col mb-3">
+    <a href="/package_preview/" style="text-decoration: none;">
+      <div class="card" style="width:100%;">
+        <img src="{{ package.packageimagesmodel_set.first.image.url }}" class="card-img-top" alt="image" height="230px">
+        <div class="card-body" style="height: 220px;">
+          <h5 class="card-title text-black fw-bold" style="height: 40px; overflow: hidden;">{{ package.destination_name }}<span class="star ms-3 fs-5">★★★★☆</span></h5>
+          <div class="star">
+            <a href="#" class="bi-star-fill"></a>
+            <a href="#" class="bi-star-fill"></a>
+            <a href="#" class="bi-star-fill"></a>
+            <a href="#" class="bi-star-fill"></a>
+            <a href="#" class="bi-star-fill"></a>
+          </div>
+          <h6 class="card-text text-secondary" style="height: 90px;">{{ package.description }}</h6>
+          <h6 class="card-text text-success fw-bold text-white pt-2 pb-2 text-center bg-success mt-auto" style="border-radius:4px;">₹ {{ package.price }}</h6>
+        </div>
+      </div>
+    </a>
+  </div>
+  {% if forloop.counter|divisibleby:4 and not forloop.last %}
+  </div>
+  <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
+  {% endif %}
+  {% endfor %}
+</div>
+
+
+
+  </section>
+
+
+
+
+  <!-- background section end -->
+
+
+
+<br>
+  <br>
+  <br>
+  <br>
   <footer class="text-center text-lg-start text-white bg-dark">
     <!-- Grid container -->
     <div class="container p-4 pb-0">
@@ -340,76 +442,36 @@
   </footer>
   <!-- Footer -->
 
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const signInButton = document.querySelector('.dropdown-toggle button');
+    const overlay = document.getElementById('overlay');
 
+    signInButton.addEventListener('click', function (event) {
+        event.stopPropagation(); // Prevent the event from bubbling up to the parent elements
+        if (overlay.style.display === "block") {
+            overlay.style.display = "none"; // Hide overlay if it's already visible
+        } else {
+            overlay.style.display = "block"; // Show overlay if it's hidden
+        }
+    });
+
+    // Add event listener to overlay to close it when clicked anywhere on the screen
+    overlay.addEventListener('click', function () {
+        overlay.style.display = "none";
+    });
+});
+
+function chooseOption(option) {
+    if (option === 'customer') {
+        window.location.href = "{% url 'login' %}"; // Redirect to the login URL
+    } else if (option === 'agent') {
+        window.location.href = "{% url 'agent_login' %}";
+    }
+}
+
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            var travelPackages = [
-                { destination: "SINGAPORE", stars: "★★★★★", image:"{% static 'singapore-79116.jpg' %}", price: 25000, date: "2024-02-04" },
-                { destination: "BALI", stars: "★★★★", image: "{% static 'bali-pagoda-sunrise-indonesia.jpg ' %}", price: 27000, date: "2024-02-01" },
-                { destination: "THAILAND", stars: "★★★", image: "{% static 'wat-arun-temple-twilight-bangkok-thailand.jpg' %}", price: 28000, date: "2024-02-02" },
-                { destination: "TOKYO", stars: "★★★★", image: "{% static 'tokyo-skyline-with-rainbow-bridge-tokyo-tower-tokyo-japan.jpg' %}", price: 30000, date: "2024-03-02" },
-                { destination: "SRI LANKA", stars: "★★★", image: "{% static 'elephants-nature.jpg'%}", price: 18000, date: "2024-02-02" },
-                { destination: "ISTANBUL", stars: "★★★★", image: "{% static 'blue-mosque-istanbul.jpg'%}", price: 22000, date: "2024-03-02" }
-                // Add more packages as needed
-            ];
-
-            // Initial display of all packages
-            displayPackages(travelPackages);
-
-            // Add event listener to sort and price filter inputs
-            $('#sort, #priceRange').on('input', function () {
-                updateResults();
-            });
-
-            function updateResults() {
-                var selectedPrice = $('#priceRange').val();
-                var selectedSort = $('#sort').val();
-
-                // Update selected price display
-                $('#selectedPrice').text(`Selected Price: $${selectedPrice}`);
-
-                var filteredPackages = travelPackages.filter(function (package) {
-                    // Apply price filter
-                    return package.price <= parseInt(selectedPrice);
-                });
-
-                // Apply sorting
-                if (selectedSort === 'latest') {
-                    filteredPackages.sort((a, b) => new Date(b.date) - new Date(a.date));
-                } else if (selectedSort === 'oldest') {
-                    filteredPackages.sort((a, b) => new Date(a.date) - new Date(b.date));
-                }
-
-                displayPackages(filteredPackages);
-            }
-
-            function displayPackages(packages) {
-                let resultText = '';
-
-                resultText += `<div class="d-flex flex-row flex-wrap">`;
-
-                // Loop through all packages and generate result cards
-                packages.forEach(package => {
-                    resultText += `
-                        <div class="col-12 col-md-6  col-sm-12 col-lg-4 mb-4">
-                            <div class="card w-75">
-                               <a href='{% url 'package_preview' %}'style="text-decoration:none;"><img src="${package.image}" class="card-img-top" alt="${package.destination}">
-                                <div class="card-body">
-                                    <h5 class="card-title text-black">${package.destination}<span class="star ms-3 fs-4 text-warning">${package.stars}</span></h5>
-                                    <p class="card-text text-black fs-5">Price: ₹${package.price}</p>
-                                </div></a>
-                            </div>
-                        </div>`;
-                });
-
-                resultText += `</div>`;
-
-                $("#results").html(resultText);
-            }
-        });
-    </script>
 </body>
 
 </html>

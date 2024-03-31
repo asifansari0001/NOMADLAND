@@ -127,12 +127,42 @@ def activities(request):
                 package_id=PackageModel.objects.get(package_id=package_id)
             )
 
-        return redirect('home')
+        return redirect('hotel_add')
 
     return render(request, 'activities.html')
 
 
 def hotel_add(request):
+    if request.method == 'POST':
+
+        package_id = request.session.get('package_id')
+
+        hotel_names = request.POST.getlist('hotel_name[]')
+        hotel_prices = request.POST.getlist('hotel_price[]')
+        hotel_quantities = request.POST.getlist('hotel_quantity[]')
+        hotel_images = request.FILES.getlist('hotel_image[]')
+
+        # Loop through the submitted data and save hotels
+        for name, price, quantity, image in zip(hotel_names, hotel_prices, hotel_quantities, hotel_images):
+            # Create hotel instance
+            hotel = HotelModel.objects.create(hotel_name=name)
+
+            # Save hotel image
+            hotel_image = HotelImage.objects.create(hotel_id=hotel, hotel_image=image)
+
+            # Get package split associated with this hotel
+            package_split_id = PackageSplit.objects.get(package_id=package_id)
+
+            # Create package hotel instance
+            package_hotel = PackageHotel.objects.create(
+                hotel_id=hotel,
+                package_split_id=package_split_id,
+                price=price,
+                quantity=quantity
+            )
+        del request.session['package_id']
+        return redirect('/welcome_agent')
+
     return render(request, 'hotel_add.html')
 
 
