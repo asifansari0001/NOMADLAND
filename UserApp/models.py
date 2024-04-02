@@ -1,5 +1,6 @@
 from django.db import models
 from AgentApp.models import *
+from AgentApp.models import PackageModel
 
 
 class UserModel(models.Model):
@@ -48,6 +49,19 @@ class FeedbackModel(models.Model):
 
     def __str__(self):
         return self.review
+
+
+class WebsiteReviewModel(models.Model):
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    review_text = models.TextField()
+    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'website_review'
+
+    def __str__(self):
+        return self.user
 
 
 class PaymentType(models.Model):

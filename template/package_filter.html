@@ -226,14 +226,14 @@
     <!-- background section starts -->
 
 <div class="col-md-12">
-    <h1 class="text-center">Packages</h1>
+    <h1 class="text-center fw-bold">Packages</h1>
     <hr>
     <div class="row  d-flex justify-content-between align-items-center" style="background-color:whitesmoke;">
         <div class="col-6 text-start">
             <form action="{% url 'package_filter' %}" method="post">
                 {% csrf_token %}
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle ms-4 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle ms-4 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Price <span><i class="fa-solid fa-filter-circle-dollar"></i></span>
                 </button>
                 <ul class="dropdown-menu">
@@ -247,7 +247,7 @@
             <form action="{% url 'package_filter' %}" method="post">
                   {% csrf_token %}
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle me-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-secondary dropdown-toggle me-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Sort <span><i class="fa-solid fa-filter"></i></span>
                 </button>
                 <ul class="dropdown-menu">

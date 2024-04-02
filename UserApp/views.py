@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from django.db.models import Q
+from django.db.models import Q, Min, Max
 from AgentApp.models import PackageModel
 from .models import *
+from django.db.models import F
 
 
 def login(request):
@@ -101,39 +102,42 @@ def user(request):
         to_date = request.POST.get('input_return')
         adult = int(request.POST.get('input_adult', 0))
         children = int(request.POST.get('input_children', 0))
-        print(from_date)
-        print(to_date)
 
         total_people = adult + children
-        print(total_people, 'total people')
 
-        location_filter = PackageModel.objects.filter(destination_name__icontains=location)
+        location_filter = PackageModel.objects.filter(
+            Q(nation_id__nation__icontains=location) |
+            Q(destination_name__icontains=location)
+        )
         split_data = PackageSplit.objects.filter(
             Q(start_date__range=[from_date, to_date]) | Q(end_date__range=[from_date, to_date]) |
             Q(start_date__lte=from_date, end_date__gte=to_date) |
             Q(start_date__gte=from_date, end_date__lte=to_date)
         )
-        print(location_filter, 'location')
-        print(split_data, 'sp1')
+
         split_data = split_data.filter(quantity__gte=total_people)
-        print(split_data, 'sp2')
 
         if location_filter.exists() and split_data.exists():
             filtered_packages = location_filter.filter(packagesplit__in=split_data)
-            print(filtered_packages, 'all done')
+
             context['filtered_packages'] = filtered_packages
         else:
             return render(request, 'login.html')
 
         context['filtered_packages'] = filtered_packages
         request.session['filtered_package_ids'] = list(filtered_packages.values_list('package_id', flat=True))
-        print(context['filtered_packages'], 'all to done')
+
         return render(request, 'package_filter.html', context)
 
     return render(request, 'index.html', context)
 
 
 def package_filter(request):
+    user_id = request.session.get('user_id')
+    user_data = None
+    if user_id:
+        user_data = UserModel.objects.filter(user_id=user_id)
+
     # Retrieve the filtered package IDs from the session
     filtered_package_ids = request.session.get('filtered_package_ids', [])
 
@@ -150,23 +154,46 @@ def package_filter(request):
         elif price_option == 'high_low':
             filtered_packages = filtered_packages.order_by('-price')
 
-        # Handle form submission for sort button
-        sort_option = request.POST.get('sort_option')
-        # Add logic to adjust queryset based on selected sort option
-        if sort_option == 'latest':
-            filtered_packages = filtered_packages.order_by('-created_at')
-        elif sort_option == 'oldest':
-            filtered_packages = filtered_packages.order_by('created_at')
-        elif sort_option == 'customer_rating':
-            # Add sorting logic based on customer rating
-            pass
-        elif sort_option == 'better_offer':
-            # Add sorting logic based on better offer
-            pass
+    # Get the IDs of filtered packages
+    filtered_package_ids = filtered_packages.values_list('package_id', flat=True)
 
-    context = {'filtered_packages': filtered_packages}
+    # Reconstruct the queryset of filtered packages with the selected price order
+    filtered_packages = PackageModel.objects.filter(package_id__in=filtered_package_ids)
+
+    # Handle form submission for sort button
+    sort_option = request.POST.get('sort_option')
+    # Add logic to adjust queryset based on selected sort option
+    if sort_option == 'latest':
+        filtered_packages = filtered_packages.order_by('-created_at')
+    elif sort_option == 'oldest':
+        filtered_packages = filtered_packages.order_by('created_at')
+
+    context = {
+        'filtered_packages': filtered_packages,
+        'user_data': user_data,  # Include user_data in the context
+    }
     return render(request, 'package_filter.html', context)
 
+
+def review(request):
+    user_id = request.session.get('user_id')
+    review_data = WebsiteReviewModel.objects.all()
+    user_data = None
+    if user_id:
+        user_data = UserModel.objects.get(user_id=user_id)
+
+    context = {'user_data': user_data, 'review_data': review_data}
+
+    if request.method == 'POST':
+        review_text = request.POST.get('review_text')
+        rating = int(request.POST.get('star'))
+        review = WebsiteReviewModel.objects.create(user=user_data, review_text=review_text, rating=rating)
+        review.save()
+
+        # Redirect to a success page or back to review page
+        return redirect('/review')  # Change 'review_success' to your success URL
+
+    return render(request, 'nomadland_review.html', context)
 
 
 def about(request):
@@ -178,17 +205,6 @@ def about(request):
     else:
 
         return render(request, 'nomadland_about.html')
-
-
-def review(request):
-    user_id = request.session.get('user_id')
-    if user_id:
-        user_data = UserModel.objects.filter(user_id=user_id)
-
-        return render(request, 'nomadland_review.html', {'user_data': user_data})
-    else:
-
-        return render(request, 'nomadland_review.html')
 
 
 def offer(request):
