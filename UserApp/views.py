@@ -53,39 +53,6 @@ def home(request):
         return render(request, 'home.html')
 
 
-# def user(request):
-#     packages = PackageModel.objects.all()
-#     user_id = request.session.get('user_id')
-#     user_data = None
-#
-#     if user_id:
-#         user_data = UserModel.objects.filter(user_id=user_id)
-#
-#     context = {'package_data': packages, 'user_data': user_data}
-#
-#     if request.method == 'POST':
-#         location = request.POST.get('input_location')
-#         from_date = request.POST.get('input_depart')
-#         to_date = request.POST.get('input_return')
-#         adult = int(request.POST.get('input_adult'))
-#         children = int(request.POST.get('input_children'))
-#
-#         total_people = adult + children
-#
-#         location_filter = PackageModel.objects.filter(destination_name__icontains=location)
-#         split_data = PackageSplit.objects.filter(start_date=from_date, end_date=to_date)
-#         split_data = split_data.filter(quantity__gte=total_people)
-#
-#         if location_filter.exists() and split_data.exists():
-#             filtered_packages = location_filter.filter(packagesplit__in=split_data)
-#             context['filtered_packages'] = filtered_packages
-#             return render(request, 'package_filter.html', context)
-#         else:
-#             return render(request, 'login.html')
-#
-#     return render(request, 'index.html', context)
-
-
 def user(request):
     packages = PackageModel.objects.all()
     user_id = request.session.get('user_id')
@@ -208,7 +175,24 @@ def about(request):
 
 
 def offer(request):
-    return render(request, 'offer.html')
+    user_id = request.session.get('user_id')
+    offers = OfferModel.objects.all()
+
+    # Iterate over offers to truncate discount_percentage
+    for offer in offers:
+        offer.discount_percentage = int(offer.discount_percentage)
+
+    # Check if user is authenticated
+    if user_id:
+        # Fetch user data
+        user_data = UserModel.objects.filter(user_id=user_id).first()
+        if user_data:
+            return render(request, 'offer.html', {'user_data': user_data, 'offers': offers})
+        else:
+            # Redirect to login page if user data is not found
+            return redirect('login')
+    else:
+        return render(request, 'offer.html', {'offers': offers})
 
 
 def package(request):
@@ -221,3 +205,14 @@ def package_preview(request, id):
 
 def package_payment(request):
     return render(request, 'package_payment.html')
+
+
+def profile(request):
+    user_id = request.session.get('user_id')
+    if user_id:
+        user_data = UserModel.objects.filter(user_id=user_id)
+
+        return render(request, 'profiledisplay.html', {'user_data': user_data})
+    else:
+
+        return render(request, 'profiledisplay.html')

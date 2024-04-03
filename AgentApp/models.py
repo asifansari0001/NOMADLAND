@@ -80,6 +80,27 @@ class PackageModel(models.Model):
         return self.destination_name
 
 
+class OfferModel(models.Model):
+    """
+    Model representing special offers or promotions.
+    """
+    offer_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)
+    valid_from = models.DateField()
+    valid_to = models.DateField()
+    applicable_packages = models.ManyToManyField(PackageModel)
+    applicable_agents = models.ManyToManyField(AgentModel)
+    status = models.CharField(max_length=255, default='active')
+
+    class Meta:
+        db_table = 'offers'
+
+    def __str__(self):
+        return self.title
+
+
 class PackageSplit(models.Model):
     """
     Model representing a split of a package into smaller units.
@@ -185,9 +206,9 @@ class ActivitiesModel(models.Model):
         package_id (ForeignKey): The package associated with this activity.
     """
     activities_id = models.AutoField(primary_key=True)
-    activities = models.CharField(max_length=255,null=True)
+    activities = models.CharField(max_length=255, null=True)
     activity_images = models.ImageField(upload_to='images/', null=True)
-    activity_description = models.CharField(max_length=255,null=True)
+    activity_description = models.CharField(max_length=255, null=True)
     package_id = models.ForeignKey(PackageModel, on_delete=models.CASCADE)
 
     class Meta:
@@ -195,24 +216,3 @@ class ActivitiesModel(models.Model):
 
     def __str__(self):
         return self.activities
-
-# class OfferModel(models.Model):
-#     """
-#     Model representing special offers or promotions.
-#     """
-#     offer_id = models.AutoField(primary_key=True)
-#     name = models.CharField(max_length=255)
-#     description = models.TextField()
-#     discount_percentage = models.IntegerField()
-#     valid_from = models.DateField()
-#     valid_to = models.DateField()
-#     applicable_packages = models.ManyToManyField(PackageModel)
-#     applicable_destinations = models.ManyToManyField(NationsModel)
-#     applicable_agents = models.ManyToManyField(AgentModel)
-#     status=models.CharField(max_length=255,default='active')
-#
-#     class Meta:
-#         db_table = 'offers'
-#
-#     def __str__(self):
-#         return self.name

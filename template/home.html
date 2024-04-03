@@ -174,7 +174,7 @@
 
    <!-- navbar section starts -->
     <header>
-        <div class="border border-secondary">
+        <div>
             <nav class="navbar navbar-expand-lg" id="#mainNav" style="background-color: whitesmoke;">
                 <div class="container-fluid">
                     <a class="navbar-brand  fw-bold" href="#">
@@ -190,7 +190,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item">
-                                <a class="nav-link text-black  nav-size " aria-current="page" href="{% url 'home' %}">HOME</a>
+                                <a class="nav-link text-black nav-size" aria-current="page" href="{% url 'home' %}">HOME</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-black  nav-size" href="{% url 'booking' %}">TOURS</a>
@@ -215,11 +215,11 @@
         {% endwith %}
     {% endwith %}
             <hr>
-            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Account</a></li>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="{% url 'profile' %}">Account</a></li>
             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Wishlist</a></li>
             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">History</a></li>
             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Contact us</a></li>
-             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Saved Address</a></li>
+             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="https://www.google.com/maps?q=India">Explore</a></li>
             <hr>
              <li><a class="dropdown-item text-center" href="{% url 'logout' %}" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: red;"> <button class="btn btn-danger" style="--bs-btn-hover-bg:#dc3545; --bs-btn-hover-border-color:#dc3545;">Logout</button> </a></li>
           </ul>
@@ -707,3 +707,4 @@ function chooseOption(option) {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
 </body>
+</html>

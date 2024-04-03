@@ -160,10 +160,42 @@ def hotel_add(request):
                 price=price,
                 quantity=quantity
             )
-        del request.session['package_id']
-        return redirect('/welcome_agent')
+
+        return redirect('/agent_offer')
 
     return render(request, 'hotel_add.html')
+
+
+def agent_offer(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        discount_percentage = request.POST.get('discount_percentage')
+        valid_from = request.POST.get('valid_from')
+        valid_to = request.POST.get('valid_to')
+        status = request.POST.get('status')
+
+        agent_id = request.session.get('agent_id')
+        package_id = request.session.get('package_id')
+
+        # Create and save the offer object
+        offer_obj = OfferModel(
+            title=title,
+            description=description,
+            discount_percentage=discount_percentage,
+            valid_from=valid_from,
+            valid_to=valid_to,
+            status=status
+        )
+        offer_obj.save()
+
+        # Add the agent and package to the offer
+        offer_obj.applicable_agents.add(agent_id)
+        offer_obj.applicable_packages.add(package_id)
+
+        return redirect('/')
+
+    return render(request, 'agent_offer.html')
 
 
 def agent_communication(request):

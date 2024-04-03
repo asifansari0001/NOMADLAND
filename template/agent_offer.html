@@ -164,30 +164,6 @@
 }
   <!--   logout button css  ends   -->
 
-<!--  offer card  -->
-.card {
-  position: relative; /* Position relative to contain the absolute overlay */
-}
-
-.image-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
-  opacity: 0; /* Initially hidden */
-  transition: opacity 0.3s ease-in-out; /* Transition effect */
-}
-
-.card:hover .image-overlay {
-  opacity: 1; /* Show overlay on hover */
-}
- <!--  offer card  -->
-
-
-
-
 </style>
 
 </head>
@@ -281,184 +257,188 @@
 
     <!-- Overlay box markup ends -->
 
-<!--background starts-->
 
 
-<div class="position-relative mt-0 w-100"> <!-- Adjusted margin-top from mt-5 to mt-0 -->
-    <img src="{% static 'spider-creating-hence-nature.jpg' %}" class="img-fluid" alt="img">
-    <div class="container-fluid position-absolute top-50 start-50 translate-middle text-center">
-        <div class="row">
-            <div class="col-md-12 col-sm-12 mt-sm-3 text-center">
-                <h3 class="text-center text-white display-5" style="font-family:monospace;">OUR OFFERS</h3>
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">Add Offer</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="title" class="form-label">Title:</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="description" class="form-label">Description:</label>
+                    <textarea class="form-control" id="description" name="description" rows="1" required></textarea>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="status" class="form-label">Status:</label>
+                <select class="form-select" id="status" name="status" required>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+                </div>
             </div>
-        </div>
+            <br>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="discount_percentage" class="form-label">Discount Percentage:</label>
+                    <input type="number" class="form-control" id="discount_percentage" name="discount_percentage" step="0.01" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="valid_from" class="form-label">Valid From:</label>
+                    <input type="date" class="form-control" id="valid_from" name="valid_from" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="valid_to" class="form-label">Valid To:</label>
+                    <input type="date" class="form-control" id="valid_to" name="valid_to" required>
+                </div>
+            </div>
+            <br>
+            <div class="display-flex justify-content-center text-center">
+             <button class="btn btn-primary mt-2 ms-3" type="submit">Submit</button>
+                <button class="btn btn-primary mt-2" type="button">Skip & Submit</button>
+       </div>
+        </form>
     </div>
-</div>
 
 
-<!--background starts-->
-
-
-<div class="container mt-5">
-  <h2 class="text-center mb-4">Special Offers</h2>
-
-  <div class="row">
-      {% for x in offers %}
-
-    <div class="col-md-4">
-  <div class="card text-bg-dark">
-    <div class="image-overlay"></div> <!-- Overlay div -->
-    <img src="{% static 'space-airplane-toy-beside-hat-sunglasses.jpg' %}" class="card-img" alt="...">
-    <div class="card-img-overlay">
-      <h5 class="card-title text-center">{{x.title}}</h5>
-      <h4 class="card-text  text-center fw-bold">{{x.discount_percentage}}% off</h4>
-      <p class="card-text  fw-bold text-center">{{x.description}}</p>
-    </div>
-  </div>
-</div>
-
-
-       {% endfor %}
-  </div>
-
-  </div>
-
-
-   <br>
-<br>
-<footer class="text-center text-lg-start text-white bg-dark">
-  <!-- Grid container -->
-  <div class="container p-4 pb-0">
-    <!-- Section: Links -->
-    <section class="">
-      <!--Grid row-->
-      <div class="row">
-        <!-- Grid column -->
-        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-2">
-          <a class="navbar-brand text-white fs-5 fw-bold" href="{% url 'home'  %}">
-            <img src="{% static 'mountains.png' %}" alt="Logo" width="30" height="28" class="d-inline-block align-text-top">
-            NOMAD<span>LAND</span>
-          </a>
-          <p class="mt-3">
-            Welcome to NomadLand, your one-stop destination for unforgettable journeys! We bring the world to your
-            fingertips, offering curated travel experiences that will ignite your wanderlust. Explore the hidden gems
-            of the globe with us and create memories that last a lifetime. Start your adventure with NomadLand today!
-          </p>
-        </div>
-        <!-- Grid column -->
-
-        <hr class="w-100 clearfix d-md-none" />
-
-        <!-- Grid column -->
-        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-          <h6 class="text-uppercase mb-4 font-weight-bold">RESOURCES</h6>
-          <p>
-            <a class="text-white">Login</a>
-          </p>
-          <p>
-            <a class="text-white">Contact us</a>
-          </p>
-          <p>
-            <a class="text-white">Certification</a>
-          </p>
-          <p>
-            <a class="text-white">Customer Reviews</a>
-          </p>
-        </div>
-        <!-- Grid column -->
-
-        <hr class="w-100 clearfix d-md-none" />
-
-        <!-- Grid column -->
-        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-          <h6 class="text-uppercase mb-4 font-weight-bold">
-            PARTNERS
-          </h6>
-          <p>
-            <a class="text-warning" style="text-decoration: none;"> BRITISH AIRWAYS</a>
-          </p>
-          <p>
-            <a class="text-warning" style="text-decoration: none;">TURKISH AIRLINES</a>
-          </p>
-          <p>
-            <a class="text-warning" style="text-decoration: none;">CITILINK</a>
-          </p>
-          <p>
-            <a class="text-warning" style="text-decoration: none;">EXPEDIA</a>
-          </p>
-          <p>
-            <a class="text-warning" style="text-decoration: none;">AUSTRALIA</a>
-          </p>
-          <p>
-            <a class="text-warning" style="text-decoration: none;">TRIP.COM</a>
-          </p>
-        </div>
-
-        <!-- Grid column -->
-        <hr class="w-100 clearfix d-md-none" />
-
-        <!-- Grid column -->
-        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-          <h6 class="text-uppercase mb-4 font-weight-bold">CONTACT</h6>
-          <p><i class="fas fa-home mr-3"></i> 2 Fifth Avenue,Alappuzha,Kerala</p>
-          <p><i class="fas fa-envelope mr-3"></i> nomadland@gmail.com</p>
-          <p><i class="fas fa-phone mr-3"></i> 923-456-789-1</p>
-          <p><i class="fas fa-print mr-3"></i> 931-564-899-5</p>
-        </div>
-        <!-- Grid column -->
-      </div>
-      <!--Grid row-->
-    </section>
-    <!-- Section: Links -->
-
-    <hr class="my-3">
-
-    <!-- Section: Copyright -->
-    <section class="p-3 pt-0">
-      <div class="row d-flex align-items-center">
-        <!-- Grid column -->
-        <div class="col-md-7 col-lg-8 text-center text-md-start">
-          <!-- Copyright -->
-          <div class="p-3">
-            © 2024 Copyright:
-            <a class="text-white" href="#">nomadland.com</a>
+   <!-- Footer -->
+  <br>
+  <br>
+  <footer class="text-center text-lg-start text-white bg-dark">
+    <!-- Grid container -->
+    <div class="container p-4 pb-0">
+      <!-- Section: Links -->
+      <section>
+        <!--Grid row-->
+        <div class="row">
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-2">
+            <a class="navbar-brand text-white fs-5 fw-bold" href="{% url 'home'  %}">
+              <img src="{% static 'mountains.png' %}" alt="Logo" width="30" height="28" class="d-inline-block align-text-top">
+              NOMAD<span>LAND</span>
+            </a>
+            <p class="mt-3">
+              Welcome to NomadLand, your one-stop destination for unforgettable journeys! We bring the world to your
+              fingertips, offering curated travel experiences that will ignite your wanderlust. Explore the hidden gems
+              of the globe with us and create memories that last a lifetime. Start your adventure with NomadLand today!
+            </p>
           </div>
-          <!-- Copyright -->
+          <!-- Grid column -->
+
+          <hr class="w-100 clearfix d-md-none" />
+
+          <!-- Grid column -->
+          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">RESOURCES</h6>
+            <p>
+              <a class="text-white" style="text-decoration:none;">Login</a>
+            </p>
+            <p>
+              <a class="text-white" style="text-decoration:none;">Contact us</a>
+            </p>
+            <p>
+              <a class="text-white" style="text-decoration:none;">Certification</a>
+            </p>
+            <p>
+              <a class="text-white" style="text-decoration:none;">Customer Reviews</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <hr class="w-100 clearfix d-md-none" />
+
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">
+              PARTNERS
+            </h6>
+            <p>
+              <a class="text-warning" style="text-decoration: none;"> BRITISH AIRWAYS</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">TURKISH AIRLINES</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">CITILINK</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">EXPEDIA</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">AUSTRALIA</a>
+            </p>
+            <p>
+              <a class="text-warning" style="text-decoration: none;">TRIP.COM</a>
+            </p>
+          </div>
+
+          <!-- Grid column -->
+          <hr class="w-100 clearfix d-md-none" />
+
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">CONTACT</h6>
+            <p><i class="fas fa-home mr-3"></i><span><a style="text-decoration: none;" class="text-white" href="https://www.google.com/maps?q=2+Fifth+Avenue,Alappuzha,Kerala" target="_blank"> 2 Fifth Avenue,Alappuzha,Kerala</a></span></p>
+            <p><i class="fas fa-envelope mr-3"></i> <span><a style="text-decoration: none;" class="text-white" href="mailto:nomadland@gmail.com"> nomadland@gmail.com</a></span></p>
+            <p><i class="fas fa-phone mr-3"></i><span><a style="text-decoration: none;" class="text-white" href="tel:+9234567891"> 923-456-789-1</a></span></p>
+            <p><i class="fas fa-phone mr-3"></i><span><a style="text-decoration: none;" class="text-white" href="tel:+9315648995"> 931-564-899-5</a></span></p>
+          </div>
+          <!-- Grid column -->
         </div>
-        <!-- Grid column -->
+        <!--Grid row-->
+      </section>
+      <!-- Section: Links -->
 
-        <!-- Grid column -->
-        <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
-          <!-- Facebook -->
-          <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
-              class="fab fa-facebook-f"></i></a>
+      <hr class="my-3">
 
-          <!-- Twitter -->
-          <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
-              class="fab fa-twitter"></i></a>
+      <!-- Section: Copyright -->
+      <section class="p-3 pt-0">
+        <div class="row d-flex align-items-center">
+          <!-- Grid column -->
+          <div class="col-md-7 col-lg-8 text-center text-md-start">
+            <!-- Copyright -->
+            <div class="p-3">
+              © 2024 Copyright:
+              <a class="text-white" style="text-decoration:none;" href="#">nomadland.com</a>
+            </div>
+            <!-- Copyright -->
+          </div>
+          <!-- Grid column -->
 
-          <!-- Google -->
-          <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
-              class="fab fa-google"></i></a>
+          <!-- Grid column -->
+          <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/your_facebook_page" class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-facebook-f"></i></a>
 
-          <!-- Instagram -->
-          <a class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
-              class="fab fa-instagram"></i></a>
+            <!-- Twitter -->
+            <a href="https://twitter.com" class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-twitter"></i></a>
+
+            <!-- Google -->
+            <a href="https://www.google.com" class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-google"></i></a>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com" class="btn btn-outline-light btn-floating m-1" class="text-white" role="button"><i
+                class="fab fa-instagram"></i></a>
+          </div>
+          <!-- Grid column -->
         </div>
-        <!-- Grid column -->
-      </div>
-    </section>
-    <!-- Section: Copyright -->
-  </div>
-  <!-- Grid container -->
-</footer>
-<!-- Footer -->
+      </section>
+      <!-- Section: Copyright -->
+    </div>
+    <!-- Grid container -->
+  </footer>
+  <!-- Footer -->
 
 
-<!-- footer endss -->
-
-
-<!-- Overlay box markup ends -->
+  <!-- footer endss -->
 
 
 <script>
@@ -491,10 +471,9 @@ function chooseOption(option) {
 
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-crossorigin="anonymous"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
 </body>
 </html>

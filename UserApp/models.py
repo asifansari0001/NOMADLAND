@@ -1,6 +1,6 @@
 from django.db import models
 from AgentApp.models import *
-from AgentApp.models import PackageModel
+from AgentApp.models import PackageModel, PackageHotel
 
 
 class UserModel(models.Model):

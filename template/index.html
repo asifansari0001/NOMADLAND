@@ -354,17 +354,19 @@
         </div><br><br>
         <div class="row">
 
-          <div class="col-md-4 mb-sm-3 d-flex justify-content-center">
-            <a href="{% url 'package_preview' %}" style="text-decoration:none;"><div class="card" style="width: 21rem;">
-              <img src="{% static 'tokyo-skyline-with-rainbow-bridge-tokyo-tower-tokyo-japan.jpg' %}" class="card-img-top" alt="...">
-              <div class="card-body">
+          <div class="col-md-4 mb-3 mb-sm-5 d-flex justify-content-center"> <!-- Added mb-3 for space between cards at all screen sizes -->
+    <a href="{% url 'package_preview' %}" style="text-decoration:none;">
+        <div class="card" style="width: 21rem;">
+            <img src="{% static 'tokyo-skyline-with-rainbow-bridge-tokyo-tower-tokyo-japan.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
                 <h5 class="card-title fw-bold">TOKYO</h5>
                 <p class="card-text fw-lighter">review <span class="star ms-3 fs-4">★★★★★</span></p>
-              </div>
-            </div></a>
-          </div>
+            </div>
+        </div>
+    </a>
+</div>
 
-          <div class="col-md-4 mb-sm-3 d-flex justify-content-center">
+          <div class="col-md-4 mb-3 mb-sm-3 d-flex justify-content-center">
              <a href="{% url 'package_preview' %}" style="text-decoration:none;"><div class="card" style="width: 21rem;">
               <img src="{% static 'blue-mosque-istanbul.jpg' %}" class="card-img-top" alt="...">
               <div class="card-body">
@@ -375,7 +377,7 @@
             </div></a>
           </div>
 
-          <div class="col-md-4 mb-sm-3 d-flex justify-content-center">
+          <div class="col-md-4 mb-3 mb-sm-3 d-flex justify-content-center">
             <a href="{% url 'package_preview' %}" style="text-decoration:none;"><div class="card" style="width: 21rem;">
               <img src="{% static 'bali-pagoda-sunrise-indonesia.jpg' %}" class="card-img-top" alt="...">
               <div class="card-body">
@@ -390,7 +392,7 @@
 
         <div class="row mt-md-5">
 
-          <div class="col-md-4 mb-sm-3 d-flex justify-content-center">
+          <div class="col-md-4 mb-3 mb-sm-3 d-flex justify-content-center">
             <a href="{% url 'package_preview' %}" style="text-decoration:none;"><div class="card" style="width: 21rem;">
               <img src="{% static 'elephants-nature.jpg' %}" class="card-img-top" alt="...">
               <div class="card-body">
@@ -401,7 +403,7 @@
             </div></a>
           </div>
 
-          <div class="col-md-4 mb-sm-3 d-flex justify-content-center">
+          <div class="col-md-4 mb-3 mb-sm-3 d-flex justify-content-center">
             <a href="{% url 'package_preview' %}" style="text-decoration:none;"><div class="card" style="width: 21rem;">
               <img src="{% static 'wat-arun-temple-twilight-bangkok-thailand.jpg' %}" class="card-img-top" alt="...">
               <div class="card-body">
@@ -412,7 +414,7 @@
             </div></a>
           </div>
 
-          <div class="col-md-4 mb-sm-3 d-flex justify-content-center">
+          <div class="col-md-4 mb-3 mb-sm-3 d-flex justify-content-center">
             <a href="{% url 'package_preview' %}" style="text-decoration:none;"><div class="card" style="width: 21rem;">
               <img src="{% static 'singapore-79116.jpg' %}" class="card-img-top" alt="...">
               <div class="card-body">
@@ -450,9 +452,9 @@
     </div>
   <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
   {% for package in package_data %}
-  <div class="col mb-3">
+  <div class="col mb-5">
     <a href="/package_preview/" style="text-decoration: none;">
-      <div class="card" style="width:100%;">
+      <div class="card" style="width:100%; height:104%;">
         <img src="{{ package.packageimagesmodel_set.first.image.url }}" class="card-img-top" alt="image" height="230px">
         <div class="card-body" style="height: 220px;">
           <h5 class="card-title text-black fw-bold" style="height: 40px; overflow: hidden;">{{ package.destination_name }}<span class="star ms-3 fs-5">★★★★☆</span></h5>
@@ -463,7 +465,7 @@
             <a href="#" class="bi-star-fill"></a>
             <a href="#" class="bi-star-fill"></a>
           </div>
-          <h6 class="card-text text-secondary" style="height: 90px;">{{ package.description }}</h6>
+          <h6 class="card-text text-secondary" style="height: 110px;">{{ package.description }}</h6>
           <h6 class="card-text text-success fw-bold text-white pt-2 pb-2 text-center bg-success mt-auto" style="border-radius:4px;">₹ {{ package.price }}</h6>
         </div>
       </div>
