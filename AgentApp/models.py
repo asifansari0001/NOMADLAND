@@ -55,7 +55,7 @@ class PackageModel(models.Model):
     Model representing a travel package offered by the agency.
 
     Attributes:
-        package_id (AutoField): The unique identifier for the package.
+        package_id (AutoField): The unique identifier for the package.3
         destination_name (CharField): The name of the travel destination.
         created_at (Date Field): The date and time when the package was created.
         status (CharField): The status of the package (e.g., active, inactive).
@@ -78,28 +78,6 @@ class PackageModel(models.Model):
 
     def __str__(self):
         return self.destination_name
-
-
-class OfferModel(models.Model):
-    """
-    Model representing special offers or promotions.
-    """
-    offer_id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)
-    valid_from = models.DateField()
-    valid_to = models.DateField()
-    applicable_packages = models.ManyToManyField(PackageModel)
-    applicable_agents = models.ManyToManyField(AgentModel)
-    status = models.CharField(max_length=255, default='active')
-
-    class Meta:
-        db_table = 'offers'
-
-    def __str__(self):
-        return self.title
-
 
 class PackageSplit(models.Model):
     """
@@ -133,10 +111,34 @@ class PackageImagesModel(models.Model):
     """
     image_id = models.AutoField(primary_key=True)
     image = models.ImageField(upload_to='images')
-    package_id = models.ForeignKey(PackageModel, on_delete=models.CASCADE)
+    package_id = models.ForeignKey(PackageModel,related_name='images', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'package_images'
+
+
+class OfferModel(models.Model):
+    """
+    Model representing special offers or promotions.
+    """
+    offer_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)
+    valid_from = models.DateField()
+    valid_to = models.DateField()
+    applicable_packages = models.ManyToManyField(PackageModel,related_name='offers')
+    applicable_agents = models.ManyToManyField(AgentModel)
+    status = models.CharField(max_length=255, default='active')
+
+    class Meta:
+        db_table = 'offers'
+
+    def __str__(self):
+        return self.title
+
+
+
 
 
 class HotelModel(models.Model):

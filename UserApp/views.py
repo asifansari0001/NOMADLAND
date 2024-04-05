@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
-from django.db.models import Q, Min, Max
-from AgentApp.models import PackageModel
+from datetime import datetime, timezone
 from .models import *
-from django.db.models import F
+from django.shortcuts import render, redirect
+from .models import OfferModel, PackageModel, PackageImagesModel
+from django.db.models import Min
+from django.db.models import Q
+from django.utils import timezone
 
 
 def login(request):
@@ -174,25 +176,38 @@ def about(request):
         return render(request, 'nomadland_about.html')
 
 
+
+
+
 def offer(request):
     user_id = request.session.get('user_id')
-    offers = OfferModel.objects.all()
 
-    # Iterate over offers to truncate discount_percentage
-    for offer in offers:
-        offer.discount_percentage = int(offer.discount_percentage)
+    # Filter offers where the status is active and the valid_to date is not in the past
+    current_time = timezone.now()
+    active_offers = OfferModel.objects.filter(status='active', valid_to__gte=current_time)
 
-    # Check if user is authenticated
+    # Filter packages associated with active offers
+    packages_offers = []
+    for package in PackageModel.objects.filter(offers__in=active_offers).distinct():
+        package_images = PackageImagesModel.objects.filter(package_id=package)
+        packages_offers.append({'package': package, 'images': package_images})
+
+    context = {
+        'packages_offers': packages_offers
+    }
+
     if user_id:
-        # Fetch user data
         user_data = UserModel.objects.filter(user_id=user_id).first()
         if user_data:
-            return render(request, 'offer.html', {'user_data': user_data, 'offers': offers})
-        else:
-            # Redirect to login page if user data is not found
-            return redirect('login')
+            context['user_data'] = user_data
     else:
-        return render(request, 'offer.html', {'offers': offers})
+        return redirect('login')
+
+    # Fetch valid_to date from your database
+    valid_to_date = active_offers.aggregate(min_valid_to=Min('valid_to'))['min_valid_to']
+    context['valid_to'] = valid_to_date.strftime('%Y-%m-%d') if valid_to_date else None
+
+    return render(request, 'offer.html', context)
 
 
 def package(request):

@@ -26,6 +26,11 @@
     rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Jacques+Francois&display=swap" rel="stylesheet">
   <title>NOMADLAND</title>
 
 
@@ -34,6 +39,12 @@
     <link rel="stylesheet" href="{% static 'home.css' %}">
 
 <style>
+
+    body {
+    font-family: "Jacques Francois", serif;
+  font-weight: 400;
+  font-style: normal;
+    }
 
   .card {
               width: 18rem;
@@ -331,66 +342,41 @@
 
   <section>
     <div class="container-fluid mt-md-5 mt-sm-5" style="background-color: whitesmoke;">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12 text-center fw-bold display-5">Best Offers</div>
-        </div><br><br>
-        <div class="row">
-        <div class="container mt-5">
-          <div class="row">
-            <div class="col-md-3">
-              <a href="{% url 'offer' %}" style="text-decoration:none;"><div class="card">
-                <img src="{% static 'rio-de-janeiro.jpg' %}" class="card-img-top" alt="Image 1">
-                <div class="card-body">
-                  <h5 class="card-title">BRAZIL</h5>
-                  <p class="card-text">Flat 20% off on selected packages</p>
-                </div>
-              </div></a>
-            </div>
-            <div class="col-md-3">
-              <a href="{% url 'offer' %}" style="text-decoration:none;"><div class="card">
-                <img src="{% static 'veligandu-island.jpg' %}" class="card-img-top" alt="Image 2">
-                <div class="card-body">
-                  <h5 class="card-title">MALDIVES</h5>
-                  <p class="card-text">Flat 20% off on selected packages</p>
-                </div>
-              </div></a>
-            </div>
-            <div class="col-md-3">
-              <a href="{% url 'offer' %}" style="text-decoration:none;"><div class="card">
-                <img src="{% static 'venice.jpg' %}" class="card-img-top" alt="Image 3">
-                <div class="card-body">
-                  <h5 class="card-title">VENICE</h5>
-                  <p class="card-text">Flat 35% off on selected packages</p>
-                </div>
-              </div></a>
-            </div>
-            <div class="col-md-3">
-              <a href="{% url 'offer' %}" style="text-decoration:none;"><div class="card">
-                <img src="{% static 'rome.jpg' %}" class="card-img-top" alt="Image 4">
-                <div class="card-body">
-                  <h5 class="card-title">ROME</h5>
-                  <p class="card-text">Flat 35% off on selected packages</p>
-                </div>
-              </div></a>
-            </div>
-          </div>
-        </div>
 
+        <br>
+        <br>
 
-
-        <div >
-
-         <a href="{% url 'offer' %}"><button class="btn btn-success mt-3" type="button">Know more</button></a>
-        </div>
-      </div>
-    </div>
-
-
-      <br>
-    <br>
 
     <div class="container">
+
+
+      <div class="container bg-light">
+    <div class="card-body row">
+        <div class="col-md-6">
+            <h2 class="card-title display-5 text-center">Explore Exclusive Travel Offers Here!</h2><br>
+            <p class="card-text text-center">Explore unbeatable deals and exclusive offers tailored just for you on NomadLand.
+                Dive into a world of adventure with our curated selection of travel packages, spanning captivating destinations worldwide.
+                From scenic wonders to cultural marvels, embark on unforgettable journeys that promise excitement and enrichment. Book now
+                and make your travel dreams a reality!</p>
+            <br>
+            <div class="text-center">
+                <a href="{% url 'offer' %}" class="btn btn-success">View Offers</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <a href="{% url 'offer' %}"><img src="{% static 'coconut-palm-tree.jpg' %}" class="img-fluid" alt="Image"></a>
+        </div>
+    </div>
+</div>
+
+
+
+<br>
+        <br>
+        <br>
+        <br>
+
+
 
       <div class="container bg-light">
         <div class="card-body row">
@@ -402,7 +388,7 @@
                 <p class="card-text text-center">Embark on unforgettable adventures with our most sought-after tours,
                 meticulously crafted to immerse you in the heart of captivating destinations around the globe.
                 From breathtaking natural wonders to culturally rich cities, our curated selection ensures an enriching
-                and memorable travel experience for every explorer.</p><br><br>
+                and memorable travel experience for every explorer.</p><br>
                 <div class="text-center">
                     <a href="{% url 'package' %}" class="btn btn-success">View Tours</a>
                 </div>
