@@ -72,6 +72,7 @@ class PackageModel(models.Model):
     description = models.TextField(max_length=255)
     price = models.IntegerField()
     nation_id = models.ForeignKey(NationsModel, on_delete=models.CASCADE)
+    is_recommended = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'PackageModel'

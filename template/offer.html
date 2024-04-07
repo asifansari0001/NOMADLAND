@@ -513,37 +513,48 @@ function chooseOption(option) {
 
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const validToDate = "{{ valid_to }}"; // Get the valid_to date from the context
+    document.addEventListener('DOMContentLoaded', function () {
+        const validToDate = "{{ valid_to }}"; // Get the valid_to date from the context
 
-    if (validToDate) {
-      const validTo = new Date(validToDate);
+        if (validToDate) {
+            const validTo = new Date(validToDate);
 
-      // Update remaining time every second
-      const timer = setInterval(function() {
-        const now = new Date();
-        const remainingTime = validTo.getTime() - now.getTime();
+            // Set the time to the end of the day
+            validTo.setHours(23);
+            validTo.setMinutes(59);
+            validTo.setSeconds(59);
 
-        if (remainingTime <= 0) {
-          clearInterval(timer);
-          return;
+            // Update remaining time every second
+            const timer = setInterval(function () {
+                const now = new Date();
+                const remainingTime = validTo.getTime() - now.getTime();
+
+                if (remainingTime <= 0) {
+                    clearInterval(timer);
+                    // Hide the offer card when the offer expires
+                    const offerCard = document.querySelector('.card');
+                    if (offerCard) {
+                        offerCard.style.display = 'none';
+                    }
+                    return;
+                }
+
+                const remainingDays = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+                const remainingHours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const remainingMinutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+                const remainingSeconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+                // Format the remaining time string
+                const remainingTimeString = `${remainingDays} days ${remainingHours} hours ${remainingMinutes} minutes ${remainingSeconds} seconds`;
+
+                // Display the remaining time
+                const remainingTimeElement = document.getElementById('remaining-time');
+                remainingTimeElement.textContent = remainingTimeString;
+            }, 1000);
         }
-
-        const remainingDays = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-        const remainingHours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const remainingMinutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-        const remainingSeconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-
-        // Format the remaining time string
-        const remainingTimeString = `${remainingDays} days ${remainingHours} hours ${remainingMinutes} minutes ${remainingSeconds} seconds`;
-
-        // Display the remaining time
-        const remainingTimeElement = document.getElementById('remaining-time');
-        remainingTimeElement.textContent = remainingTimeString;
-      }, 1000);
-    }
-  });
+    });
 </script>
+
 
 
 

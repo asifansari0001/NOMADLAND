@@ -231,17 +231,18 @@
     <div class="row  d-flex justify-content-between align-items-center" style="background-color:whitesmoke;">
         <div class="col-6 text-start">
             <form action="{% url 'package_filter' %}" method="post">
-                {% csrf_token %}
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle ms-4 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Price <span><i class="fa-solid fa-filter-circle-dollar"></i></span>
-                </button>
-                <ul class="dropdown-menu">
-                     <li><button class="dropdown-item" type="submit" name="price_option" value="low_high">Low to High</button></li>
-                        <li><button class="dropdown-item" type="submit" name="price_option" value="high_low">High to Low</button></li>
-                </ul>
-            </div>
-                </form>
+    {% csrf_token %}
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle ms-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Price <span><i class="fa-solid fa-filter-circle-dollar"></i></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><button class="dropdown-item" type="submit" name="price_option" value="low_high">Low to High</button></li>
+            <li><button class="dropdown-item" type="submit" name="price_option" value="high_low">High to Low</button></li>
+        </ul>
+    </div>
+</form>
+
         </div>
         <div class="col-6 text-end">
             <form action="{% url 'package_filter' %}" method="post">
@@ -270,38 +271,42 @@
 
 
 
-  <section style="background-color:whitesmoke;" class="mt-4">
+<section style="background-color:whitesmoke;" class="mt-4 ms-2">
   <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
-  {% for package in filtered_packages %}
-  <div class="col mb-3">
-    <a href="/package_preview/" style="text-decoration: none;">
-      <div class="card" style="width:100%;">
-        <img src="{{ package.packageimagesmodel_set.first.image.url }}" class="card-img-top" alt="image" height="230px">
-        <div class="card-body" style="height: 220px;">
-          <h5 class="card-title text-black fw-bold" style="height: 40px; overflow: hidden;">{{ package.destination_name }}<span class="star ms-3 fs-5">★★★★☆</span></h5>
-          <div class="star">
-            <a href="#" class="bi-star-fill"></a>
-            <a href="#" class="bi-star-fill"></a>
-            <a href="#" class="bi-star-fill"></a>
-            <a href="#" class="bi-star-fill"></a>
-            <a href="#" class="bi-star-fill"></a>
+    {% for package in filtered_packages %}
+      <div class="col mb-3">
+        <a href="#" style="text-decoration: none;">
+          <div class="card" style="width:100%;">
+            <img src="{{ package.images.first.image.url }}" class="card-img-top" alt="image" height="230px">
+            <div class="card-body" style="height: 220px;">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title text-black fw-bold" style="height: 40px; overflow: hidden; flex-grow: 1;">
+                  {{ package.destination_name }}
+                  <span class="star ms-3 fs-5">★★★★☆</span>
+                </h5>
+               <button style="border:transparent; background-color:transparent;"> <i class="wishlist-btn fa-regular fa-heart mb-3 me-2 text-danger" style="font-size: 1.5rem; cursor: pointer;"></i></button>
+              </div>
+              <div class="star">
+                <a href="#" class="bi-star-fill"></a>
+                <a href="#" class="bi-star-fill"></a>
+                <a href="#" class="bi-star-fill"></a>
+                <a href="#" class="bi-star-fill"></a>
+                <a href="#" class="bi-star-fill"></a>
+              </div>
+              <h6 class="card-text text-secondary" style="height: 90px;">{{ package.description }}</h6>
+              <h6 class="card-text text-success fw-bold text-white pt-2 pb-2 text-center bg-success mt-auto" style="border-radius:4px;">₹ {{ package.price }}</h6>
+            </div>
           </div>
-          <h6 class="card-text text-secondary" style="height: 90px;">{{ package.description }}</h6>
-          <h6 class="card-text text-success fw-bold text-white pt-2 pb-2 text-center bg-success mt-auto" style="border-radius:4px;">₹ {{ package.price }}</h6>
-        </div>
+        </a>
       </div>
-    </a>
+      {% if forloop.counter|divisibleby:4 and not forloop.last %}
+        </div>
+        <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
+      {% endif %}
+    {% endfor %}
   </div>
-  {% if forloop.counter|divisibleby:4 and not forloop.last %}
-  </div>
-  <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
-  {% endif %}
-  {% endfor %}
-</div>
+</section>
 
-
-
-  </section>
 
 
 
@@ -471,6 +476,21 @@ function chooseOption(option) {
 }
 
 </script>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const wishlistButtons = document.querySelectorAll('.wishlist-btn');
+
+    wishlistButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        button.classList.toggle('fa-regular');
+        button.classList.toggle('fa-solid');
+      });
+    });
+  });
+</script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

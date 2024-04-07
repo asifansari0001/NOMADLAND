@@ -2,9 +2,12 @@ from datetime import datetime, timezone
 from .models import *
 from django.shortcuts import render, redirect
 from .models import OfferModel, PackageModel, PackageImagesModel
-from django.db.models import Min
+from django.db.models import Min, Avg
 from django.db.models import Q
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
+from .models import FeedbackModel
+from django.http import HttpResponse
 
 
 def login(request):
@@ -62,8 +65,13 @@ def user(request):
 
     if user_id:
         user_data = UserModel.objects.filter(user_id=user_id)
-
-    context = {'package_data': packages, 'user_data': user_data}
+    recommended_packages = PackageModel.objects.annotate(avg_rating=Avg('feedbackmodel__rating')).filter(
+        avg_rating__gte=4, avg_rating__lte=5
+    )
+    context = {'package_data': packages, 'user_data': user_data, 'recommended_packages': recommended_packages}
+    for package in packages:
+        average_rating = FeedbackModel.objects.filter(package_id=package).aggregate(Avg('rating'))['rating__avg']
+        package.average_rating = round(average_rating, 1) if average_rating else None
 
     if request.method == 'POST':
         location = request.POST.get('input_location')
@@ -91,7 +99,7 @@ def user(request):
 
             context['filtered_packages'] = filtered_packages
         else:
-            return render(request, 'login.html')
+            return render(request, 'index.html')
 
         context['filtered_packages'] = filtered_packages
         request.session['filtered_package_ids'] = list(filtered_packages.values_list('package_id', flat=True))
@@ -115,13 +123,17 @@ def package_filter(request):
 
     # Check if the request is a POST request
     if request.method == 'POST':
-        # Handle form submission for price buttons
         price_option = request.POST.get('price_option')
         # Add logic to adjust queryset based on selected price option
         if price_option == 'low_high':
             filtered_packages = filtered_packages.order_by('price')
         elif price_option == 'high_low':
             filtered_packages = filtered_packages.order_by('-price')
+        context = {
+            'filtered_packages': filtered_packages,
+            'user_data': user_data,  # Include user_data in the context
+        }
+        return render(request, 'package_filter.html', context)
 
     # Get the IDs of filtered packages
     filtered_package_ids = filtered_packages.values_list('package_id', flat=True)
@@ -178,8 +190,8 @@ def about(request):
 
 
 
-
 def offer(request):
+    update_expired_offers()
     user_id = request.session.get('user_id')
 
     # Filter offers where the status is active and the valid_to date is not in the past
@@ -200,14 +212,70 @@ def offer(request):
         user_data = UserModel.objects.filter(user_id=user_id).first()
         if user_data:
             context['user_data'] = user_data
-    else:
-        return redirect('login')
 
     # Fetch valid_to date from your database
     valid_to_date = active_offers.aggregate(min_valid_to=Min('valid_to'))['min_valid_to']
     context['valid_to'] = valid_to_date.strftime('%Y-%m-%d') if valid_to_date else None
 
     return render(request, 'offer.html', context)
+
+
+def update_expired_offers():
+    current_time = timezone.now()
+    expired_offers = OfferModel.objects.filter(valid_to__lt=current_time, status='active')
+    print(f"Found {expired_offers.count()} expired offers to update")
+
+    # Update the status of expired offers to 'inactive'
+    num_updated = expired_offers.update(status='inactive')
+    print(f"Successfully updated status for {num_updated} expired offers")
+
+
+def package_review(request, package_id):
+    user_id = request.session.get('user_id')
+    if user_id:
+        user_data = UserModel.objects.filter(user_id=user_id)
+
+        return render(request, 'package_review.html', {'user_data': user_data, 'package_id': package_id})
+    else:
+
+        return render(request, 'package_review.html', {'package_id': package_id})
+
+
+def submit_feedback(request):
+    if request.method == 'POST':
+        package_id = request.POST.get('package_id')
+        rating = request.POST.get('star')
+        review = request.POST.get('review_text')
+
+        # Convert package_id to an integer
+        try:
+            package_id = int(package_id)
+        except ValueError:
+            return HttpResponse("Invalid Package ID", status=400)
+
+        # Retrieve the PackageModel instance
+        package = get_object_or_404(PackageModel, pk=package_id)
+
+        # Validate rating
+        if rating is None:
+            return HttpResponse("Rating is required", status=400)
+
+        try:
+            rating = int(rating)
+            if rating < 1 or rating > 5:
+                raise ValueError("Rating must be between 1 and 5")
+        except ValueError:
+            return HttpResponse("Invalid Rating", status=400)
+        package_now = PackageModel.objects.get(package_id=package_id)
+        user_id = request.session.get('user_id')
+        user = UserModel.objects.get(user_id=user_id)
+        # Create and save the feedback
+        feedback = FeedbackModel(package_id=package_now, rating=rating, review=review, user_id=user)
+        feedback.save()
+
+        return redirect('/')
+    else:
+        return HttpResponse("Method Not Allowed", status=405)
 
 
 def package(request):
@@ -231,3 +299,15 @@ def profile(request):
     else:
 
         return render(request, 'profiledisplay.html')
+
+
+def wishlist(request):
+    user_id = request.session.get('user_id')
+    if user_id:
+        user_data = UserModel.objects.filter(user_id=user_id)
+
+        return render(request, 'wishlist.html', {'user_data': user_data})
+    else:
+
+        return render(request, 'wishlist.html')
+

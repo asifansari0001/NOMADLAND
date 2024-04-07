@@ -13,7 +13,10 @@ urlpatterns = [
     path('package_filter/', views.package_filter, name='package_filter'),
     path('package_preview/', views.package_preview, name='package_preview'),
     path('package_payment/', views.package_payment, name='package_payment'),
-    path('profile',views.profile, name='profile'),
+    path('profile/', views.profile, name='profile'),
+    path('wishlist/', views.wishlist, name='wishlist'),
+    path('package_review/<int:package_id>/', views.package_review, name='feedback_form'),
+    path('submit_feedback/', views.submit_feedback, name='submit_feedback'),
     path('logout/', views.logout, name='logout')
 
 ]
