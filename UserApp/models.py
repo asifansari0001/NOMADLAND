@@ -40,7 +40,7 @@ class FeedbackModel(models.Model):
         review (TextField): The review provided by the user.
     """
     user_id = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    package_id = models.ForeignKey(PackageModel, on_delete=models.CASCADE)
+    package_id = models.ForeignKey(PackageModel, on_delete=models.CASCADE, null=False)
     rating = models.IntegerField(default=1)
     review = models.TextField(max_length=500)
 
@@ -49,6 +49,16 @@ class FeedbackModel(models.Model):
 
     def __str__(self):
         return self.review
+
+
+class WishlistModel(models.Model):
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    package = models.ForeignKey(PackageModel, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'wishlist'
+        unique_together = ['user', 'package']
 
 
 class WebsiteReviewModel(models.Model):

@@ -270,43 +270,53 @@
 
 
 
-
-<section style="background-color:whitesmoke;" class="mt-4 ms-2">
-  <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
-    {% for package in filtered_packages %}
-      <div class="col mb-3">
-        <a href="#" style="text-decoration: none;">
-          <div class="card" style="width:100%;">
-            <img src="{{ package.images.first.image.url }}" class="card-img-top" alt="image" height="230px">
-            <div class="card-body" style="height: 220px;">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title text-black fw-bold" style="height: 40px; overflow: hidden; flex-grow: 1;">
-                  {{ package.destination_name }}
-                  <span class="star ms-3 fs-5">★★★★☆</span>
-                </h5>
-               <button style="border:transparent; background-color:transparent;"> <i class="wishlist-btn fa-regular fa-heart mb-3 me-2 text-danger" style="font-size: 1.5rem; cursor: pointer;"></i></button>
-              </div>
-              <div class="star">
-                <a href="#" class="bi-star-fill"></a>
-                <a href="#" class="bi-star-fill"></a>
-                <a href="#" class="bi-star-fill"></a>
-                <a href="#" class="bi-star-fill"></a>
-                <a href="#" class="bi-star-fill"></a>
-              </div>
-              <h6 class="card-text text-secondary" style="height: 90px;">{{ package.description }}</h6>
-              <h6 class="card-text text-success fw-bold text-white pt-2 pb-2 text-center bg-success mt-auto" style="border-radius:4px;">₹ {{ package.price }}</h6>
+<section style="background-color: whitesmoke;" class="mt-4 ms-2">
+    <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
+        {% for package in filtered_packages %}
+            <div class="col mb-3">
+                <a href="#" style="text-decoration: none; position: relative; display: block;">
+                    <div class="card" style="width: 100%;">
+                        <div style="position: absolute; top: 10px; right: 10px; z-index: 1;">
+                           {% if package.package_in_wishlist %}
+                                <a href="/remove_from_wishlist/{{ package.package_id }}/" class="btn btn-secondary"><i class="fa-solid fa-heart text-danger" id="heart-{{ package.id }}"></i></a>
+                            {% else %}
+                                <a href="/add_wishlist/{{ package.package_id }}/" class="btn btn-secondary" onclick="toggleHeart(this)"><i class="fa-regular fa-heart" id="heart-{{ package.id }}"></i></a>
+                            {% endif %}
+                        </div>
+                        <img src="{{ package.images.first.image.url }}" class="card-img-top" alt="image" height="230px">
+                        <div class="card-body" style="height: 220px;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="card-title text-black fw-bold" style="height: 40px; overflow: hidden; flex-grow: 1;">
+                                    {{ package.destination_name }}
+                                    <span class="star ms-3 fs-3">
+                                        {% if package.average_rating %}
+                                            {% for star in "x"|ljust:5 %}
+                                                {% if forloop.counter <= package.average_rating %}
+                                                    ★
+                                                {% else %}
+                                                    ☆
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            <span class="fs-6 text-danger">No ratings yet</span>
+                                        {% endif %}
+                                    </span>
+                                </h5>
+                            </div>
+                            <h6 class="card-text text-secondary" style="height: 90px;">{{ package.description }}</h6>
+                            <h6 class="card-text text-success fw-bold text-white pt-2 pb-2 text-center bg-success mt-auto"
+                                style="border-radius:4px;">₹ {{ package.price }}</h6>
+                        </div>
+                    </div>
+                </a>
             </div>
-          </div>
-        </a>
-      </div>
-      {% if forloop.counter|divisibleby:4 and not forloop.last %}
-        </div>
-        <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
-      {% endif %}
-    {% endfor %}
-  </div>
+            {% if forloop.counter|divisibleby:4 and not forloop.last %}
+                </div>
+                <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
+            {% endif %}
+        {% endfor %}
+    </div>
 </section>
-
 
 
 
@@ -477,18 +487,15 @@ function chooseOption(option) {
 
 </script>
 
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const wishlistButtons = document.querySelectorAll('.wishlist-btn');
-
-    wishlistButtons.forEach(function(button) {
-      button.addEventListener('click', function() {
-        button.classList.toggle('fa-regular');
-        button.classList.toggle('fa-solid');
-      });
-    });
-  });
+<script>
+    function toggleHeart(button) {
+        var heartIcon = button.querySelector('.fa-heart');
+        heartIcon.classList.toggle('fa-regular');
+        heartIcon.classList.toggle('fa-solid');
+        heartIcon.classList.toggle('text-danger');
+    }
 </script>
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,6 +1,5 @@
 from datetime import datetime, timezone
 from .models import *
-from django.shortcuts import render, redirect
 from .models import OfferModel, PackageModel, PackageImagesModel
 from django.db.models import Min, Avg
 from django.db.models import Q
@@ -104,56 +103,10 @@ def user(request):
         context['filtered_packages'] = filtered_packages
         request.session['filtered_package_ids'] = list(filtered_packages.values_list('package_id', flat=True))
 
-        return render(request, 'package_filter.html', context)
+        # return render(request, 'package_filter.html', context)
+        return redirect('/package_filter')
 
     return render(request, 'index.html', context)
-
-
-def package_filter(request):
-    user_id = request.session.get('user_id')
-    user_data = None
-    if user_id:
-        user_data = UserModel.objects.filter(user_id=user_id)
-
-    # Retrieve the filtered package IDs from the session
-    filtered_package_ids = request.session.get('filtered_package_ids', [])
-
-    # Reconstruct the queryset of filtered packages
-    filtered_packages = PackageModel.objects.filter(package_id__in=filtered_package_ids)
-
-    # Check if the request is a POST request
-    if request.method == 'POST':
-        price_option = request.POST.get('price_option')
-        # Add logic to adjust queryset based on selected price option
-        if price_option == 'low_high':
-            filtered_packages = filtered_packages.order_by('price')
-        elif price_option == 'high_low':
-            filtered_packages = filtered_packages.order_by('-price')
-        context = {
-            'filtered_packages': filtered_packages,
-            'user_data': user_data,  # Include user_data in the context
-        }
-        return render(request, 'package_filter.html', context)
-
-    # Get the IDs of filtered packages
-    filtered_package_ids = filtered_packages.values_list('package_id', flat=True)
-
-    # Reconstruct the queryset of filtered packages with the selected price order
-    filtered_packages = PackageModel.objects.filter(package_id__in=filtered_package_ids)
-
-    # Handle form submission for sort button
-    sort_option = request.POST.get('sort_option')
-    # Add logic to adjust queryset based on selected sort option
-    if sort_option == 'latest':
-        filtered_packages = filtered_packages.order_by('-created_at')
-    elif sort_option == 'oldest':
-        filtered_packages = filtered_packages.order_by('created_at')
-
-    context = {
-        'filtered_packages': filtered_packages,
-        'user_data': user_data,  # Include user_data in the context
-    }
-    return render(request, 'package_filter.html', context)
 
 
 def review(request):
@@ -175,18 +128,6 @@ def review(request):
         return redirect('/review')  # Change 'review_success' to your success URL
 
     return render(request, 'nomadland_review.html', context)
-
-
-def about(request):
-    user_id = request.session.get('user_id')
-    if user_id:
-        user_data = UserModel.objects.filter(user_id=user_id)
-
-        return render(request, 'nomadland_about.html', {'user_data': user_data})
-    else:
-
-        return render(request, 'nomadland_about.html')
-
 
 
 
@@ -301,13 +242,108 @@ def profile(request):
         return render(request, 'profiledisplay.html')
 
 
+from django.http import JsonResponse
+from .models import WishlistModel
+
+# views.py
+
+from django.shortcuts import render
+
+from django.shortcuts import redirect
+from django.contrib import messages
+
+
+def package_filter(request):
+    user_id = request.session.get('user_id')
+    user_data = None
+    if user_id:
+        user_data = UserModel.objects.get(user_id=user_id)
+
+    # Retrieve the filtered package IDs from the session
+    filtered_package_ids = request.session.get('filtered_package_ids', [])
+
+    # Reconstruct the queryset of filtered packages
+    filtered_packages = PackageModel.objects.filter(package_id__in=filtered_package_ids)
+
+    # Calculate average rating for each package
+    filtered_packages = filtered_packages.annotate(average_rating=Avg('feedbackmodel__rating'))
+
+    # Check if each package is in the wishlist
+    for package in filtered_packages:
+        package_in_wishlist = WishlistModel.objects.filter(user=user_data, package=package).exists()
+        package.package_in_wishlist = package_in_wishlist
+
+    if request.method == 'POST':
+        price_option = request.POST.get('price_option')
+        sort_option = request.POST.get('sort_option')
+
+        if price_option == 'low_high':
+            filtered_packages = filtered_packages.order_by('price')
+        elif price_option == 'high_low':
+            filtered_packages = filtered_packages.order_by('-price')
+
+        if sort_option == 'latest':
+            filtered_packages = filtered_packages.order_by('-created_at')
+        elif sort_option == 'oldest':
+            filtered_packages = filtered_packages.order_by('created_at')
+
+    context = {
+        'filtered_packages': filtered_packages,
+        'user_data': user_data,  # Include user_data in the context
+    }
+    return render(request, 'package_filter.html', context)
+
+
+def add_wishlist(request, package_id):
+    user_id = request.session.get('user_id')
+
+    if user_id:
+        try:
+            user_data = UserModel.objects.get(user_id=user_id)
+            package = PackageModel.objects.get(package_id=package_id)
+
+            if WishlistModel.objects.filter(user=user_data, package=package).exists():
+                return redirect('/package_filter')
+            else:
+                wishlist = WishlistModel.objects.create(user=user_data, package=package)
+                return redirect('/package_filter')
+        except UserModel.DoesNotExist:
+            return redirect('/login')
+        except PackageModel.DoesNotExist:
+            return redirect('/package_filter')
+    else:
+        return redirect('/login')
+
+
+def remove_from_wishlist(request, package_id):
+    user_id = request.session.get('user_id')
+    if user_id:
+        wishlist_remove = WishlistModel.objects.filter(user=user_id, package=package_id)
+
+        wishlist_remove.delete()
+
+        return redirect('/package_filter')
+    else:
+        return redirect('/login')
+
+
 def wishlist(request):
     user_id = request.session.get('user_id')
     if user_id:
         user_data = UserModel.objects.filter(user_id=user_id)
+        wishlist_items = WishlistModel.objects.filter(user=user_id)
+    else:
+        return redirect('/login')
 
-        return render(request, 'wishlist.html', {'user_data': user_data})
+    return render(request, 'wishlist.html', {'wishlist_items': wishlist_items,'user_data': user_data})
+
+def about(request):
+    user_id = request.session.get('user_id')
+    if user_id:
+        user_data = UserModel.objects.filter(user_id=user_id)
+
+        return render(request, 'nomadland_about.html', {'user_data': user_data})
     else:
 
-        return render(request, 'wishlist.html')
+        return render(request, 'nomadland_about.html')
 

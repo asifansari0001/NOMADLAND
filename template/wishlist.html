@@ -40,12 +40,6 @@
 
 <style>
 
-    body {
-    font-family: "Jacques Francois", serif;
-  font-weight: 400;
-  font-style: normal;
-    }
-
   .card {
               width: 18rem;
               margin-right: 10px;
@@ -227,7 +221,7 @@
     {% endwith %}
             <hr>
             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="{% url 'profile' %}">Account</a></li>
-            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="{% url 'wishlist' %}">Wishlist</a></li>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="/wishlist/">Wishlist</a></li>
             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">History</a></li>
             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Contact us</a></li>
              <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="https://www.google.com/maps?q=India">Explore</a></li>
@@ -269,37 +263,66 @@
     <!-- Overlay box markup ends -->
 
 
-  <div class="col-md-12 text-center fw-bold display-5">Your Wishlist</div><br><br>
-
-   <div class="card" style="width: 18rem;">
-       <a>
-           <img src="https://via.placeholder.com/300" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h5 class="card-title fw-bold">TOKYO</h5>
-            <p class="card-text fw-lighter">Rating<span class="star ms-3 fs-4">★★★★★</span></p>
 
 
+<!--<div class="container">-->
+<!--    <div class="row">-->
+<!--        {% for item in wishlist_items %}-->
+<!--        <div class="col-md-4 mb-4"> &lt;!&ndash; Adjust the column width and margin as needed &ndash;&gt;-->
+<!--            <div class="card text-center"> &lt;!&ndash; Center align the card content &ndash;&gt;-->
+<!--                &lt;!&ndash; Use the destination_name as the title and description as the description &ndash;&gt;-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title text-danger">{{ item.package.destination_name }}</h5>-->
+<!--                    <p class="card-text text-danger">{{ item.package.description }}</p>-->
+<!--                    &lt;!&ndash; Display only the first image associated with the package &ndash;&gt;-->
+<!--                    {% with first_image=item.package.images.first %}-->
+<!--                        {% if first_image %}-->
+<!--                            <img src="{{ first_image.image.url }}" class="card-img" alt="...">-->
+<!--                        {% endif %}-->
+<!--                    {% endwith %}-->
+<!--                    &lt;!&ndash; Add any other details you want to display &ndash;&gt;-->
+<!--                    <button class="remove-from-wishlist-btn btn btn-danger mt-3" data-package-id="{{ item.package.id }}">Remove from Wishlist</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+<!--</div>-->
 
-
-          <a href="#" class="btn btn-primary">Remove Wishlist</a>
+<div class="col-md-12 text-center fw-bold display-5">Your Wishlist</div><br><br>
+<div class="container">
+    <div class="row">
+        {% for item in wishlist_items %}
+        <div class="col-md-3">
+            <div class="card mb-3" style="width:105%; height:100%; position: relative;">
+                {% with first_image=item.package.images.first %}
+                    {% if first_image %}
+                        <div style="position: absolute; top: 10px; right: 10px; z-index: 1;">
+                            <a href="#" class="btn btn-secondary"><i class="fa-solid fa-trash"></i></a>
+                        </div>
+                        <img src="{{ first_image.image.url }}" class="card-img-top" alt="{{ item.package.destination_name }}" height="200px">
+                    {% endif %}
+                {% endwith %}
+                <div class="card-body">
+                    <div class="row" style="height:20px;">
+                        <div class="col">
+                            <h5 class="card-title fw-bolder fs-4">{{ item.package.destination_name }}</h5>
+                        </div>
+                        <div class="col">
+                            <h5 class="card-text text-end text-success fw-bold fs-4">{{ item.package.price }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </a>
+        {% endfor %}
+    </div>
 </div>
 
 
 
 
-
-
-
-  <!-- footer starts -->
-
-
-
-
-
-  <!-- Footer -->
-  <br>
+   <br>
   <br>
   <!-- Footer -->
   <br>
@@ -436,52 +459,6 @@
   <!-- footer endss -->
 
 
-<!--<script>-->
-
-<!--        document.addEventListener('DOMContentLoaded', function () {-->
-<!--            const dropdownIcon = document.querySelector('.dropdown-toggle');-->
-<!--            const overlay = document.getElementById('overlay');-->
-<!--            const signInButton = document.querySelector('.dropdown-toggle button');-->
-
-<!--            dropdownIcon.addEventListener('click', function () {-->
-<!--                if (overlay.style.display === "block") {-->
-<!--                    overlay.style.display = "none"; // Hide overlay if it's already visible-->
-<!--                    signInButton.style.backgroundColor = "";-->
-<!--                    signInButton.style.color = "";-->
-<!--                } else {-->
-<!--                    overlay.style.display = "block";-->
-<!--                    signInButton.style.backgroundColor = "white"; // Show overlay if it's hidden-->
-<!--                    signInButton.style.color = "black";-->
-<!--                }-->
-<!--            });-->
-
-<!--            // Add event listener to overlay to close it when clicked anywhere on the screen-->
-<!--            overlay.addEventListener('click', function () {-->
-<!--                overlay.style.display = "none";-->
-<!--                signInButton.style.backgroundColor = "";-->
-<!--                signInButton.style.color = "";-->
-<!--            });-->
-<!--        });-->
-
-<!--        function chooseOption(option) {-->
-<!--            if (option === 'customer') {-->
-<!--                window.location.href = "{% url 'login' %}"; // Redirect to the login URL-->
-<!--            } else if (option === 'agent') {-->
-<!--                 window.location.href = "{% url 'agent_login' %}";-->
-<!--            }-->
-<!--        }-->
-
-<!--        $(document).ready(function () {-->
-<!--            $(window).on('resize', function () {-->
-<!--                if ($(window).width() < 992) {-->
-<!--                    $('#mainNav').removeClass('fixed-top');-->
-<!--                } else {-->
-<!--                    $('#mainNav').addClass('fixed-top');-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--</script>-->
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const signInButton = document.querySelector('.dropdown-toggle button');
@@ -511,6 +488,9 @@ function chooseOption(option) {
 }
 
 </script>
+
+
+
 
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
