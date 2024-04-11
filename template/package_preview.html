@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@300;400&family=Raleway&display=swap"
-    rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>NOMADLAND</title>
-    {% load static %}
-   <link rel="icon" type="image/png" href="{% static 'mountains_top.png' %}">
-</head>
 
-<style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/7db032fd81.js" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  {% load static %}
+   <link rel="icon" type="image/png" href="{% static 'mountains_black.png' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+  <title>NOMADLAND</title>
+
+  <style>
     /* overlay css */
         .overlay {
             display: none;
@@ -129,9 +130,34 @@
         }
 
         /* overlay css */
-</style>
+
+
+                    /* Add rating styles here */
+.rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: left;
+}
+.rating > input {
+    display: none;
+}
+.rating > label {
+    display: inline-block;
+    padding: 5px;
+    font-size: 2rem; /* Increase the font size to make the stars larger */
+    color: #ccc;
+    cursor: pointer;
+}
+.rating > label:hover,
+.rating > input:checked ~ label {
+    color: #ffcc00;
+}
+  </style>
+</head>
+
 <body>
-     <!-- navbar section starts -->
+
+  <!-- navbar section starts -->
     <header>
         <div>
             <nav class="navbar navbar-expand-lg" id="#mainNav" style="background-color: whitesmoke;">
@@ -160,14 +186,37 @@
                             <li class="nav-item">
                                 <a class="nav-link text-black  nav-size" href="{% url 'about' %}">ABOUT US</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link dropdown-toggle ms-md-1 justify-content-sm-start ps-1 pt-1 pb-1"
-                                    href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <button type="button"
-                                        class="btn btn-outline-dark bg-light btn-sm sg-button text-black">SIGN
-                                        IN</button>
-                                </a>
-                            </li>
+
+{% if user_data %}
+    <li class="nav-item dropdown ">
+          <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-circle-user"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-light dropdown-menu-end">
+            {% with user=user_data.first %}
+       {% with names=user.user_name.split %}
+
+            <h6 class="text-center fw-bold mt-1">Hello {{ names.0 }}</h6>
+        {% endwith %}
+    {% endwith %}
+            <hr>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Account</a></li>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Wishlist</a></li>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">History</a></li>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Contact us</a></li>
+             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Saved Address</a></li>
+            <hr>
+             <li><a class="dropdown-item text-center" href="{% url 'logout' %}" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: red;"> <button class="btn btn-danger" style="--bs-btn-hover-bg:#dc3545; --bs-btn-hover-border-color:#dc3545;">Logout</button> </a></li>
+          </ul>
+        </li>
+{% else %}
+    <li class="nav-item">
+        <a class="nav-link dropdown-toggle ms-md-1 justify-content-sm-start ps-1 pt-1 pb-1"
+            href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button type="button" class="btn btn-outline-dark bg-light btn-sm sg-button text-black">SIGN IN</button>
+        </a>
+    </li>
+{% endif %}
                         </ul>
                     </div>
                 </div>
@@ -195,47 +244,75 @@
 
 <!--  preview starts   -->
 
-    <div class="container mt-5">
-    <div class="row align-items-center">
-      <div class="col-md-6">
-        <img src="{% static 'tokyo-skyline-with-rainbow-bridge-tokyo-tower-tokyo-japan.jpg' %}" class="img-fluid package-image mt-4"
-          alt="Package Image">
-          <img src="{% static 'tokyo-railway-station-business-district-building-night-japan.jpg' %}" class="img-fluid package-image mt-3"
-          alt="Package Image">
-      </div>
+   <div class="container mt-5">
+    <div class="row align-items-start"><!-- Changed to align-items-start -->
+        <div class="col-md-6">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <img src="{{ package_images.0.image.url }}" class="img-fluid package-image fixed-image" alt="Package Image">
+                    </div>
 
-      <div class="col-md-6">
-        <div class="package-details">
-          <h2 class="text-center fw-bold">TOKYO</h2>
-          <p>Experience the vibrant culture and modern wonders of Tokyo with our
-            exclusive tour package. Immerse yourself in the dynamic energy of Japan's
-            capital city as you explore its bustling streets and iconic landmarks.
-            Our Tokyo tour package offers a comprehensive itinerary designed to showcase
-            the best of this captivating metropolis..</p>
+                    <div class="col-md-6" style="height: 300px;">
+                        <!-- First image below -->
+                        <img src="{{ activity_images.0.url }}" class="img-fluid package-image fixed-image mt-1" alt="Activity Image">
+                    </div>
 
-          <p><strong>Activities:</strong>
-            <div>
-              <b class="text-danger">WaterSports</b> :Snorking,diving,water skiing
-            <br>
-            <b  class="text-danger"> Bungalows</b> :The stay in overwater bungalows
-            <br>
-            <b  class="text-danger"> Hopping</b> :Explore different atolls and islands
-            <br>
-            <b  class="text-danger"> Watching</b> :Take a boat tour to spot dolphins
+                    {% for hotel_image in hotel_images %}
+                    <div class="col-md-6" style="height: 300px;">
+                        <!-- Second image below -->
+                        <img src="{{ hotel_image.hotel_image.url }}" class="img-fluid package-image mt-1 fixed-image" alt="Package Image">
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-
-
-          </p>
-
-          <p><strong>Price:</strong> $1000</p>
-          <p><strong>Duration:</strong> 10 days</p>
-          <p><strong>Car Rental:</strong> Included</p>
-          <p class="card-text fw-lighter">review <span class="star ms-3 fs-4 text-warning">★★★★★</span></p>
-          <a href="{% url 'package_payment' %}"><button class="btn btn-primary btn-book-now">Book Now</button></a>
         </div>
-      </div>
+
+        <div class="col-md-6 align-self-start"><!-- Added align-self-start -->
+            <div class="package-details">
+                <!-- Display package details -->
+                <h2 class="text-center fw-bold">{{ package.destination_name }}</h2>
+                <p>{{ package.description }}</p>
+
+                <!-- Loop through activities -->
+                <p><strong>Activities:</strong></p>
+                <ul>
+                    {% for activity in activities %}
+                    <li>
+                        <b class="text-danger">{{ activity.activities }}</b> : {{ activity.activity_description }}
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                {% for duration in package_split_durations %}
+                <p class="fw-bold">Duration: <span class="fw-lighter">{{ duration }}</span></p>
+                {% endfor %}
+
+                <p><strong>Car Rental:</strong>Included</p>
+                <p class="text-success fw-bold"><span class="text-black ">Price:</span> ${{ package.price }}</p>
+
+                <h3 class="star text-warning fs-3">
+                    {% if package.average_rating %}
+                    {% for star in "x"|ljust:5 %}
+                    {% if forloop.counter <= package.average_rating %}
+                    ★
+                    {% else %}
+                    ☆
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    <span class="fs-6 text-danger">No ratings yet</span>
+                    {% endif %}
+                </h3>
+
+                <a href="{% url 'package_payment' %}"><button class="btn btn-primary mt-2 btn-book-now">Book Now</button></a>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
+
+
+
 
 <!--  preview ends   -->
 
@@ -375,57 +452,60 @@
   <!-- footer endss -->
 
   <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const signInButton = document.querySelector('.dropdown-toggle button');
+    const overlay = document.getElementById('overlay');
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const dropdownIcon = document.querySelector('.dropdown-toggle');
-            const overlay = document.getElementById('overlay');
-            const signInButton = document.querySelector('.dropdown-toggle button');
+    signInButton.addEventListener('click', function (event) {
+        event.stopPropagation(); // Prevent the event from bubbling up to the parent elements
+        if (overlay.style.display === "block") {
+            overlay.style.display = "none"; // Hide overlay if it's already visible
+        } else {
+            overlay.style.display = "block"; // Show overlay if it's hidden
+        }
+    });
 
-            dropdownIcon.addEventListener('click', function () {
-                if (overlay.style.display === "block") {
-                    overlay.style.display = "none"; // Hide overlay if it's already visible
-                    signInButton.style.backgroundColor = "";
-                    signInButton.style.color = "";
-                } else {
-                    overlay.style.display = "block";
-                    signInButton.style.backgroundColor = "white"; // Show overlay if it's hidden
-                    signInButton.style.color = "black";
-                }
-            });
+    // Add event listener to overlay to close it when clicked anywhere on the screen
+    overlay.addEventListener('click', function () {
+        overlay.style.display = "none";
+    });
+});
 
-            // Add event listener to overlay to close it when clicked anywhere on the screen
-            overlay.addEventListener('click', function () {
-                overlay.style.display = "none";
-                signInButton.style.backgroundColor = "";
-                signInButton.style.color = "";
-            });
+function chooseOption(option) {
+    if (option === 'customer') {
+        window.location.href = "{% url 'login' %}"; // Redirect to the login URL
+    } else if (option === 'agent') {
+        window.location.href = "{% url 'agent_login' %}";
+    }
+}
+
+</script>
+
+   <script>
+    // JavaScript to convert integer ratings to star icons
+    document.addEventListener('DOMContentLoaded', function () {
+        const starRatingElements = document.querySelectorAll('.star-ratings');
+        starRatingElements.forEach(function (element) {
+            const rating = parseInt(element.getAttribute('data-rating'));
+            element.innerHTML = generateStarRatingHTML(rating);
         });
+    });
 
-        function chooseOption(option) {
-            if (option === 'customer') {
-                window.location.href = "{% url 'login' %}"; // Redirect to the login URL
-            } else if (option === 'agent') {
-                // Add logic for redirecting to the agent URL if needed
+    // Function to generate star rating HTML based on integer rating value
+    function generateStarRatingHTML(rating) {
+        let starsHTML = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= rating) {
+                starsHTML += '<span>&#9733;</span>'; // Filled star
+            } else {
+                starsHTML += '<span>&#9734;</span>'; // Empty star
             }
         }
-
-        $(document).ready(function () {
-            $(window).on('resize', function () {
-                if ($(window).width() < 992) {
-                    $('#mainNav').removeClass('fixed-top');
-                } else {
-                    $('#mainNav').addClass('fixed-top');
-                }
-            });
-        });
+        return starsHTML;
+    }
 </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
-
-
-
-
-
 </body>
-</html>

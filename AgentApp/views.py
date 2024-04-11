@@ -111,7 +111,36 @@ def manage_package(request):
     return render(request, 'manage_package.html', context)
 
 
+# def activities(request):
+#     if request.method == 'POST':
+#         package_id = request.GET.get('package_id')
+#
+#         activity_names = request.POST.getlist('activity_name[]')
+#         activity_images = request.FILES.getlist('activity_image[]')
+#         activity_descriptions = request.POST.getlist('activity_description[]')
+#
+#         for name, image, description in zip(activity_names, activity_images, activity_descriptions):
+#             new_activity = ActivitiesModel.objects.create(
+#                 activities=name,
+#                 activity_description=description,
+#                 activity_images=image,
+#                 package_id=PackageModel.objects.get(package_id=package_id)
+#             )
+#
+#         return redirect('hotel_add')
+#
+#     return render(request, 'activities.html')
+
+
 def activities(request):
+    agent_id = request.session.get('agent_id')
+    agent_data = AgentModel.objects.filter(
+        agent_id=agent_id).first()  # Using filter() and first() to handle the case where agent is not found
+    context = {}
+
+    if agent_data:
+        context['agent'] = agent_data  # Pass agent details to the template
+
     if request.method == 'POST':
         package_id = request.GET.get('package_id')
 
@@ -128,8 +157,8 @@ def activities(request):
             )
 
         return redirect('hotel_add')
-
-    return render(request, 'activities.html')
+    else:
+        return render(request, 'activities.html', context)
 
 
 def hotel_add(request):
@@ -204,3 +233,7 @@ def agent_communication(request):
 
 def agent_analyticgraph(request):
     return render(request, 'agent_analyticgraph.html')
+
+
+def contact(request):
+    return render(request, 'contact.html')

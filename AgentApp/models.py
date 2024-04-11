@@ -80,6 +80,7 @@ class PackageModel(models.Model):
     def __str__(self):
         return self.destination_name
 
+
 class PackageSplit(models.Model):
     """
     Model representing a split of a package into smaller units.
@@ -112,7 +113,7 @@ class PackageImagesModel(models.Model):
     """
     image_id = models.AutoField(primary_key=True)
     image = models.ImageField(upload_to='images')
-    package_id = models.ForeignKey(PackageModel,related_name='images', on_delete=models.CASCADE)
+    package_id = models.ForeignKey(PackageModel, related_name='images', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'package_images'
@@ -128,7 +129,7 @@ class OfferModel(models.Model):
     discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)
     valid_from = models.DateField()
     valid_to = models.DateField()
-    applicable_packages = models.ManyToManyField(PackageModel,related_name='offers')
+    applicable_packages = models.ManyToManyField(PackageModel, related_name='offers')
     applicable_agents = models.ManyToManyField(AgentModel)
     status = models.CharField(max_length=255, default='active')
 
@@ -137,9 +138,6 @@ class OfferModel(models.Model):
 
     def __str__(self):
         return self.title
-
-
-
 
 
 class HotelModel(models.Model):

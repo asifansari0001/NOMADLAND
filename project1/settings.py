@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'UserApp',
-    'AgentApp'
+    'AgentApp',
+    'AdminApp'
 ]
 
 MIDDLEWARE = [

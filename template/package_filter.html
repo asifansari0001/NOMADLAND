@@ -272,6 +272,7 @@
 
 <section style="background-color: whitesmoke;" class="mt-4 ms-2">
     <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
+        {% if filtered_packages %}
         {% for package in filtered_packages %}
             <div class="col mb-3">
                 <a href="#" style="text-decoration: none; position: relative; display: block;">
@@ -315,6 +316,17 @@
                 <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-4 g-4">
             {% endif %}
         {% endfor %}
+                     {% else %}
+           <div class="container mt-5 h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col text-center">
+                <h4>Sorry, we couldn't find any matching packages</h4> <br>
+
+
+            </div>
+        </div>
+    </div>
+        {% endif %}
     </div>
 </section>
 

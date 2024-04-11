@@ -1,4 +1,6 @@
 from datetime import datetime, timezone
+
+from AgentApp.models import ActivitiesModel
 from .models import *
 from .models import OfferModel, PackageModel, PackageImagesModel
 from django.db.models import Min, Avg
@@ -130,7 +132,6 @@ def review(request):
     return render(request, 'nomadland_review.html', context)
 
 
-
 def offer(request):
     update_expired_offers()
     user_id = request.session.get('user_id')
@@ -221,10 +222,6 @@ def submit_feedback(request):
 
 def package(request):
     return render(request, 'package.html')
-
-
-def package_preview(request, id):
-    return render(request, 'package_preview.html')
 
 
 def package_payment(request):
@@ -335,7 +332,8 @@ def wishlist(request):
     else:
         return redirect('/login')
 
-    return render(request, 'wishlist.html', {'wishlist_items': wishlist_items,'user_data': user_data})
+    return render(request, 'wishlist.html', {'wishlist_items': wishlist_items, 'user_data': user_data})
+
 
 def about(request):
     user_id = request.session.get('user_id')
@@ -346,4 +344,71 @@ def about(request):
     else:
 
         return render(request, 'nomadland_about.html')
+
+
+def package_preview(request, package_id):
+    user_id = request.session.get('user_id')
+    user = UserModel.objects.filter(user_id=user_id)
+    package = PackageModel.objects.get(package_id=package_id)
+    package_split = PackageSplit.objects.filter(package_id=package_id)
+    package_images = PackageImagesModel.objects.filter(package_id=package_id)
+    activities = ActivitiesModel.objects.filter(package_id=package_id)
+    feedbacks = FeedbackModel.objects.filter(package_id=package_id)
+
+    package_split_durations = []
+
+    for package_split_item in package_split:
+        duration = (package_split_item.end_date - package_split_item.start_date).days
+        package_split_durations.append(duration)
+
+    # Calculate average rating for the package
+    average_rating = feedbacks.aggregate(Avg('rating'))['rating__avg']
+    package.average_rating = round(average_rating, 1) if average_rating else None
+
+    hotel_images = []
+
+    for split in package_split:
+        package_hotel = PackageHotel.objects.filter(package_split_id=split.package_split_id)
+        for hotel in package_hotel:
+            hotel_image = HotelImage.objects.filter(hotel_id=hotel.hotel_id).first()
+            if hotel_image:
+                hotel_images.append(hotel_image)
+
+    activity_images = []
+
+    for activity in activities:
+        if activity.activity_images:
+            activity_images.append(activity.activity_images)
+
+    if user_id:
+        context1 = {
+            'user_data': user,
+            'package': package,
+            'package_split': package_split,
+            'package_images': package_images,
+            'activities': activities,
+            'package_split_durations': package_split_durations,
+            'feedbacks': feedbacks,
+            'hotel_images': hotel_images,
+            'activity_images': activity_images,
+        }
+        return render(request, 'package_preview.html', context1)
+    else:
+        context2 = {
+            'package': package,
+            'package_split': package_split,
+            'package_images': package_images,
+            'activities': activities,
+            'package_split_durations': package_split_durations,
+            'feedbacks': feedbacks,
+            'hotel_images': hotel_images,
+            'activity_images': activity_images,
+        }
+
+    return render(request, 'package_preview.html', context2)
+
+
+
+
+
 

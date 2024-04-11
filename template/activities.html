@@ -169,10 +169,22 @@
                         <a class="nav-link" href="{% url 'about' %}">ABOUT US</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <button type="button" class="btn btn-outline-dark btn-sm sg-button">SIGN IN</button>
-                        </a>
+<!--                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"-->
+<!--                            aria-expanded="false">-->
+<!--                            <button type="button" class="btn btn-outline-dark btn-sm sg-button">SIGN IN</button>-->
+<!--                        </a>-->
+
+                        {% if agent %}
+                            <!-- If agent is present in context, display logout button -->
+                            <a class="nav-link" role="button" href="#">LOGOUT</a>
+                            {% else %}
+                            <!-- If agent is not present in context, display sign in button -->
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <button type="button" class="btn btn-outline-dark btn-sm sg-button">SIGN IN</button>
+                            </a>
+                            {% endif %}
+
                     </li>
                 </ul>
             </div>
