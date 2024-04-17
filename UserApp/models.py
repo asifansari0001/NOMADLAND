@@ -117,11 +117,12 @@ class BookingModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     num_adult = models.IntegerField()
     num_children = models.IntegerField()
-    special_request = models.CharField(max_length=255)
-    payment_status = models.CharField(max_length=255)
+    payment_status = models.CharField(max_length=255,default="pending")
+    car_rental=models.CharField(max_length=255,null=True)
+    package_id = models.ForeignKey(PackageModel, on_delete=models.CASCADE,null=True)
     user_id = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     package_hotel_id = models.ForeignKey(PackageHotel, on_delete=models.CASCADE)
-    status = models.CharField(max_length=255, default="Pending")
+
 
     class Meta:
         db_table = 'booking'

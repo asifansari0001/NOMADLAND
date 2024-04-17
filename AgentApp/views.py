@@ -48,7 +48,9 @@ def agent_manage(request):
 
 
 def manage_package(request):
-    packages = PackageModel.objects.all()
+    agent_id = request.session.get('agent_id')
+    agent = AgentModel.objects.get(agent_id=agent_id)
+    packages = PackageModel.objects.filter(agent_id=agent)
 
     context = {
         'data_key': packages
@@ -111,36 +113,7 @@ def manage_package(request):
     return render(request, 'manage_package.html', context)
 
 
-# def activities(request):
-#     if request.method == 'POST':
-#         package_id = request.GET.get('package_id')
-#
-#         activity_names = request.POST.getlist('activity_name[]')
-#         activity_images = request.FILES.getlist('activity_image[]')
-#         activity_descriptions = request.POST.getlist('activity_description[]')
-#
-#         for name, image, description in zip(activity_names, activity_images, activity_descriptions):
-#             new_activity = ActivitiesModel.objects.create(
-#                 activities=name,
-#                 activity_description=description,
-#                 activity_images=image,
-#                 package_id=PackageModel.objects.get(package_id=package_id)
-#             )
-#
-#         return redirect('hotel_add')
-#
-#     return render(request, 'activities.html')
-
-
 def activities(request):
-    agent_id = request.session.get('agent_id')
-    agent_data = AgentModel.objects.filter(
-        agent_id=agent_id).first()  # Using filter() and first() to handle the case where agent is not found
-    context = {}
-
-    if agent_data:
-        context['agent'] = agent_data  # Pass agent details to the template
-
     if request.method == 'POST':
         package_id = request.GET.get('package_id')
 
@@ -157,8 +130,8 @@ def activities(request):
             )
 
         return redirect('hotel_add')
-    else:
-        return render(request, 'activities.html', context)
+
+    return render(request, 'activities.html')
 
 
 def hotel_add(request):
@@ -222,9 +195,398 @@ def agent_offer(request):
         offer_obj.applicable_agents.add(agent_id)
         offer_obj.applicable_packages.add(package_id)
 
-        return redirect('/')
+        return redirect('/welcome_agent')
 
     return render(request, 'agent_offer.html')
+
+
+def logout(request):
+    if 'agent_id' in request.session:
+        del request.session['agent_id']
+    return redirect('/')
+
+
+def package_remove(request, package_id):
+    package_del = PackageModel.objects.filter(package_id=package_id)
+    package_del.delete()
+    return redirect('/manage_package')
+
+
+# update package
+
+
+def pack_img_del(request, image_id):
+    img_del = PackageImagesModel.objects.filter(image_id=image_id)
+    img_del.delete()
+    package_id = request.GET.get('package_id')
+    destination = PackageModel.objects.filter(package_id=package_id)
+    package_image = PackageImagesModel.objects.filter(package_id=package_id)
+    activity = ActivitiesModel.objects.filter(package_id=package_id)
+
+    package_split = PackageSplit.objects.filter(package_id=package_id).first()
+    hotel_package_ids = PackageHotel.objects.filter(package_split_id=package_split.package_split_id)
+
+    hotel_ids = [hotel_package.hotel_id_id for hotel_package in hotel_package_ids]
+
+    hotel_images = HotelImage.objects.filter(hotel_id__in=hotel_ids)
+    hotel_names = HotelModel.objects.filter(hotel_id__in=hotel_ids)
+
+    hotel_details = PackageHotel.objects.filter(package_split_id=package_split.package_split_id)
+
+    # Zip hotel_details and hotel_images together with hotel_names
+    hotel_data = zip(hotel_names, hotel_details, hotel_images)
+
+    destination_for_nation = PackageModel.objects.get(package_id=package_id)
+    nation = NationsModel.objects.get(nation=destination_for_nation.nation_id)
+
+    package_split_data = PackageSplit.objects.get(package_id=package_id)
+    package_start_date_formatted = package_split_data.start_date
+    package_end_date_formatted = package_split_data.end_date
+
+    if request.method == 'POST':
+        nation_name = request.POST.get('nation_name')
+
+        destination_name = request.POST.get('destination')
+        package_quantity = request.POST.get('package_quantity')
+        package_status = request.POST.get('package_status')
+        package_description = request.POST.get('package_description')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        package_price = request.POST.get('package_price')
+        package_images = request.FILES.get('package_image')
+        activity_name = request.POST.get('activity_name')
+        activity_description = request.POST.get('activity_description')
+        activity_img = request.FILES.get('activity_img')
+        hotel_name = request.POST.get('hotel_name')
+        hotel_quantity = request.POST.get('hotel_quantity')
+        hotel_price = request.POST.get('hotel_price')
+        hotel_image = request.FILES.get('hotel_image')
+        target_activity_id = request.POST.get('target_activity_id')
+
+        nation_obj = NationsModel.objects.get(nation=destination_for_nation.nation_id)
+        nation_obj.nation = nation_name
+        nation_obj.save()
+
+        pack_obj = PackageModel.objects.get(package_id=package_id)
+        pack_obj.destination_name = destination_name
+        pack_obj.status = package_status
+        pack_obj.package_description = package_description
+        pack_obj.package_price = package_price
+
+        if package_images:
+            package = PackageModel.objects.get(package_id=package_id)
+
+            # Create a new instance of PackageImagesModel with the retrieved PackageModel instance
+            pak_img = PackageImagesModel.objects.create(package_id=package, image=package_images)
+
+        pack_obj.save()
+
+        split_obj = PackageSplit.objects.get(package_id=package_id)
+        split_obj.quantity = package_quantity
+        split_obj.start_date = start_date
+        split_obj.end_date = end_date
+        split_obj.save()
+
+        for activity in ActivitiesModel.objects.filter(package_id=package_id):
+            activity_name = request.POST.get(f'activity_name_{activity.activities_id}')
+            activity_description = request.POST.get(f'activity_description_{activity.activities_id}')
+            activity_img = request.FILES.get(f'activity_img_{activity.activities_id}')
+
+            if activity_name and activity_description:
+                activity.activities = activity_name
+                activity.activity_description = activity_description
+
+                if activity_img:
+                    activity.activity_images = activity_img
+
+                activity.save()
+
+        # done till here
+
+        for hotel, details, image in hotel_data:
+            hotel_id = hotel.hotel_id
+            hotel_name = request.POST.get(f'hotel_name_{hotel_id}')
+            hotel_quantity = request.POST.get(f'hotel_quantity_{hotel_id}')
+            hotel_price = request.POST.get(f'hotel_price_{hotel_id}')
+            hotel_image = request.FILES.get(f'hotel_image_{hotel_id}')
+
+            # Update hotel name
+            hotel_obj = HotelModel.objects.get(hotel_id=hotel_id)
+            hotel_obj.hotel_name = hotel_name
+            hotel_obj.save()
+
+            # Update package-hotel details
+            pack_hotel_obj = PackageHotel.objects.get(hotel_id=hotel_id)
+            pack_hotel_obj.quantity = hotel_quantity
+            pack_hotel_obj.price = hotel_price
+            pack_hotel_obj.save()
+
+            # Update hotel image if provided
+            if hotel_image:
+                image_obj = HotelImage.objects.get(hotel_id=hotel_obj.hotel_id)
+
+                image_obj.hotel_image = hotel_image
+                image_obj.save()
+
+        return redirect('/update_package')
+
+    return render(request, 'update_package.html', {
+        'data_key': destination,
+        'image_key': package_image,
+        'activities': activity,
+        'hotel_data': hotel_data,
+        'nation': nation,
+        'package_split': package_split_data,
+        'package_start_date': package_start_date_formatted,
+        'package_end_date': package_end_date_formatted
+    })
+
+
+def hotel_img_del(request, hotel_image_id):
+    img_del = HotelImage.objects.filter(hotel_image_id=hotel_image_id)
+    img_del.delete()
+    package_id = request.GET.get('package_id')
+    destination = PackageModel.objects.filter(package_id=package_id)
+    package_image = PackageImagesModel.objects.filter(package_id=package_id)
+    activity = ActivitiesModel.objects.filter(package_id=package_id)
+
+    package_split = PackageSplit.objects.filter(package_id=package_id).first()
+    hotel_package_ids = PackageHotel.objects.filter(package_split_id=package_split.package_split_id)
+
+    hotel_ids = [hotel_package.hotel_id_id for hotel_package in hotel_package_ids]
+
+    hotel_images = HotelImage.objects.filter(hotel_id__in=hotel_ids)
+    hotel_names = HotelModel.objects.filter(hotel_id__in=hotel_ids)
+
+    hotel_details = PackageHotel.objects.filter(package_split_id=package_split.package_split_id)
+
+    # Zip hotel_details and hotel_images together with hotel_names
+    hotel_data = zip(hotel_names, hotel_details, hotel_images)
+
+    destination_for_nation = PackageModel.objects.get(package_id=package_id)
+    nation = NationsModel.objects.get(nation=destination_for_nation.nation_id)
+
+    package_split_data = PackageSplit.objects.get(package_id=package_id)
+    package_start_date_formatted = package_split_data.start_date
+    package_end_date_formatted = package_split_data.end_date
+
+    if request.method == 'POST':
+        nation_name = request.POST.get('nation_name')
+
+        destination_name = request.POST.get('destination')
+        package_quantity = request.POST.get('package_quantity')
+        package_status = request.POST.get('package_status')
+        package_description = request.POST.get('package_description')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        package_price = request.POST.get('package_price')
+        package_images = request.FILES.get('package_image')
+        activity_name = request.POST.get('activity_name')
+        activity_description = request.POST.get('activity_description')
+        activity_img = request.FILES.get('activity_img')
+        hotel_name = request.POST.get('hotel_name')
+        hotel_quantity = request.POST.get('hotel_quantity')
+        hotel_price = request.POST.get('hotel_price')
+        hotel_image = request.FILES.get('hotel_image')
+        target_activity_id = request.POST.get('target_activity_id')
+
+        nation_obj = NationsModel.objects.get(nation=destination_for_nation.nation_id)
+        nation_obj.nation = nation_name
+        nation_obj.save()
+
+        pack_obj = PackageModel.objects.get(package_id=package_id)
+        pack_obj.destination_name = destination_name
+        pack_obj.status = package_status
+        pack_obj.package_description = package_description
+        pack_obj.package_price = package_price
+
+        if package_images:
+            package = PackageModel.objects.get(package_id=package_id)
+
+            # Create a new instance of PackageImagesModel with the retrieved PackageModel instance
+            pak_img = PackageImagesModel.objects.create(package_id=package, image=package_images)
+
+        pack_obj.save()
+
+        split_obj = PackageSplit.objects.get(package_id=package_id)
+        split_obj.quantity = package_quantity
+        split_obj.start_date = start_date
+        split_obj.end_date = end_date
+        split_obj.save()
+
+        for activity in ActivitiesModel.objects.filter(package_id=package_id):
+            activity_name = request.POST.get(f'activity_name_{activity.activities_id}')
+            activity_description = request.POST.get(f'activity_description_{activity.activities_id}')
+            activity_img = request.FILES.get(f'activity_img_{activity.activities_id}')
+
+            if activity_name and activity_description:
+                activity.activities = activity_name
+                activity.activity_description = activity_description
+
+                if activity_img:
+                    activity.activity_images = activity_img
+
+                activity.save()
+
+        # done till here
+
+        for hotel, details, image in hotel_data:
+            hotel_id = hotel.hotel_id
+            hotel_name = request.POST.get(f'hotel_name_{hotel_id}')
+            hotel_quantity = request.POST.get(f'hotel_quantity_{hotel_id}')
+            hotel_price = request.POST.get(f'hotel_price_{hotel_id}')
+            hotel_image = request.FILES.get(f'hotel_image_{hotel_id}')
+
+            # Update hotel name
+            hotel_obj = HotelModel.objects.get(hotel_id=hotel_id)
+            hotel_obj.hotel_name = hotel_name
+            hotel_obj.save()
+
+            # Update package-hotel details
+            pack_hotel_obj = PackageHotel.objects.get(hotel_id=hotel_id)
+            pack_hotel_obj.quantity = hotel_quantity
+            pack_hotel_obj.price = hotel_price
+            pack_hotel_obj.save()
+
+            # Update hotel image if provided
+            if hotel_image:
+                image_obj = HotelImage.objects.get(hotel_id=hotel_obj.hotel_id)
+
+                image_obj.hotel_image = hotel_image
+                image_obj.save()
+
+        return redirect('/update_package')
+
+    return render(request, 'update_package.html', {
+        'data_key': destination,
+        'image_key': package_image,
+        'activities': activity,
+        'hotel_data': hotel_data,
+        'nation': nation,
+        'package_split': package_split_data,
+        'package_start_date': package_start_date_formatted,
+        'package_end_date': package_end_date_formatted
+    })
+
+
+def package_update(request, package_id):
+    destination = PackageModel.objects.filter(package_id=package_id)
+    package_image = PackageImagesModel.objects.filter(package_id=package_id)
+    activity = ActivitiesModel.objects.filter(package_id=package_id)
+
+    package_split = PackageSplit.objects.filter(package_id=package_id).first()
+    hotel_package_ids = PackageHotel.objects.filter(package_split_id=package_split.package_split_id)
+    hotel_ids = [hotel_package.hotel_id_id for hotel_package in hotel_package_ids]
+    hotel_images = HotelImage.objects.filter(hotel_id__in=hotel_ids)
+    hotel_names = HotelModel.objects.filter(hotel_id__in=hotel_ids)
+    hotel_details = PackageHotel.objects.filter(package_split_id=package_split.package_split_id)
+    # Zip hotel_details and hotel_images together with hotel_names
+    hotel_data = zip(hotel_names, hotel_details, hotel_images)
+
+    destination_for_nation = PackageModel.objects.get(package_id=package_id)
+    nation = NationsModel.objects.get(nation=destination_for_nation.nation_id)
+
+    package_split_data = PackageSplit.objects.get(package_id=package_id)
+    package_start_date_formatted = package_split_data.start_date
+    package_end_date_formatted = package_split_data.end_date
+
+    if request.method == 'POST':
+        nation_name = request.POST.get('nation_name')
+
+        destination_name = request.POST.get('destination')
+        package_quantity = request.POST.get('package_quantity')
+        package_status = request.POST.get('package_status')
+        package_description = request.POST.get('package_description')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        package_price = request.POST.get('package_price')
+        package_images = request.FILES.get('package_image')
+        activity_name = request.POST.get('activity_name')
+        activity_description = request.POST.get('activity_description')
+        activity_img = request.FILES.get('activity_img')
+        hotel_name = request.POST.get('hotel_name')
+        hotel_quantity = request.POST.get('hotel_quantity')
+        hotel_price = request.POST.get('hotel_price')
+        hotel_image = request.FILES.get('hotel_image')
+        target_activity_id = request.POST.get('target_activity_id')
+
+        nation_obj = NationsModel.objects.get(nation=destination_for_nation.nation_id)
+        nation_obj.nation = nation_name
+        nation_obj.save()
+
+        pack_obj = PackageModel.objects.get(package_id=package_id)
+        pack_obj.destination_name = destination_name
+        pack_obj.status = package_status
+        pack_obj.package_description = package_description
+        pack_obj.package_price = package_price
+
+        if package_images:
+            package = PackageModel.objects.get(package_id=package_id)
+
+            # Create a new instance of PackageImagesModel with the retrieved PackageModel instance
+            pak_img = PackageImagesModel.objects.create(package_id=package, image=package_images)
+
+        pack_obj.save()
+
+        split_obj = PackageSplit.objects.get(package_id=package_id)
+        split_obj.quantity = package_quantity
+        split_obj.start_date = start_date
+        split_obj.end_date = end_date
+        split_obj.save()
+
+        for activity in ActivitiesModel.objects.filter(package_id=package_id):
+            activity_name = request.POST.get(f'activity_name_{activity.activities_id}')
+            activity_description = request.POST.get(f'activity_description_{activity.activities_id}')
+            activity_img = request.FILES.get(f'activity_img_{activity.activities_id}')
+
+            if activity_name and activity_description:
+                activity.activities = activity_name
+                activity.activity_description = activity_description
+
+                if activity_img:
+                    activity.activity_images = activity_img
+
+                activity.save()
+
+        # done till here
+
+        for hotel, details, image in hotel_data:
+            hotel_id = hotel.hotel_id
+            hotel_name = request.POST.get(f'hotel_name_{hotel_id}')
+            hotel_quantity = request.POST.get(f'hotel_quantity_{hotel_id}')
+            hotel_price = request.POST.get(f'hotel_price_{hotel_id}')
+            hotel_image = request.FILES.get(f'hotel_image_{hotel_id}')
+
+            # Update hotel name
+            hotel_obj = HotelModel.objects.get(hotel_id=hotel_id)
+            hotel_obj.hotel_name = hotel_name
+            hotel_obj.save()
+
+            # Update package-hotel details
+            pack_hotel_obj = PackageHotel.objects.get(hotel_id=hotel_id)
+            pack_hotel_obj.quantity = hotel_quantity
+            pack_hotel_obj.price = hotel_price
+            pack_hotel_obj.save()
+
+            # Update hotel image if provided
+            if hotel_image:
+                image_obj = HotelImage.objects.get(hotel_id=hotel_obj.hotel_id)
+
+                image_obj.hotel_image = hotel_image
+                image_obj.save()
+
+        return redirect('/update_package')
+
+    return render(request, 'update_package.html', {
+        'data_key': destination,
+        'image_key': package_image,
+        'activities': activity,
+        'hotel_data': hotel_data,
+        'nation': nation,
+        'package_split': package_split_data,
+        'package_start_date': package_start_date_formatted,
+        'package_end_date': package_end_date_formatted
+    })
 
 
 def agent_communication(request):

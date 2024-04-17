@@ -150,6 +150,7 @@ class HotelModel(models.Model):
     """
     hotel_id = models.AutoField(primary_key=True)
     hotel_name = models.CharField(max_length=255)
+    hotel_description = models.TextField(null=True)
 
     class Meta:
         db_table = 'hotel_data'

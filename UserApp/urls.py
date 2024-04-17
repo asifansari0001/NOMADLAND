@@ -19,6 +19,8 @@ urlpatterns = [
     path('remove_from_wishlist/<int:package_id>/', views.remove_from_wishlist, name='remove_from_wishlist'),
     path('package_review/<int:package_id>/', views.package_review, name='feedback_form'),
     path('submit_feedback/', views.submit_feedback, name='submit_feedback'),
-    path('logout/', views.logout, name='logout')
+    path('logout/', views.logout, name='logout'),
+    path('hotel_select/<int:package_split_id>/', views.hotel_select, name='hotel_select'),
+    path('booking_user/', views.booking_user, name='booking_user'),
 
 ]

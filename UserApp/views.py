@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from AgentApp.models import ActivitiesModel
+from AgentApp.models import ActivitiesModel, HotelImage
 from .models import *
 from .models import OfferModel, PackageModel, PackageImagesModel
 from django.db.models import Min, Avg
@@ -408,7 +408,94 @@ def package_preview(request, package_id):
     return render(request, 'package_preview.html', context2)
 
 
+def hotel_select(request, package_split_id):
+    package_hotels = PackageHotel.objects.filter(package_split_id=package_split_id)
+    user_id = request.session.get('user_id')
+
+    pack_split = PackageSplit.objects.filter(package_split_id=package_split_id)
+    package_id = pack_split[0].package_id_id
+
+    children = None
+    adults = None
+    car_rental = None
+
+    if request.method == 'POST':
+        # Accessing form data
+        car_rental = request.POST.get('input_car_rental')
+        adults = request.POST.get('input_adult')
+        children = request.POST.get('input_children')
+
+    # Initialize an empty list to store hotel instances
+    hotels = []
+
+    # Iterate over each package hotel to retrieve the associated hotel
+    for package_hotel in package_hotels:
+        # Retrieve the hotel associated with the package hotel
+        hotel = package_hotel.hotel_id
+        # Add the hotel instance to the list
+        hotels.append(hotel)
+
+    hotel_images = HotelImage.objects.select_related('hotel_id').all()
+
+    if user_id:
+        user_data = UserModel.objects.filter(user_id=user_id)
+        context1 = {
+            'hotels': hotels,
+            'hotel_images': hotel_images,
+            'package_hotels': package_hotels,
+            'user_data': user_data,
+            'package_id': package_id,
+            'children': children,
+            'adults': adults,
+            'car_rental': car_rental
+
+        }
+        return render(request, 'hotel_select.html', context1)
+
+    return redirect('/login')
 
 
+def booking_user(request):
+    adults = None
+    children = None
+    car_rental = None
+    package_id = None
+    hotel_id = None
 
+    if request.method == 'POST':
+        children = request.POST.get('children')
+        car_rental = request.POST.get('car_rental')
+        adults = request.POST.get('adults')
+        package_id = request.POST.get('package_id')
+        hotel_id = request.POST.get('hotel_id')
 
+    package_id = package_id
+    hotel_id = hotel_id
+
+    user_id = request.session.get('user_id')
+    usermodel=UserModel.objects.get(user_id=user_id)
+    package_split = PackageSplit.objects.get(package_id=package_id)
+    packagemodel = PackageModel.objects.get(package_id=package_id)
+
+    package_split_from_date = package_split.start_date
+    package_split_to_date = package_split.end_date
+
+    package_hotel = PackageHotel.objects.get(hotel_id=hotel_id)
+    package_hotel_price = package_hotel.price
+    package_price = packagemodel.price
+    total_price = int(package_hotel_price + package_price)
+
+    booking_obj = BookingModel()
+    booking_obj.from_date = package_split_from_date
+    booking_obj.to_date = package_split_to_date
+    booking_obj.total_price = total_price
+    booking_obj.num_adult = adults
+    booking_obj.num_children = children
+    booking_obj.car_rental = car_rental
+    booking_obj.package_id = packagemodel
+    booking_obj.package_hotel_id = package_hotel
+    booking_obj.user_id = usermodel
+
+    booking_obj.save()
+
+    return redirect('/')

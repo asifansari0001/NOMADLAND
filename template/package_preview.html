@@ -152,6 +152,8 @@
 .rating > input:checked ~ label {
     color: #ffcc00;
 }
+
+
   </style>
 </head>
 
@@ -245,28 +247,31 @@
 <!--  preview starts   -->
 
    <div class="container mt-5">
-    <div class="row align-items-start"><!-- Changed to align-items-start -->
-        <div class="col-md-6">
+    <div class="row align-items-start">
+
+
+                <div class="col-md-6">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-                        <img src="{{ package_images.0.image.url }}" class="img-fluid package-image fixed-image" alt="Package Image">
+                        <img src="{{ package_images.0.image.url }}" class="img-fluid package-image" alt="Package Image">
                     </div>
 
-                    <div class="col-md-6" style="height: 300px;">
-                        <!-- First image below -->
-                        <img src="{{ activity_images.0.url }}" class="img-fluid package-image fixed-image mt-1" alt="Activity Image">
-                    </div>
+                    <div class="col-md-6" style="height: 170px;">
+            <!-- Second image -->
+            <img src="{{ activity_images.0.url }}" class="img-fluid package-image mt-1" style="width: 100%; height: 110%;" alt="Activity Image">
+        </div>
 
-                    {% for hotel_image in hotel_images %}
-                    <div class="col-md-6" style="height: 300px;">
-                        <!-- Second image below -->
-                        <img src="{{ hotel_image.hotel_image.url }}" class="img-fluid package-image mt-1 fixed-image" alt="Package Image">
-                    </div>
-                    {% endfor %}
+
+        <div class="col-md-6" style="height: 170px;">
+            <!-- Third image -->
+            <img src="{{ hotel_images.0.hotel_image.url }}" class="img-fluid package-image mt-1 " style="width: 100%; height: 110%;" alt="Package Image">
+        </div>
+
                 </div>
             </div>
         </div>
+
 
         <div class="col-md-6 align-self-start"><!-- Added align-self-start -->
             <div class="package-details">
@@ -288,8 +293,8 @@
                 <p class="fw-bold">Duration: <span class="fw-lighter">{{ duration }}</span></p>
                 {% endfor %}
 
-                <p><strong>Car Rental:</strong>Included</p>
-                <p class="text-success fw-bold"><span class="text-black ">Price:</span> ${{ package.price }}</p>
+
+                <p class="text-success fw-bold"><span class="text-black ">Price:</span> ₹{{ package.price }}</p>
 
                 <h3 class="star text-warning fs-3">
                     {% if package.average_rating %}
@@ -305,7 +310,61 @@
                     {% endif %}
                 </h3>
 
-                <a href="{% url 'package_payment' %}"><button class="btn btn-primary mt-2 btn-book-now">Book Now</button></a>
+<form id="bookingForm" method="post">
+    {% csrf_token %}
+               <div class="col-md-9 ms-2 mt-3">
+    <div class="row align-items-center">
+        <div class="col-3  p-0" style="max-width:fit-content;"> <!-- Adjust the column size as needed -->
+            <label class="text-black fw-bold" for="car_rental">Car Rental</label>
+        </div>
+        <div class="col-4"> <!-- Adjust the column size as needed -->
+            <select class="form-control" name="input_car_rental" id="car_rental" required>
+                <option value="included">Include</option>
+                <option value="excluded">Exclude</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+    <div class="row align-items-center mt-3">
+        <div class="col-md-4">
+            <label class="text-black fw-bold" for="adults">Adults</label>
+            <select class="form-control" name="input_adult" id="adults" required>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label class="text-black fw-bold" for="children">Children</label>
+            <select class="form-control" name="input_children" id="children" required>
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+        </div>
+    </div>
+</form>
+<div class="text-center mt-5">
+    {% for spill in package_split %}
+    <button class="btn btn-primary btn-book-now" onclick="submitBookingForm('{{ spill.package_split_id }}')">Book Now</button>
+    {% endfor %}
+</div>
             </div>
         </div>
     </div>
@@ -318,6 +377,7 @@
 
 <br>
   <br>
+
 
 <!--  footer starts   -->
   <footer class="text-center text-lg-start text-white bg-dark">
@@ -502,6 +562,15 @@ function chooseOption(option) {
             }
         }
         return starsHTML;
+    }
+</script>
+
+  <script>
+    function submitBookingForm(packageSplitId) {
+        // Set the action attribute of the form to include the package split ID
+        document.getElementById('bookingForm').action = "/hotel_select/" + packageSplitId + "/";
+        // Submit the form
+        document.getElementById('bookingForm').submit();
     }
 </script>
 
