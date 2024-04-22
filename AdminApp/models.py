@@ -11,6 +11,9 @@ class AdminModel(models.Model):
     """
     admin_name = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
+    reg_no = models.CharField(max_length=255,null=True)
+    email = models.EmailField(max_length=255,null=True)
+    status = models.CharField(max_length=255, default='inactive')
 
     class Meta:
         db_table = 'admin_data'

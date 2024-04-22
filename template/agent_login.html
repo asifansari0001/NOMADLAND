@@ -205,11 +205,11 @@
                 <h1> sign up</h1>
 
                 <span>or use your email for registration</span>
-                <input type="text" name="agent_name" placeholder="Name">
-                <input type="email" name="agent_email" placeholder="Email">
-                <input type="text" name="agent_phone" placeholder="Mobile">
-                <input type="text" name="license" placeholder="License Number">
-                <input type="password" name="agent_password" placeholder="Password">
+                <input type="text" name="agent_name" placeholder="Name" required>
+                <input type="email" name="agent_email" placeholder="Email" required>
+                <input type="text" name="agent_phone" placeholder="Mobile" required>
+                <input type="text" name="license" placeholder="License Number" required>
+                <input type="password" name="agent_password" placeholder="Password" required>
                 <button type="submit"> Sign Up</button>
                 <input type="hidden" name="agent_signup" value="true">
             </form>
@@ -225,8 +225,8 @@
                     <a href="#" class="icon"><i class="fab fa-linkedin-in"></i></a>
                 </div>
                 <span>or use your email and password</span>
-                <input type="email" name="agent_email" placeholder="Email">
-                <input type="password" name="agent_password" placeholder="Password">
+                <input type="email" name="agent_email" placeholder="Email" required>
+                <input type="password" name="agent_password" placeholder="Password" required>
                 <a href="#">Forgot Your Password?</a>
                 <button type="submit">Sign In</button>
                 <input type="hidden" name="agent_signin" value="true">

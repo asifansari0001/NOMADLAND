@@ -381,14 +381,14 @@ def hotel_img_del(request, hotel_image_id):
         end_date = request.POST.get('end_date')
         package_price = request.POST.get('package_price')
         package_images = request.FILES.get('package_image')
-        activity_name = request.POST.get('activity_name')
-        activity_description = request.POST.get('activity_description')
-        activity_img = request.FILES.get('activity_img')
-        hotel_name = request.POST.get('hotel_name')
-        hotel_quantity = request.POST.get('hotel_quantity')
-        hotel_price = request.POST.get('hotel_price')
-        hotel_image = request.FILES.get('hotel_image')
-        target_activity_id = request.POST.get('target_activity_id')
+        # activity_name = request.POST.get('activity_name')
+        # activity_description = request.POST.get('activity_description')
+        # activity_img = request.FILES.get('activity_img')
+        # hotel_name = request.POST.get('hotel_name')
+        # hotel_quantity = request.POST.get('hotel_quantity')
+        # hotel_price = request.POST.get('hotel_price')
+        # hotel_image = request.FILES.get('hotel_image')
+        # target_activity_id = request.POST.get('target_activity_id')
 
         nation_obj = NationsModel.objects.get(nation=destination_for_nation.nation_id)
         nation_obj.nation = nation_name
@@ -428,7 +428,7 @@ def hotel_img_del(request, hotel_image_id):
 
                 activity.save()
 
-        # done till here
+
 
         for hotel, details, image in hotel_data:
             hotel_id = hotel.hotel_id
@@ -598,4 +598,8 @@ def agent_analyticgraph(request):
 
 
 def contact(request):
+    user_id=request.session.get('user_id')
+    if user_id:
+        user_data=UserModel.objects.filter(user_id=user_id)
+        return render(request, 'contact.html',{'user_data':user_data})
     return render(request, 'contact.html')

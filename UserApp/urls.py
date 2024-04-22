@@ -12,7 +12,6 @@ urlpatterns = [
     path('package/', views.package, name='package'),
     path('package_filter/', views.package_filter, name='package_filter'),
     path('package_preview/<int:package_id>/', views.package_preview, name='package_preview'),
-    path('package_payment/', views.package_payment, name='package_payment'),
     path('profile/', views.profile, name='profile'),
     path('add_wishlist/<int:package_id>/', views.add_wishlist, name='add_wishlist'),
     path('wishlist/', views.wishlist, name='wishlist'),
@@ -22,5 +21,6 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('hotel_select/<int:package_split_id>/', views.hotel_select, name='hotel_select'),
     path('booking_user/', views.booking_user, name='booking_user'),
+    path('history_booking/',views.history_booking, name='history_booking'),
 
 ]

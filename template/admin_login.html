@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Signup</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s ease;
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #0056b3;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .btn-login {
+            width: auto; /* Changed width to auto */
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .btn-login:hover {
+            background-color: #004080;
+        }
+        .toggle-btn {
+            width: 60%;
+            background-color: #f8f9fa;
+            color: #0056b3;
+            border: 1px solid #0056b3;
+            border-radius: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .toggle-btn:hover {
+            background-color: #0056b3;
+            color: #fff;
+        }
+        .forgot-password {
+            text-align: center;
+            margin-top: 10px;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="form-container">
+                    <h2>Welcome</h2>
+                    <form id="login-form" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{form.email}}
+                        </div>
+                        <div class="form-group">
+                            {{form.password}}
+                        </div>
+
+                         <div class="form-group">
+                            {{form.hidden_field}}
+                        </div>
+
+                         <div class="d-flex justify-content-center mt-2">
+
+                        <button type="submit" class="btn btn-primary btn-login">Login</button>
+                             </div>
+                    </form>
+                    <form id="signup-form" style="display: none;" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{forms.name}}
+                        </div>
+                        <div class="form-group">
+                            {{forms.reg_number}}
+                        </div>
+                        <div class="form-group">
+                            {{forms.email}}
+                        </div>
+                        <div class="form-group">
+                            {{forms.password}}
+                        </div>
+
+                         <div class="form-group">
+                            {{forms.hidden_fields}}
+                        </div>
+                        <div class="d-flex justify-content-center mt-2">
+
+                            <button type="submit" class="btn btn-primary btn-login">Sign Up</button>
+
+                        </div>
+                    </form>
+
+                    <div class="d-flex justify-content-center mt-3">
+
+                             <button class="btn toggle-btn" id="toggle-btn">Switch to Sign Up</button>
+
+                        </div>
+
+                    <div class="forgot-password">
+                        <a href="#" style="text-decoration:none;">Forgot Password?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButton = document.getElementById('toggle-btn');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+
+            toggleButton.addEventListener('click', function () {
+                if (loginForm.style.display === 'none') {
+                    loginForm.style.display = 'block';
+                    signupForm.style.display = 'none';
+                    this.textContent = 'Switch to Sign Up';
+                } else {
+                    loginForm.style.display = 'none';
+                    signupForm.style.display = 'block';
+                    this.textContent = 'Switch to Login';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

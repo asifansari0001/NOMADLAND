@@ -440,6 +440,7 @@ def hotel_select(request, package_split_id):
     if user_id:
         user_data = UserModel.objects.filter(user_id=user_id)
         context1 = {
+
             'hotels': hotels,
             'hotel_images': hotel_images,
             'package_hotels': package_hotels,
@@ -473,7 +474,7 @@ def booking_user(request):
     hotel_id = hotel_id
 
     user_id = request.session.get('user_id')
-    usermodel=UserModel.objects.get(user_id=user_id)
+    usermodel = UserModel.objects.get(user_id=user_id)
     package_split = PackageSplit.objects.get(package_id=package_id)
     packagemodel = PackageModel.objects.get(package_id=package_id)
 
@@ -498,4 +499,52 @@ def booking_user(request):
 
     booking_obj.save()
 
-    return redirect('/')
+    return redirect('/package_payment')
+
+
+def history_booking(request):
+    if 'user_id' in request.session:
+        user_id = request.session.get('user_id')
+        user_data = UserModel.objects.filter(user_id=user_id)
+
+        # Filter bookings with status 'complete'
+        bookings = BookingModel.objects.filter(user_id=user_id, booking_status='complete')
+
+        # Lists to store individual booking details
+        total_prices = []
+        destinations = []
+        package_imgs = []
+        from_dates = []
+        to_dates = []
+
+        # Iterate over filtered bookings queryset to fetch individual booking details
+        for booking in bookings:
+            total_prices.append(booking.total_price)
+            from_dates.append(booking.from_date)
+            to_dates.append(booking.to_date)
+
+            # Fetch destination name
+            destination = PackageModel.objects.get(package_id=booking.package_id_id).destination_name
+            destinations.append(destination)
+
+            # Fetch package image
+            package_images = PackageImagesModel.objects.filter(package_id=booking.package_id)
+            if package_images.exists():
+                package_img = package_images.first().image
+            else:
+                package_img = None  # Handle the case where no image is found
+            package_imgs.append(package_img)
+
+        # Zip the lists together
+        booking_data = zip(total_prices, destinations, package_imgs, from_dates, to_dates)
+
+        context = {
+            'booking_data': booking_data,
+            'user_data': user_data,
+        }
+
+        return render(request, 'history_booking.html', context)
+    else:
+        return redirect('/login')
+
+
