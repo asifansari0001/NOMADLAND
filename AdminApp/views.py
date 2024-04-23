@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from pyexpat.errors import messages
+
+from .models import *
 from .form import AdminLoginForm, AdminSignupForm
 
 
@@ -10,32 +13,54 @@ def welcome_admin(request):
 def admin_login(request):
     form = AdminLoginForm()
     forms = AdminSignupForm()
+
     if request.method == 'POST':
+        print('post')
         if 'hidden_field' in request.POST and request.POST['hidden_field'] == 'login':
             print('login')
-            form = AdminLoginForm(request.POST)
-            if form.is_valid():
-                email = form.cleaned_data['email']
-                password = form.cleaned_data['password']
-                user = authenticate(request, email=email, password=password)
-                if user is not None:
-                    login(request, user)
-                    # Redirect to a success page
-                    return redirect('/welcome_admin')
+            email = request.POST['email']
+            password = request.POST['password']
+            admin = AdminModel.objects.filter(email=email, password=password)
+            if admin:
+                print('log in successfully')
+                return redirect('welcome_admin')
             else:
-                return render(request, 'admin_login.html', {'form': form, 'forms': forms})
+                return redirect('admin_login')
 
-        if 'hidden_field' in request.POST and request.POST['hidden_field'] == 'signup':
+        elif 'hidden_fields' in request.POST and request.POST['hidden_fields'] == 'signup':
+            print('signup')
 
-            forms = AdminSignupForm(request.POST)
-            if forms.is_valid():
-                # Process the form data and create a new user account
-                # Redirect to a success page
-                return redirect('/admin')  # Replace 'success_page' with the name of your success page URL
+            email = request.POST['email']
+
+            existing_admin = AdminModel.objects.filter(email=email).exists()
+
+            if existing_admin:
+                print('exist')
+                messages.error(request, 'User with this email already exists.')
+
             else:
-                forms = AdminSignupForm()
-            return render(request, 'signup.html', {'forms': forms})
 
-    else:
+                # Create a new AdminModel instance
 
-        return render(request, 'admin_login.html', {'form': form, 'forms': forms})
+                new_admin = AdminModel(
+
+                    admin_name=request.POST['name'],
+
+                    reg_no=request.POST['reg_number'],
+
+                    email=email,
+
+                    password=request.POST['password']
+
+                )
+
+                # Save the new admin instance to the database
+
+                new_admin.save()
+                print('saved')
+
+                # Redirect the user to some success page or login page
+
+                return redirect('admin_login')
+
+    return render(request, 'admin_login.html', {'form': form, 'forms': forms})

@@ -195,97 +195,52 @@
     </div>
 </div>
 
-<div class="container mt-5">
-    <h2>Manage Bookings</h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Booking ID</th>
-          <th>Client Name</th>
-          <th>Booking Date</th>
-          <th>Package</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Example booking data, you can populate this dynamically from the backend -->
-        <tr>
-          <td>1</td>
-          <td>John Doe</td>
-          <td>2024-03-01</td>
-          <td>Paris Tour</td>
-          <td>Pending</td>
+<div class="container">
+    {% if bookings %}
+    <table class="table booking-details">
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Package Name</th>
+                <th>User's Name</th>
+                <th>Booking Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
 
-          <td>
-            <button class="btn btn-primary btn-sm">Approve</button>
-            <button class="btn btn-danger btn-sm">Deny</button>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.booking_id }}</td>
+                    <td>{{ booking.package_id.destination_name }}</td>
+                    <td>{{ booking.user_id.user_name }}</td>
+                    <td>{{ booking.created_at }}</td>
+                    <td>
+                        <form action="/booking_approval/{{booking.booking_id}}/" method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="approve" class="btn btn-success">Approve</button>
+                            <button type="submit" name="deny" class="btn btn-danger">Deny</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
 
-          </td>
-        </tr>
-
-        <tr>
-          <td>2</td>
-          <td>Jane Smith</td>
-          <td>2024-03-02</td>
-          <td>London Tour</td>
-          <td>Approved</td>
-          <td>
-            <button class="btn btn-primary btn-sm">Approve</button>
-            <button class="btn btn-danger btn-sm">Deny</button>
-
-          </td>
-        </tr>
-
-        <tr>
-          <td>3</td>
-          <td> Smith Jane</td>
-          <td>2024-03-02</td>
-          <td>London Tour</td>
-          <td>Approved</td>
-          <td>
-            <button class="btn btn-primary btn-sm">Approve</button>
-            <button class="btn btn-danger btn-sm">Deny</button>
-
-          </td>
-        </tr>
-
-        <tr>
-          <td>4</td>
-          <td>David</td>
-          <td>2024-03-02</td>
-          <td>London Tour</td>
-          <td>Approved</td>
-          <td>
-            <button class="btn btn-primary btn-sm">Approve</button>
-            <button class="btn btn-danger btn-sm">Deny</button>
-
-          </td>
-        </tr>
-
-        <tr>
-          <td>5</td>
-          <td>Rubaen</td>
-          <td>2024-03-02</td>
-          <td>London Tour</td>
-          <td>Approved</td>
-          <td>
-            <button class="btn btn-primary btn-sm">Approve</button>
-            <button class="btn btn-danger btn-sm">Deny</button>
-
-          </td>
-        </tr>
-
-
-        <!-- Example bookings, you can populate this dynamically from the backend -->
-      </tbody>
+        </tbody>
     </table>
-  </div>
+    {% else %}
+                <br>
+                <h3 class="text-center text-danger mt-5">You Don't Have Any Recent Booking Request!</h3>
+            {% endif %}
+</div>
+
+
 
 
 
 
 <!-- Footer -->
+<br>
+<br>
 <br>
 <br>
 <footer class="text-center text-lg-start text-white bg-dark">
