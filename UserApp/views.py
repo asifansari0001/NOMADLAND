@@ -165,11 +165,11 @@ def offer(request):
 def update_expired_offers():
     current_time = timezone.now()
     expired_offers = OfferModel.objects.filter(valid_to__lt=current_time, status='active')
-    print(f"Found {expired_offers.count()} expired offers to update")
+
 
     # Update the status of expired offers to 'inactive'
     num_updated = expired_offers.update(status='inactive')
-    print(f"Successfully updated status for {num_updated} expired offers")
+
 
 
 def package_review(request, package_id):

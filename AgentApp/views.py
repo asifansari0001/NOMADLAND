@@ -499,6 +499,7 @@ def package_update(request, package_id):
         end_date = request.POST.get('end_date')
         package_price = request.POST.get('package_price')
         package_images = request.FILES.get('package_image')
+
         # activity_name = request.POST.get('activity_name')
         # activity_description = request.POST.get('activity_description')
         # activity_img = request.FILES.get('activity_img')

@@ -584,51 +584,18 @@
   <!-- footer endss -->
 
 
-<!--<script>-->
-
-<!--        document.addEventListener('DOMContentLoaded', function () {-->
-<!--            const dropdownIcon = document.querySelector('.dropdown-toggle');-->
-<!--            const overlay = document.getElementById('overlay');-->
-<!--            const signInButton = document.querySelector('.dropdown-toggle button');-->
-
-<!--            dropdownIcon.addEventListener('click', function () {-->
-<!--                if (overlay.style.display === "block") {-->
-<!--                    overlay.style.display = "none"; // Hide overlay if it's already visible-->
-<!--                    signInButton.style.backgroundColor = "";-->
-<!--                    signInButton.style.color = "";-->
-<!--                } else {-->
-<!--                    overlay.style.display = "block";-->
-<!--                    signInButton.style.backgroundColor = "white"; // Show overlay if it's hidden-->
-<!--                    signInButton.style.color = "black";-->
-<!--                }-->
-<!--            });-->
-
-<!--            // Add event listener to overlay to close it when clicked anywhere on the screen-->
-<!--            overlay.addEventListener('click', function () {-->
-<!--                overlay.style.display = "none";-->
-<!--                signInButton.style.backgroundColor = "";-->
-<!--                signInButton.style.color = "";-->
-<!--            });-->
-<!--        });-->
-
-<!--        function chooseOption(option) {-->
-<!--            if (option === 'customer') {-->
-<!--                window.location.href = "{% url 'login' %}"; // Redirect to the login URL-->
-<!--            } else if (option === 'agent') {-->
-<!--                 window.location.href = "{% url 'agent_login' %}";-->
-<!--            }-->
-<!--        }-->
-
-<!--        $(document).ready(function () {-->
-<!--            $(window).on('resize', function () {-->
-<!--                if ($(window).width() < 992) {-->
-<!--                    $('#mainNav').removeClass('fixed-top');-->
-<!--                } else {-->
-<!--                    $('#mainNav').addClass('fixed-top');-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--</script>-->
+<script>
+window.embeddedChatbotConfig = {
+chatbotId: "Yq8Xtq7EWh5TiMSkjsYlJ",
+domain: "www.chatbase.co"
+}
+</script>
+<script
+src="https://www.chatbase.co/embed.min.js"
+chatbotId="Yq8Xtq7EWh5TiMSkjsYlJ"
+domain="www.chatbase.co"
+defer>
+</script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {

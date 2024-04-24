@@ -61,9 +61,9 @@
             text-decoration: none;
             transition: background-color 0.3s ease;
         }
-        button:hover, a:hover {
-            background-color: #004080;
-        }
+<!--        button:hover, a:hover {-->
+<!--            background-color: #004080;-->
+<!--        }-->
         ul {
             list-style: none;
             padding: 0;
@@ -116,23 +116,27 @@
         <div class="options">
             <div class="option">
                 <h2>Registered Agents</h2>
-                <button id="removeAgentBtn">Remove Agent</button>
+                <a href="{% url 'agent_remove' %}"><button class="p-0" id="removeAgentBtn">Remove Agent</button></a>
             </div>
             <div class="option">
                 <h2>Registered Users</h2>
-                <button id="removeUserBtn">Remove User</button>
+
+                <a href="{% url 'user_remove' %}"><button class="p-0" id="removeUserBtn">Remove User</button></a>
             </div>
             <div class="option">
                 <h2>Manage Agent </h2>
-                <button id="approveAgentBtn">Approve/Deny Agent </button>
+
+                <a href="#"><button class="p-0" id="approveAgentBtn">Approve/Deny Agent </button></a>
             </div>
             <div class="option">
                 <h2>Change  Images</h2>
-                <button id="changeImagesBtn">Change Images</button>
+
+                <a href="#"><button class="p-0" id="changeImagesBtn">Change Images</button></a>
             </div>
             <div class="option">
                 <h2>Remove Package</h2>
-                <button id="remove_package">Remove Package</button>
+
+                <a href="#"><button class="p-0" id="remove_package">Remove Package</button></a>
             </div>
             <div class="option">
                 <h2>Messages</h2>
