@@ -108,7 +108,7 @@
         <i class="fas fa-bell"></i> <!-- Font Awesome bell icon -->
     </button>
         <!-- Parallel button -->
-        <button id="parallelBtn">Website</button>
+        <button class="p-0" id="parallelBtn"><a href="{% url 'home' %}">Website</a></button>
 
                 <h1 class=" text-center" >Hello Admin</h1>
        <p class="welcome-msg text-center" style="text-align: center;">Manage your travel website with ease!</p>
@@ -126,22 +126,22 @@
             <div class="option">
                 <h2>Manage Agent </h2>
 
-                <a href="#"><button class="p-0" id="approveAgentBtn">Approve/Deny Agent </button></a>
+                <a href="{% url 'pending_agents' %}"><button class="p-0" id="approveAgentBtn">Approve/Deny Agent </button></a>
             </div>
             <div class="option">
                 <h2>Change  Images</h2>
 
                 <a href="#"><button class="p-0" id="changeImagesBtn">Change Images</button></a>
             </div>
-            <div class="option">
-                <h2>Remove Package</h2>
+<!--            <div class="option">-->
+<!--                <h2>Remove Package</h2>-->
 
-                <a href="#"><button class="p-0" id="remove_package">Remove Package</button></a>
-            </div>
-            <div class="option">
-                <h2>Messages</h2>
-                <button id="remove_offer">Messages</button>
-            </div>
+<!--                <a href="#"><button class="p-0" id="remove_package">Remove Package</button></a>-->
+<!--            </div>-->
+<!--            <div class="option">-->
+<!--                <h2>Messages</h2>-->
+<!--                <button id="remove_offer">Messages</button>-->
+<!--            </div>-->
 
             <div class="option">
                 <h2>Booking Statistics</h2>

@@ -23,7 +23,7 @@ class AgentModel(models.Model):
     agent_phone = models.CharField(max_length=255)
     created_at = models.DateField(auto_now_add=True)
     license = models.CharField(max_length=255)
-    status = models.CharField(max_length=255)
+    status = models.CharField(max_length=255,default='inactive')
 
     class Meta:
         db_table = 'agent_data'

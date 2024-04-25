@@ -76,7 +76,7 @@ def agent_remove(request):
     return render(request, 'agent_remove.html', {'agent_data': agent_data})
 
 
-def agent_remove_fun(request,agent_id):
+def agent_remove_fun(request, agent_id):
     agent = AgentModel.objects.filter(agent_id=agent_id).first()
     agent.delete()
     message = "Agent Successfully Removed"
@@ -96,9 +96,40 @@ def user_remove(request):
         user_data.append(agent_info)
     return render(request, 'remove_user.html', {'user_data': user_data})
 
-def user_remove_fun(request,user_id):
+
+def user_remove_fun(request, user_id):
     user = UserModel.objects.filter(user_id=user_id).first()
     user.delete()
     message = "User Successfully Removed"
     return HttpResponse(f'<script>alert("{message}"); window.location.href = "/user_remove/"</script>')
+
+
+def pending_agents(request):
+    agents = AgentModel.objects.filter(status='inactive')
+    agent_data = []
+    for agent in agents:
+        agent_info = {
+            'agent_id': agent.agent_id,
+            'agent_name': agent.agent_name,
+            'agent_email': agent.agent_email,
+            'agent_phone': agent.agent_phone,
+            'created_at': agent.created_at,
+            'license': agent.license
+        }
+        agent_data.append(agent_info)
+
+    return render(request, 'pending_agents.html', {'agent_data': agent_data})
+
+
+def action_pending_agents(request, agent_id):
+    if request.method == 'POST':
+        agents = AgentModel.objects.get(agent_id=agent_id)
+        if 'approve' in request.POST:
+            agents.status = 'active'
+        elif 'deny' in request.POST:
+            agents.status = 'denied'
+        agents.save()
+        return redirect('/pending_agents')
+    else:
+        return redirect('/pending_agents')
 

@@ -13,7 +13,7 @@ def agent_login(request):
 
             if agent:
                 request.session['agent_id'] = agent.agent_id
-                agent_data = AgentModel.objects.filter(agent_id=agent.agent_id)
+                agent_data = AgentModel.objects.filter(agent_id=agent.agent_id, status='active')
                 return render(request, 'welcome_agent.html', {'data_key': agent_data})
 
             if agent is None:
@@ -618,9 +618,8 @@ def booking_approval(request, booking_id):
 
 
 def agent_booking(request):
-    bookings = BookingModel.objects.filter(booking_status='pending',payment_status='complete')
+    bookings = BookingModel.objects.filter(booking_status='pending', payment_status='complete')
     context = {
         'bookings': bookings,
     }
     return render(request, 'agent_manage.html', context)
-
