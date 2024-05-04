@@ -164,6 +164,8 @@
 }
   <!--   logout button css  ends   -->
 
+
+
 </style>
 
 </head>
@@ -262,48 +264,38 @@
 <br>
 
 <section>
-    <div class="container w-75">
-
-        <div class="container-fluid border border-secondary w-75">
-
+    <div class="container">
+        <div class="container-fluid border border-secondary">
             <h4 class="fw-bolder text-secondary text-center mt-2">Profile Details</h4>
             <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-center">
+                        {% for x in user_data %}
+                        <h6 class="fw-light ms-2" style="letter-spacing: 3px;">Full Name : {{x.user_name}}</h6>
+
+                        <h6 class="fw-light ms-2" style="letter-spacing: 3px;">Mobile : {{x.user_mobile}}</h6>
+                        <h6 class="fw-light ms-2" style="letter-spacing: 3px;">Gender : {{x.gender}}</h6>
+                        <h6 class="fw-light ms-2" style="letter-spacing: 3px;">Location : {{x.location}} </h6>
+                        <h6 class="fw-light ms-2" style="letter-spacing: 3px;">Date of Birth : {{x.user_dob}}</h6>
+                        <h6 class="fw-light ms-2" style="letter-spacing: 3px;">Email : {{x.user_email}}</h6>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-4 text-center d-flex justify-content-center">
+    <button type="submit" class="btn btn-success w-25">
+        <a href="{% url 'profile_edit' %}" style="text-decoration: none; color: inherit;">Edit</a>
+    </button>
+</div>
+
+            </div>
             <br>
-            <div class="d-flex justify-content-between flex-wrap">
-                <div class="text-end w-50">
-                    <h6 class="fw-light" style="letter-spacing: 3px;">Full Name :</h6>
-                    <h6 class="fw-light" style="letter-spacing: 3px;">Email :</h6>
-                    <h6 class="fw-light" style="letter-spacing: 3px;">Mobile :</h6>
-                    <h6 class="fw-light" style="letter-spacing: 3px;">Gender :</h6>
-                    <h6 class="fw-light" style="letter-spacing: 3px;">Location :</h6>
-                    <h6 class="fw-light" style="letter-spacing: 3px;">Date of Birth :</h6>
-                </div>
-                <div class="text-start w-50">
-                    {% for x in user_data %}
-
-                    <h6 class="fw-light ms-2" style="letter-spacing: 3px;">{{x.user_name}}</h6>
-                    <h6 class="fw-light ms-2" style="letter-spacing: 3px;">{{x.user_email}}</h6>
-                    <h6 class="fw-light ms-2" style="letter-spacing: 3px;"> -not added-</h6>
-                    <h6 class="fw-light ms-2" style="letter-spacing: 3px;"> -not added-</h6>
-                    <h6 class="fw-light ms-2" style="letter-spacing: 3px;"> -not added-</h6>
-                    <h6 class="fw-light ms-2" style="letter-spacing: 3px;"> -not added-</h6>
-
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="justify-content-center d-flex p-4">
-                <button type="submit" class="btn btn-success ps-4 pe-4">Edit</button>
-            </div>
-
-
-
-
-
         </div>
-
     </div>
 </section>
+
 
 
 

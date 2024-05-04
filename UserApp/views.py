@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from AgentApp.models import ActivitiesModel, HotelImage
 from .models import *
 from .models import OfferModel, PackageModel, PackageImagesModel
-from django.db.models import Min, Avg
+from django.db.models import Min, Avg, Count, Max
 from django.db.models import Q
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
@@ -17,7 +17,7 @@ def login(request):
             user_email = request.POST.get('user_email')
             user_password = request.POST.get('user_password')
 
-            user = UserModel.objects.filter(user_email=user_email, user_password=user_password).first()
+            user = UserModel.objects.filter(user_email=user_email, user_password=user_password, status='active').first()
 
             if user:
                 request.session['user_id'] = user.user_id
@@ -121,13 +121,15 @@ def review(request):
     context = {'user_data': user_data, 'review_data': review_data}
 
     if request.method == 'POST':
-        review_text = request.POST.get('review_text')
-        rating = int(request.POST.get('star'))
-        review = WebsiteReviewModel.objects.create(user=user_data, review_text=review_text, rating=rating)
-        review.save()
-
-        # Redirect to a success page or back to review page
-        return redirect('/review')  # Change 'review_success' to your success URL
+        if user_id:
+            user_data = UserModel.objects.get(user_id=user_id)
+            review_text = request.POST.get('review_text')
+            rating = int(request.POST.get('star'))
+            review = WebsiteReviewModel.objects.create(user=user_data, review_text=review_text, rating=rating)
+            review.save()
+            return redirect('/review')
+        else:
+            return redirect('/login')
 
     return render(request, 'nomadland_review.html', context)
 
@@ -166,10 +168,8 @@ def update_expired_offers():
     current_time = timezone.now()
     expired_offers = OfferModel.objects.filter(valid_to__lt=current_time, status='active')
 
-
     # Update the status of expired offers to 'inactive'
     num_updated = expired_offers.update(status='inactive')
-
 
 
 def package_review(request, package_id):
@@ -248,47 +248,6 @@ from django.shortcuts import render
 
 from django.shortcuts import redirect
 from django.contrib import messages
-
-
-def package_filter(request):
-    user_id = request.session.get('user_id')
-    user_data = None
-    if user_id:
-        user_data = UserModel.objects.get(user_id=user_id)
-
-    # Retrieve the filtered package IDs from the session
-    filtered_package_ids = request.session.get('filtered_package_ids', [])
-
-    # Reconstruct the queryset of filtered packages
-    filtered_packages = PackageModel.objects.filter(package_id__in=filtered_package_ids)
-
-    # Calculate average rating for each package
-    filtered_packages = filtered_packages.annotate(average_rating=Avg('feedbackmodel__rating'))
-
-    # Check if each package is in the wishlist
-    for package in filtered_packages:
-        package_in_wishlist = WishlistModel.objects.filter(user=user_data, package=package).exists()
-        package.package_in_wishlist = package_in_wishlist
-
-    if request.method == 'POST':
-        price_option = request.POST.get('price_option')
-        sort_option = request.POST.get('sort_option')
-
-        if price_option == 'low_high':
-            filtered_packages = filtered_packages.order_by('price')
-        elif price_option == 'high_low':
-            filtered_packages = filtered_packages.order_by('-price')
-
-        if sort_option == 'latest':
-            filtered_packages = filtered_packages.order_by('-created_at')
-        elif sort_option == 'oldest':
-            filtered_packages = filtered_packages.order_by('created_at')
-
-    context = {
-        'filtered_packages': filtered_packages,
-        'user_data': user_data,  # Include user_data in the context
-    }
-    return render(request, 'package_filter.html', context)
 
 
 def add_wishlist(request, package_id):
@@ -548,3 +507,123 @@ def history_booking(request):
         return redirect('/login')
 
 
+# better offer filter
+
+# def package_filter(request):
+#     user_id = request.session.get('user_id')
+#     user_data = None
+#     if user_id:
+#         user_data = UserModel.objects.get(user_id=user_id)
+#
+#     # Retrieve the filtered package IDs from the session
+#     filtered_package_ids = request.session.get('filtered_package_ids', [])
+#
+#     # Reconstruct the queryset of filtered packages
+#     filtered_packages = PackageModel.objects.filter(package_id__in=filtered_package_ids)
+#
+#     # Annotate with average rating
+#     filtered_packages = filtered_packages.annotate(
+#         average_rating=Avg('feedbackmodel__rating', output_field=FloatField())
+#     )
+#
+#     # Annotate with total number of feedbacks
+#     filtered_packages = filtered_packages.annotate(
+#         num_feedbacks=Count('feedbackmodel')
+#     )
+#
+#     # Annotate with maximum discount percentage among applicable offers
+#     filtered_packages = filtered_packages.annotate(
+#         max_discount=Max('offers__discount_percentage', filter=Q(offers__valid_from__lte=timezone.now(),
+#                                                                  offers__valid_to__gte=timezone.now(), offers__status='active'))
+#     )
+#
+#     if request.method == 'POST':
+#         price_option = request.POST.get('price_option')
+#         sort_option = request.POST.get('sort_option')
+#
+#         if price_option == 'low_high':
+#             filtered_packages = filtered_packages.order_by('price')
+#         elif price_option == 'high_low':
+#             filtered_packages = filtered_packages.order_by('-price')
+#
+#         if sort_option == 'latest':
+#             filtered_packages = filtered_packages.order_by('-created_at')
+#         elif sort_option == 'oldest':
+#             filtered_packages = filtered_packages.order_by('created_at')
+#         elif sort_option == 'customer_rating':
+#             filtered_packages = filtered_packages.order_by('-average_rating', '-num_feedbacks')
+#         elif sort_option == 'better_offer':
+#             filtered_packages = filtered_packages.order_by('-max_discount')
+#
+#     context = {
+#         'filtered_packages': filtered_packages,
+#         'user_data': user_data,  # Include user_data in the context
+#     }
+#     return render(request, 'package_filter.html', context)
+
+
+def package_filter(request):
+    user_id = request.session.get('user_id')
+    user_data = None
+    if user_id:
+        user_data = UserModel.objects.get(user_id=user_id)
+
+    # Retrieve the filtered package IDs from the session
+    filtered_package_ids = request.session.get('filtered_package_ids', [])
+
+    # Reconstruct the queryset of filtered packages
+    filtered_packages = PackageModel.objects.filter(package_id__in=filtered_package_ids)
+
+    # Calculate average rating for each package
+    filtered_packages = filtered_packages.annotate(average_rating=Avg('feedbackmodel__rating'))
+
+    # Check if each package is in the wishlist
+    for package in filtered_packages:
+        package_in_wishlist = WishlistModel.objects.filter(user=user_data, package=package).exists()
+        package.package_in_wishlist = package_in_wishlist
+
+    if request.method == 'POST':
+        price_option = request.POST.get('price_option')
+        sort_option = request.POST.get('sort_option')
+
+        if price_option == 'low_high':
+            filtered_packages = filtered_packages.order_by('price')
+        elif price_option == 'high_low':
+            filtered_packages = filtered_packages.order_by('-price')
+
+        if sort_option == 'latest':
+            filtered_packages = filtered_packages.order_by('-created_at')
+        elif sort_option == 'oldest':
+            filtered_packages = filtered_packages.order_by('created_at')
+        elif sort_option == 'customer_rating':
+            filtered_packages = filtered_packages.order_by('-average_rating')
+        elif sort_option == 'better_offer':
+            # Sort by the presence of offers and their discount percentages
+            filtered_packages = filtered_packages.order_by('-offers__discount_percentage')
+
+    context = {
+        'filtered_packages': filtered_packages,
+        'user_data': user_data,  # Include user_data in the context
+    }
+    return render(request, 'package_filter.html', context)
+
+
+def profile_edit(request):
+    user_id = request.session.get('user_id')
+    user_data = None
+    if user_id:
+        user_data = UserModel.objects.filter(user_id=user_id).first()
+        user_name=UserModel.objects.filter(user_id=user_id)
+
+    if request.method == 'POST':
+        user_data.user_name = request.POST.get('user_name')
+        user_data.user_mobile = request.POST.get('user_mobile')
+        user_data.user_dob = request.POST.get('user_dob')
+        user_data.location = request.POST.get('location')
+        user_data.gender = request.POST.get('gender')
+        user_data.user_email = request.POST.get('user_email')
+        user_data.user_password = request.POST.get('user_password')
+        user_data.save()
+        return redirect('/profile')
+
+    return render(request, 'profile_edit.html', {'user': user_data,'user_data': user_name})

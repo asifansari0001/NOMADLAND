@@ -40,7 +40,10 @@ def agent_login(request):
 
 
 def welcome_agent(request):
-    return render(request, 'welcome_agent.html')
+    agent_id = request.session.get('agent_id')
+    agent = AgentModel.objects.filter(agent_id=agent_id)
+
+    return render(request, 'welcome_agent.html', {'data_key': agent})
 
 
 def agent_manage(request):
@@ -142,12 +145,14 @@ def hotel_add(request):
         hotel_names = request.POST.getlist('hotel_name[]')
         hotel_prices = request.POST.getlist('hotel_price[]')
         hotel_quantities = request.POST.getlist('hotel_quantity[]')
+        hotel_description = request.POST.getlist('hotel_description[]')
         hotel_images = request.FILES.getlist('hotel_image[]')
 
         # Loop through the submitted data and save hotels
-        for name, price, quantity, image in zip(hotel_names, hotel_prices, hotel_quantities, hotel_images):
+        for name, price, quantity, image, description in zip(hotel_names, hotel_prices, hotel_quantities, hotel_images,
+                                                             hotel_description):
             # Create hotel instance
-            hotel = HotelModel.objects.create(hotel_name=name)
+            hotel = HotelModel.objects.create(hotel_name=name, hotel_description=description)
 
             # Save hotel image
             hotel_image = HotelImage.objects.create(hotel_id=hotel, hotel_image=image)

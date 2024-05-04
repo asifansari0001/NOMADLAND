@@ -17,10 +17,14 @@ class UserModel(models.Model):
     """
     user_id = models.AutoField(primary_key=True)
     user_name = models.CharField(max_length=255)
+    user_mobile = models.CharField(max_length=255, null=True,default='-not added-')
+    user_dob = models.CharField(max_length=255, null=True,default='-not added-')
+    location = models.CharField(max_length=255, null=True,default='-not added-')
+    gender = models.CharField(max_length=255, null=True,default='-not added-')
     user_email = models.EmailField(max_length=255)
     user_password = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=255, default='Active')
+    status = models.CharField(max_length=255, default='active')
 
     class Meta:
         db_table = 'user_data'

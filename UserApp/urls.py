@@ -22,5 +22,6 @@ urlpatterns = [
     path('hotel_select/<int:package_split_id>/', views.hotel_select, name='hotel_select'),
     path('booking_user/', views.booking_user, name='booking_user'),
     path('history_booking/',views.history_booking, name='history_booking'),
+    path('profile_edit/', views.profile_edit, name='profile_edit'),
 
 ]

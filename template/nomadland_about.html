@@ -137,6 +137,13 @@
         }
 
         /* overlay css */
+
+        @media (max-width: 576px) {
+    .hide-sm {
+        display: none;
+    }
+}
+
     </style>
 </head>
 
@@ -230,13 +237,13 @@
     <!-- background section starts -->
 
     <div class="position-relative w-100">
-        <img src="{% static 'view-urban-dark-city-with-fog.jpg' %}" class="img-fluid" alt="img">
+        <img src="{% static '427.jpg' %}" class="img-fluid" alt="img">
         <div class="container-fluid position-absolute top-50 start-50 translate-middle text-center">
             <div class="row">
                 <div class="col-md-12 col-sm-12 mt-sm-3 text-center">
                     <h3 class=" text-center text-white display-5">WHAT DO WE DO?</h3>
-                    <p class="text-center fs-6 text-white opacity-50">
-                        We serves as a virtual gateway for potential travelers,
+                    <p class="text-center fs-6 text-white fw-bold hide-sm ">
+                        We serve as a virtual gateway for potential travelers,
                         providing comprehensive information on destinations,
                         itineraries, and unique offerings.
                     </p>

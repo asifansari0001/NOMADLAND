@@ -167,7 +167,7 @@
         <div>
             <nav class="navbar navbar-expand-lg" id="#mainNav" style="background-color: whitesmoke;">
                 <div class="container-fluid">
-                    <a class="navbar-brand  fw-bold" href="#">
+                    <a class="navbar-brand  fw-bold" href="{% url 'home' %}">
                         <img src="{% static 'mountains_black.png' %}" alt="Logo" width="30" height="28"
                             class="d-inline-block align-text-top">
                         NOMAD<span>LAND</span>
@@ -321,30 +321,25 @@
 
   <section>
     <div class="container-fluid mt-md-5 mt-sm-5" style="background-color: whitesmoke;">
-
         <br>
         <br>
-
-
-    <div class="container">
-
-
-      <div class="container bg-light">
-    <div class="card-body row">
-        <div class="col-md-6">
-            <h2 class="card-title display-5 text-center">Explore Exclusive Travel Offers Here!</h2><br>
-            <p class="card-text text-center">Explore unbeatable deals and exclusive offers tailored just for you on NomadLand.
-                Dive into a world of adventure with our curated selection of travel packages, spanning captivating destinations worldwide.
-                From scenic wonders to cultural marvels, embark on unforgettable journeys that promise excitement and enrichment. Book now
-                and make your travel dreams a reality!</p>
-            <br>
-            <div class="text-center">
-                <a href="{% url 'offer' %}" class="btn btn-success">View Offers</a>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <a href="{% url 'offer' %}"><img src="{% static 'coconut-palm-tree.jpg' %}" class="img-fluid" alt="Image"></a>
-        </div>
+        <div class="container">
+            <div class="container bg-light">
+                <div class="card-body row">
+                    <div class="col-md-6">
+                        <h2 class="card-title display-5 text-center">Explore Exclusive Travel Offers Here!</h2><br>
+                        <p class="card-text text-center">Explore unbeatable deals and exclusive offers tailored just for you on NomadLand.
+                            Dive into a world of adventure with our curated selection of travel packages, spanning captivating destinations worldwide.
+                            From scenic wonders to cultural marvels, embark on unforgettable journeys that promise excitement and enrichment. Book now
+                            and make your travel dreams a reality!</p>
+                        <br>
+                        <div class="text-center mb-md-1 mb-3 mb-sm-0"> <!-- Add margin-top at medium screens and margin-bottom only for small screens -->
+                            <a href="{% url 'offer' %}" class="btn btn-success">View Offers</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{% url 'offer' %}"><img src="{% static 'coconut-palm-tree.jpg' %}" class="img-fluid mt-4 mt-sm-0" alt="Image"></a>
+                    </div>
     </div>
 </div>
 
@@ -353,27 +348,28 @@
 <br>
         <br>
         <br>
-        <br>
+        
 
 
 
       <div class="container bg-light">
-        <div class="card-body row">
-            <div class="col-md-6">
-                <a href="{% url 'package' %}"><img src="{% static 'canyon-1740973_1920.jpg' %}" class="img-fluid" alt="Image"></a>
-            </div>
-            <div class="col-md-6">
-                <h2 class="card-title display-5 text-center">Our Most Popular Tours</h2><br>
-                <p class="card-text text-center">Embark on unforgettable adventures with our most sought-after tours,
+    <div class="card-body row">
+        <div class="col-md-6 mb-4 mb-md-0"> <!-- Added mb-4 mb-md-0 for margin bottom -->
+            <a href="{% url 'package' %}"><img src="{% static 'canyon-1740973_1920.jpg' %}" class="img-fluid" alt="Image"></a>
+        </div>
+        <div class="col-md-6">
+            <h2 class="card-title display-5 text-center">Our Most Popular Tours</h2><br>
+            <p class="card-text text-center">Embark on unforgettable adventures with our most sought-after tours,
                 meticulously crafted to immerse you in the heart of captivating destinations around the globe.
                 From breathtaking natural wonders to culturally rich cities, our curated selection ensures an enriching
                 and memorable travel experience for every explorer.</p><br>
-                <div class="text-center">
-                    <a href="{% url 'package' %}" class="btn btn-success">View Tours</a>
-                </div>
+            <div class="text-center">
+                <a href="{% url 'package' %}" class="btn btn-success mt-md-4">View Tours</a>
             </div>
         </div>
     </div>
+</div>
+
 
 
     <br>
@@ -381,55 +377,59 @@
 
 
     <h2 style="text-align: center;">Amenities & Services</h2><br>
-    <p style="text-align: center;">Embark on seamless journeys with our comprehensive travel services,<br>
-      where every detail is meticulously crafted to ensure your comfort,<br>
-      convenience, and unforgettable experiences</p>
+<p style="text-align: center;">Embark on seamless journeys with our comprehensive travel services,<br>
+    where every detail is meticulously crafted to ensure your comfort,<br>
+    convenience, and unforgettable experiences</p>
 
-      <div class="container mt-5">
-        <div class="row">
-          <div class="col-md-3 ">
-            <div class="card" style="width:301px;">
-              <img src="{% static 'handsome-elegant-man-car-salon.jpg' %}" class="card-img-top" style="width:300px;" alt="Image 1">
-              <div class="card-body" style="width:300px;">
-                <h5 class="card-title">Car rental</h5>
-                <p class="card-text">Experience the freedom to explore at your
-                  own pace with our convenient and affordable
-                  car rental services</p>
-              </div>
+<div class="container mt-5">
+    <div class="row" style="margin-left: 0;">
+        <div class="col-md-3">
+            <div class="card mt-md-3" style="width:301px;">
+                <img src="{% static 'handsome-elegant-man-car-salon.jpg' %}" class="card-img-top" style="width:300px;" alt="Image 1">
+                <div class="card-body" style="width:300px;">
+                    <h5 class="card-title">Car rental</h5>
+                    <p class="card-text">Experience the freedom to explore at your
+                        own pace with our convenient and affordable
+                        car rental services</p>
+                </div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card" style="width:301px;">
-              <img src="{% static 'busy-woman-doing-many-things-same-time.jpg' %}" class="card-img-top" style="width:300px;" alt="Image 2">
-              <div class="card-body" style="width:300px;">
-                <h5 class="card-title">24/7 Customer support</h5>
-                <p class="card-text">Enjoy peace of mind with our dedicated 24/7
-                  customer support, ensuring a seamless
-                  and stress-free experience</p>
-              </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card mt-3" style="width:301px;">
+                <img src="{% static 'busy-woman-doing-many-things-same-time.jpg' %}" class="card-img-top" style="width:300px;" alt="Image 2">
+                <div class="card-body" style="width:300px;">
+                    <h5 class="card-title">24/7 Customer support</h5>
+                    <p class="card-text">Enjoy peace of mind with our dedicated 24/7
+                        customer support, ensuring a seamless
+                        and stress-free experience</p>
+                </div>
             </div>
-          </div>
-          <div class="col-md-3 ">
-            <div class="card" style="width:301px;">
-              <img src="{% static '3d-rendering-beautiful-comtemporary-luxury-bedroom-suite-hotel-with-tv.jpg' %}" style="width:300px;" class="card-img-top" alt="Image 3">
-              <div class="card-body" style="width:300px;">
-                <h5 class="card-title">Luxurious rooms</h5>
-                <p class="card-text">Luxury rooms offer unparalleled comfort
-                  and sophistication, creating an indulgent
-                  retreat for  guests.</p>
-              </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card mt-3" style="width:301px;">
+                <img src="{% static '3d-rendering-beautiful-comtemporary-luxury-bedroom-suite-hotel-with-tv.jpg' %}" style="width:300px;" class="card-img-top" alt="Image 3">
+                <div class="card-body" style="width:300px;">
+                    <h5 class="card-title">Luxurious rooms</h5>
+                    <p class="card-text">Luxury rooms offer unparalleled comfort
+                        and sophistication, creating an indulgent
+                        retreat for  guests.</p>
+                </div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card" style="width:301px;">
-              <img src="{% static 'people-traveling-without-covid-worries.jpg' %}" class="card-img-top" style="width:300px;" alt="Image 3">
-              <div class="card-body" style="width:300px;">
-                <h5 class="card-title">Tour guidance</h5>
-                <p class="card-text"> Let us be your compass as you navigate
-                  the extraordinary tapestry of our world. Your adventure starts here!</p>
-              </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card mt-3" style="width:301px;">
+                <img src="{% static 'people-traveling-without-covid-worries.jpg' %}" class="card-img-top" style="width:300px;" alt="Image 3">
+                <div class="card-body" style="width:300px;">
+                    <h5 class="card-title">Tour guidance</h5>
+                    <p class="card-text"> Let us be your compass as you navigate
+                        the extraordinary tapestry of our world. Your adventure starts here!</p>
+                </div>
             </div>
-          </div>
+        </div>
+    </div>
+</div>
+
+
 
           <div style="margin-top: 5%;">
             <h2 style="text-align: center;">Contact Us</h2><br>
@@ -447,6 +447,10 @@
             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             <button type="button" class="btn btn-success mt-2">Send</button>
           </div>
+            </div>
+          </div>
+        </div>
+        </div>
   </section>
 
 

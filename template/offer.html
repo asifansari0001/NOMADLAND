@@ -311,7 +311,9 @@
                     {% for package_data in packages_offers %}
                         {% with package=package_data.package images=package_data.images %}
                             <div class="col-md-3 mb-3 mb-sm-5 d-flex justify-content-center">
-                                <a href="{% url 'package_preview' %}" style="text-decoration:none;">
+
+                                <a href="{% url 'package_preview' package.package_id %}" style="text-decoration:none;">
+
                                     <div class="card" style="width: 21rem;">
                                         {% if images %}
                                             <img src="{{ images.0.image.url }}" class="card-img-top" alt="...">

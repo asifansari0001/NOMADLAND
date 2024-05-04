@@ -26,7 +26,7 @@ DEBUG = True
 
 # aws
 
-# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 
 # aws
 
@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'UserApp',
     'AgentApp',
     'AdminApp',
-    'PaymentApp'
+    'PaymentApp',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -78,35 +79,34 @@ WSGI_APPLICATION = 'project1.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'nomadland',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        }
-    }
-}
-
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'nomadland',
-#         'USER': 'testuser',
-#         'PASSWORD': 'asif1997',
-#         'HOST': 'database-1.c544wweywkfj.ap-southeast-2.rds.amazonaws.com',
-#         'PORT': '3306',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': '',
+#         'PORT': '',
 #         'OPTIONS': {
 #             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
 #         }
 #     }
 # }
 
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'nomadland',
+        'USER': 'testuser',
+        'PASSWORD': 'asif1997',
+        'HOST': 'database-1.c544wweywkfj.ap-southeast-2.rds.amazonaws.com',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -145,8 +145,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+
 
 
 # Default primary key field type
