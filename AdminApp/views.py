@@ -96,6 +96,19 @@ def user_remove(request):
         user_data.append(agent_info)
     return render(request, 'remove_user.html', {'user_data': user_data})
 
+# def user_remove(request):
+#     users = UserModel.objects.all()
+#     user_data = []
+#     for user in users:
+#         agent_info = {
+#             'user_id': user.user_id,
+#             'user_name': user.user_name,
+#             'user_email': user.user_email,
+#             'created_at': user.created_at,
+#         }
+#         user_data.append(agent_info)
+#     return render(request, 'remove_user.html', {'user_data': user_data})
+
 
 def user_remove_fun(request, user_id):
     user = UserModel.objects.filter(user_id=user_id).first()
