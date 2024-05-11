@@ -53,8 +53,9 @@ def home(request):
 
     if user_id:
         user_data = UserModel.objects.filter(user_id=user_id)
+        user_data_2=UserModel.objects.filter(user_id=user_id).first()
 
-        return render(request, 'home.html', {'user_data': user_data})
+        return render(request, 'home.html', {'user_data': user_data,'user_data_2':user_data_2})
     else:
         return render(request, 'home.html')
 

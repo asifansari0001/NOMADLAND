@@ -169,7 +169,7 @@
                 <div class="container-fluid">
                     <a class="navbar-brand  fw-bold" href="{% url 'home' %}">
                         <img src="{% static 'mountains_black.png' %}" alt="Logo" width="30" height="28"
-                            class="d-inline-block align-text-top">
+                            class="d-inline-block align-text-top" style="margin-top:1px;">
                         NOMAD<span>LAND</span>
                     </a>
                     <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse"
@@ -192,6 +192,7 @@
                                 <a class="nav-link text-black  nav-size" href="{% url 'about' %}">ABOUT US</a>
                             </li>
 
+
 {% if user_data %}
     <li class="nav-item dropdown ">
           <button class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -208,7 +209,7 @@
             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="{% url 'profile' %}">Account</a></li>
             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="/wishlist/">Wishlist</a></li>
             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="{% url 'history_booking' %}">History</a></li>
-            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="/contact/">Contact us</a></li>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="{% url 'contact' %}">Contact us</a></li>
              <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="https://www.google.com/maps?q=India">Explore</a></li>
             <hr>
              <li><a class="dropdown-item text-center" href="{% url 'logout' %}" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: red;"> <button class="btn btn-danger" style="--bs-btn-hover-bg:#dc3545; --bs-btn-hover-border-color:#dc3545;">Logout</button> </a></li>
@@ -277,7 +278,7 @@
             </div>
           </div>
           <div class="carousel-item" style="max-height:735px;">
-            <img src="{% static 'sri-lankan-elephant-4043774_1920.jpg' %}" class="d-block w-100" alt="...">
+            <img src="{% static 'ship-7833921.jpg' %}" class="d-block w-100" alt="...">
             <div class="carousel-caption d-none d-md-block">
               <h5 class="fw-bold display-6">Travel&
                 Explore the
@@ -384,9 +385,9 @@
 <div class="container mt-5">
     <div class="row" style="margin-left: 0;">
         <div class="col-md-3">
-            <div class="card mt-md-3" style="width:301px;">
-                <img src="{% static 'handsome-elegant-man-car-salon.jpg' %}" class="card-img-top" style="width:300px;" alt="Image 1">
-                <div class="card-body" style="width:300px;">
+            <div class="card mt-md-3" style="width: 300px; height: 400px;">
+                <img src="{% static 'handsome-elegant-man-car-salon.jpg' %}" class="card-img-top" style="object-fit: cover; width: 100%; height: 200px;" alt="Image 1">
+                <div class="card-body" style="height: 200px;">
                     <h5 class="card-title">Car rental</h5>
                     <p class="card-text">Experience the freedom to explore at your
                         own pace with our convenient and affordable
@@ -395,9 +396,9 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card mt-3" style="width:301px;">
-                <img src="{% static 'busy-woman-doing-many-things-same-time.jpg' %}" class="card-img-top" style="width:300px;" alt="Image 2">
-                <div class="card-body" style="width:300px;">
+            <div class="card mt-3" style="width: 300px; height: 400px;">
+                <img src="{% static 'busy-woman-doing-many-things-same-time.jpg' %}" class="card-img-top" style="object-fit: cover; width: 100%; height: 200px;" alt="Image 2">
+                <div class="card-body" style="height: 200px;">
                     <h5 class="card-title">24/7 Customer support</h5>
                     <p class="card-text">Enjoy peace of mind with our dedicated 24/7
                         customer support, ensuring a seamless
@@ -406,9 +407,9 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card mt-3" style="width:301px;">
-                <img src="{% static '3d-rendering-beautiful-comtemporary-luxury-bedroom-suite-hotel-with-tv.jpg' %}" style="width:300px;" class="card-img-top" alt="Image 3">
-                <div class="card-body" style="width:300px;">
+            <div class="card mt-3" style="width: 300px; height: 400px;">
+                <img src="{% static '3d-rendering-beautiful-comtemporary-luxury-bedroom-suite-hotel-with-tv.jpg' %}" class="card-img-top" style="object-fit: cover; width: 100%; height: 200px;" alt="Image 3">
+                <div class="card-body" style="height: 200px;">
                     <h5 class="card-title">Luxurious rooms</h5>
                     <p class="card-text">Luxury rooms offer unparalleled comfort
                         and sophistication, creating an indulgent
@@ -417,9 +418,9 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card mt-3" style="width:301px;">
-                <img src="{% static 'people-traveling-without-covid-worries.jpg' %}" class="card-img-top" style="width:300px;" alt="Image 3">
-                <div class="card-body" style="width:300px;">
+            <div class="card mt-3" style="width: 300px; height: 400px;">
+                <img src="{% static 'people-traveling-without-covid-worries.jpg' %}" class="card-img-top" style="object-fit: cover; width: 100%; height: 200px;" alt="Image 4">
+                <div class="card-body" style="height: 200px;">
                     <h5 class="card-title">Tour guidance</h5>
                     <p class="card-text"> Let us be your compass as you navigate
                         the extraordinary tapestry of our world. Your adventure starts here!</p>
@@ -431,6 +432,7 @@
 
 
 
+
           <div style="margin-top: 5%;">
             <h2 style="text-align: center;">Contact Us</h2><br>
 
@@ -438,15 +440,27 @@
 
 
 
-          <div class="mb-3">
-            <label for="exampleFormControlInput1" class="form-label" >Email address</label>
-            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Enter Your Email">
-          </div>
-          <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label">Write your Message</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            <button type="button" class="btn btn-success mt-2">Send</button>
-          </div>
+       <form id="messageForm" action="https://formspree.io/f/xnqewoow" method="post">
+    <input type="hidden" name="_subject" value="New message from user">
+    <input type="hidden" name="_next" value="your_redirect_url">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Email address</label>
+        {% if user_data_2 %}
+            <input type="email" class="form-control" id="exampleFormControlInput1" value="{{ user_data_2.user_email }}" readonly>
+        {% else %}
+            <input type="email" class="form-control" id="exampleFormControlInput2" name="_replyto" placeholder="Enter your email">
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">Write your Message</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" name="message" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-success mt-2">Send</button>
+</form>
+
+
+
             </div>
           </div>
         </div>
@@ -466,7 +480,7 @@
           <!-- Grid column -->
           <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-2">
             <a class="navbar-brand text-white fs-5 fw-bold" href="{% url 'home'  %}">
-              <img src="{% static 'mountains.png' %}" alt="Logo" width="30" height="28" class="d-inline-block align-text-top">
+              <img src="{% static 'mountains.png' %}" alt="Logo" width="30" height="28" class="d-inline-block align-text-top" style="margin-top:2px;">
               NOMAD<span>LAND</span>
             </a>
             <p class="mt-3">
@@ -630,6 +644,21 @@ function chooseOption(option) {
 }
 
 </script>
+
+
+
+   <script>
+    document.getElementById("messageForm").addEventListener("submit", function(event) {
+        {% if user_data_2 %}
+            // User data is present, no need to show alert
+        {% else %}
+            // User data is not present, show alert
+            alert("Please log in to send a message.");
+            event.preventDefault(); // Prevent form submission
+        {% endif %}
+    });
+</script>
+
 
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

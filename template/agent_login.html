@@ -11,6 +11,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'nomad_login.css' %}">
     <link rel="icon" type="image/png" href="{% static 'mountains_top.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Jacques+Francois&display=swap" rel="stylesheet">
      <title>NOMADLAND</title>
 
 <style>
@@ -136,15 +137,16 @@
 
 <body>
 
+
     <!-- navbar section starts -->
     <header>
         <div>
             <nav class="navbar navbar-expand-lg" id="#mainNav" style="background-color: whitesmoke;">
                 <div class="container-fluid">
-                    <a class="navbar-brand  fw-bold" href="{% url 'home' %}">
+                    <a class="navbar-brand fw-bold" href="{% url 'home' %}" style="font-family: Jacques Francois, serif; font-weight: 400;   font-style: normal;">
                         <img src="{% static 'mountains_black.png' %}" alt="Logo" width="30" height="28"
-                            class="d-inline-block align-text-top">
-                        NOMAD<span>LAND</span>
+                            class="d-inline-block align-text-top" style="margin-top:1px;">
+                        NOMADLAND
                     </a>
                     <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
@@ -154,22 +156,22 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item">
-                                <a class="nav-link text-black  nav-size " aria-current="page" href="{% url 'home' %}">HOME</a>
+                                <a class="nav-link text-black  nav-size " aria-current="page" href="{% url 'home' %}" style="font-family: Jacques Francois, serif; font-weight: 400;   font-style: normal;">HOME</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-black  nav-size" href="{% url 'booking' %}">TOURS</a>
+                                <a class="nav-link text-black  nav-size" href="{% url 'booking' %}" style="font-family: Jacques Francois, serif; font-weight: 400;   font-style: normal;">TOURS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-black  nav-size" href="{% url 'review' %}">REVIEWS</a>
+                                <a class="nav-link text-black  nav-size" href="{% url 'review' %}" style="font-family: Jacques Francois, serif; font-weight: 400;   font-style: normal;">REVIEWS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-black  nav-size" href="{% url 'about' %}">ABOUT US</a>
+                                <a class="nav-link text-black  nav-size" href="{% url 'about' %}" style="font-family: Jacques Francois, serif; font-weight: 400;   font-style: normal;">ABOUT US</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link dropdown-toggle ms-md-1 justify-content-sm-start ps-1 pt-1 pb-1"
                                     href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <button type="button"
-                                        class="btn btn-outline-dark bg-light btn-sm sg-button text-black">SIGN
+                                        class="btn btn-outline-dark bg-light btn-sm sg-button text-black" style="font-family: Jacques Francois, serif; font-weight: 400;   font-style: normal;">SIGN
                                         IN</button>
                                 </a>
                             </li>
@@ -184,12 +186,12 @@
     <!-- Overlay box markup -->
     <div class="overlay" id="overlay">
         <div class="overlay-box">
-            <button class="btn user-btn fs-5 fw-bolder border-0" onclick="chooseOption('customer')">
+            <button class="btn user-btn fs-5 fw-bolder border-0" onclick="chooseOption('customer')" style="font-family: Jacques Francois, serif; font-weight: 400;   font-style: normal;">
                 <i class="fas fa-user"></i><br> USER
             </button>
             <h2 class="hide-on">|</h2>
             <h1 class="hide-off">─</h1>
-            <button class="btn  agent-btn fs-5 fw-bolder border-0" onclick="chooseOption('agent')">
+            <button class="btn  agent-btn fs-5 fw-bolder border-0" onclick="chooseOption('agent')" style="font-family: Jacques Francois, serif; font-weight: 400;   font-style: normal;">
                 <i class="fas fa-user-tie"></i><br> AGENT
             </button><br>
         </div>

@@ -10,6 +10,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Jacques+Francois&display=swap" rel="stylesheet">
+
   <title>NOMADLAND</title>
 
 
@@ -172,9 +173,9 @@
         <div>
             <nav class="navbar navbar-expand-lg" id="#mainNav" style="background-color: whitesmoke;">
                 <div class="container-fluid">
-                    <a class="navbar-brand  fw-bold" href="#">
+                    <a class="navbar-brand  fw-bold" href="{% url 'home' %}">
                         <img src="{% static 'mountains_black.png' %}" alt="Logo" width="30" height="28"
-                            class="d-inline-block align-text-top">
+                            class="d-inline-block align-text-top" style="margin-top:1px;">
                         NOMAD<span>LAND</span>
                     </a>
                     <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse"
@@ -213,7 +214,7 @@
             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="{% url 'profile' %}">Account</a></li>
             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="/wishlist/">Wishlist</a></li>
             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="{% url 'history_booking' %}">History</a></li>
-            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="/contact/">Contact us</a></li>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="{% url 'contact' %}">Contact us</a></li>
              <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="https://www.google.com/maps?q=India">Explore</a></li>
             <hr>
              <li><a class="dropdown-item text-center" href="{% url 'logout' %}" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: red;"> <button class="btn btn-danger" style="--bs-btn-hover-bg:#dc3545; --bs-btn-hover-border-color:#dc3545;">Logout</button> </a></li>
@@ -300,6 +301,8 @@
     </div>
 </main>
 
+   <br>
+  <br>
   <footer class="text-center text-lg-start text-white bg-dark">
     <!-- Grid container -->
     <div class="container p-4 pb-0">
@@ -310,7 +313,7 @@
           <!-- Grid column -->
           <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-2">
             <a class="navbar-brand text-white fs-5 fw-bold" href="{% url 'home'  %}">
-              <img src="{% static 'mountains.png' %}" alt="Logo" width="30" height="28" class="d-inline-block align-text-top">
+              <img src="{% static 'mountains.png' %}" alt="Logo" width="30" height="28" class="d-inline-block align-text-top" style="margin-top:2px;">
               NOMAD<span>LAND</span>
             </a>
             <p class="mt-3">
@@ -427,9 +430,6 @@
     <!-- Grid container -->
   </footer>
   <!-- Footer -->
-
-
-  <!-- footer endss -->
 
 
 <script>

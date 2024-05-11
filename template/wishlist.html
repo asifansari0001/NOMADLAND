@@ -182,9 +182,9 @@
         <div>
             <nav class="navbar navbar-expand-lg" id="#mainNav" style="background-color: whitesmoke;">
                 <div class="container-fluid">
-                    <a class="navbar-brand  fw-bold" href="#">
+                    <a class="navbar-brand  fw-bold" href="{% url 'home' %}">
                         <img src="{% static 'mountains_black.png' %}" alt="Logo" width="30" height="28"
-                            class="d-inline-block align-text-top">
+                            class="d-inline-block align-text-top" style="margin-top:1px;">
                         NOMAD<span>LAND</span>
                     </a>
                     <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse"
@@ -219,11 +219,11 @@
             <h6 class="text-center fw-bold mt-1">Hello {{ names.0 }}</h6>
         {% endwith %}
     {% endwith %}
-            <hr>
+           <hr>
             <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="{% url 'profile' %}">Account</a></li>
-            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="/wishlist/">Wishlist</a></li>
-            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">History</a></li>
-            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="#">Contact us</a></li>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="{% url 'wishlist' %}">Wishlist</a></li>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="{% url 'history_booking' %}">History</a></li>
+            <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="{% url 'contact' %}">Contact us</a></li>
              <li><a class="dropdown-item text-start" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: black;" href="https://www.google.com/maps?q=India">Explore</a></li>
             <hr>
              <li><a class="dropdown-item text-center" href="{% url 'logout' %}" style="--bs-dropdown-link-active-bg:transperant; --bs-dropdown-link-active-color: red;"> <button class="btn btn-danger" style="--bs-btn-hover-bg:#dc3545; --bs-btn-hover-border-color:#dc3545;">Logout</button> </a></li>
@@ -260,62 +260,41 @@
     </div>
 
 
-    <!-- Overlay box markup ends -->
 
-
-
-
-<!--<div class="container">-->
-<!--    <div class="row">-->
-<!--        {% for item in wishlist_items %}-->
-<!--        <div class="col-md-4 mb-4"> &lt;!&ndash; Adjust the column width and margin as needed &ndash;&gt;-->
-<!--            <div class="card text-center"> &lt;!&ndash; Center align the card content &ndash;&gt;-->
-<!--                &lt;!&ndash; Use the destination_name as the title and description as the description &ndash;&gt;-->
-<!--                <div class="card-body">-->
-<!--                    <h5 class="card-title text-danger">{{ item.package.destination_name }}</h5>-->
-<!--                    <p class="card-text text-danger">{{ item.package.description }}</p>-->
-<!--                    &lt;!&ndash; Display only the first image associated with the package &ndash;&gt;-->
-<!--                    {% with first_image=item.package.images.first %}-->
-<!--                        {% if first_image %}-->
-<!--                            <img src="{{ first_image.image.url }}" class="card-img" alt="...">-->
-<!--                        {% endif %}-->
-<!--                    {% endwith %}-->
-<!--                    &lt;!&ndash; Add any other details you want to display &ndash;&gt;-->
-<!--                    <button class="remove-from-wishlist-btn btn btn-danger mt-3" data-package-id="{{ item.package.id }}">Remove from Wishlist</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        {% endfor %}-->
-<!--    </div>-->
-<!--</div>-->
 
 <div class="col-md-12 text-center fw-bold display-5">Your Wishlist</div><br><br>
 <div class="container">
     <div class="row">
-        {% for item in wishlist_items %}
-        <div class="col-md-3">
-            <div class="card mb-3" style="width:105%; height:100%; position: relative;">
-                {% with first_image=item.package.images.first %}
-                    {% if first_image %}
-                        <div style="position: absolute; top: 10px; right: 10px; z-index: 1;">
-                            <a href="#" class="btn btn-secondary"><i class="fa-solid fa-trash"></i></a>
-                        </div>
-                        <img src="{{ first_image.image.url }}" class="card-img-top" alt="{{ item.package.destination_name }}" height="200px">
-                    {% endif %}
-                {% endwith %}
-                <div class="card-body">
-                    <div class="row" style="height:20px;">
-                        <div class="col">
-                            <h5 class="card-title fw-bolder fs-4">{{ item.package.destination_name }}</h5>
-                        </div>
-                        <div class="col">
-                            <h5 class="card-text text-end text-success fw-bold fs-4">{{ item.package.price }}</h5>
+        {% if wishlist_items %}
+            {% for item in wishlist_items %}
+            <div class="col-md-3">
+                <div class="card mb-3" style="width:105%; height:100%; position: relative;">
+                    {% with first_image=item.package.images.first %}
+                        {% if first_image %}
+                            <div style="position: absolute; top: 10px; right: 10px; z-index: 1;">
+                                <a href="#" class="btn btn-secondary"><i class="fa-solid fa-trash"></i></a>
+                            </div>
+                            <img src="{{ first_image.image.url }}" class="card-img-top" alt="{{ item.package.destination_name }}" height="200px">
+                        {% endif %}
+                    {% endwith %}
+                    <div class="card-body">
+                        <div class="row" style="height:20px;">
+                            <div class="col">
+                                <h5 class="card-title fw-bolder fs-4">{{ item.package.destination_name }}</h5>
+                            </div>
+                            <div class="col">
+                                <h5 class="card-text text-end text-success fw-bold fs-4">{{ item.package.price }}</h5>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <div class="col-md-12 text-center">
+                <p>No items in your wishlist yet.</p>
+            </div>
+        {% endif %}
     </div>
 </div>
 
@@ -325,7 +304,7 @@
    <br>
   <br>
   <!-- Footer -->
-  <br>
+   <br>
   <br>
   <footer class="text-center text-lg-start text-white bg-dark">
     <!-- Grid container -->
@@ -337,7 +316,7 @@
           <!-- Grid column -->
           <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-2">
             <a class="navbar-brand text-white fs-5 fw-bold" href="{% url 'home'  %}">
-              <img src="{% static 'mountains.png' %}" alt="Logo" width="30" height="28" class="d-inline-block align-text-top">
+              <img src="{% static 'mountains.png' %}" alt="Logo" width="30" height="28" class="d-inline-block align-text-top" style="margin-top:2px;">
               NOMAD<span>LAND</span>
             </a>
             <p class="mt-3">
